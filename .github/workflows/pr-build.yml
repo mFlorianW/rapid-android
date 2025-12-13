@@ -93,5 +93,5 @@ jobs:
       uses: actions/upload-artifact@v4
       if: success() || failure()
       with:
-        name: test-results@${{ matrix.commits }}.xml
+        name: test-results@${{ matrix.compiler }}@${{ matrix.commits }}.xml
         path: build/debug/test_results.xml
