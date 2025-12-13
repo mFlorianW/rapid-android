@@ -45,7 +45,7 @@ jobs:
         echo "###############################################################"
     - name: build and test
       run: |
-        cmake --preset github
+        cmake --preset release
         cmake --build --preset release --target install --parallel
         ctest --preset release --output-on-failure
       env:

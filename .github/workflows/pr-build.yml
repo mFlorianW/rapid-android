@@ -71,7 +71,7 @@ jobs:
         echo "###############################################################"
         git checkout ${{ matrix.commits }}
         cmake --preset debug -DENABLE_WARNING_AS_ERROR=ON
-        cmake --build --preset debug --target install --parallel
+        cmake --build --preset debug --target all --parallel
         echo "###############################################################"
         echo "# Finished Build Commit ${{ matrix.commits }}"
         echo "###############################################################"
@@ -93,5 +93,5 @@ jobs:
       uses: actions/upload-artifact@v4
       if: success() || failure()
       with:
-        name: test-results@${{ matrix.commits }}.xml
+        name: test-results@${{ matrix.compiler }}@${{ matrix.commits }}.xml
         path: build/debug/test_results.xml

@@ -24,6 +24,7 @@ jobs:
         cmake --build --preset debug
       env:
         QT_QPA_PLATFORM: offscreen
+
     - name: Clazy-Standalone
       run: |
         files=$(git diff  --diff-filter=ACMR --name-status --dirstat=files origin/${{ github.base_ref }}..origin/${{ github.head_ref }} | awk -F'\t' '{ if(NF==3){ print $3; }else{print $2; }}'| grep -E "(.*)\.(h|cpp|hpp)$" | grep -v thirdparty) || true
@@ -34,16 +35,26 @@ jobs:
           echo "No file for checking create empty log file."
           touch clazy.log
         fi
+
     - name: Publish Clazy Fixes
       uses: actions/upload-artifact@v4
       with:
         name: clazy-fixes@${{ github.sha }}.yml
         path: clazy-fixes.yml
+
     - name: Publish Clazy Log
       uses: actions/upload-artifact@v4
       with:
         name: clazy.log@${{ github.sha }}.yml
         path: clazy.log
+
+    - name: Comment Clazy results
+      if: always()
+      uses: JacobDomagala/CompileResult@master
+      with:
+        comment_title: Include What You Result
+        compile_result_file: clazy.log
+
     - name: Check Clazy Warnings
       id: clazy-check
       shell: bash
