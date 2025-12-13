@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 - 2025 All contributors
+// SPDX-FileCopyrightText: 2025 All contributors
 //
 // SPDX-License-Identifier: GPL-2.0-or-later
 
@@ -8,7 +8,7 @@
 #include <QHostAddress>
 #include <QQmlEngine>
 
-namespace RapidAndroid::Common::Qt
+namespace RapidAndroid::Common
 {
 
 /**
@@ -47,6 +47,6 @@ public:
     bool operator!=(DeviceSettings const& rhs) const = default;
 };
 
-} // namespace RapidAndroid::Common::Qt
+} // namespace RapidAndroid::Common
 
 #endif // RAPIDANDROID_COMMON_DEVICESETTINGS_HPP

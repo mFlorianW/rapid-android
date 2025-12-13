@@ -6,7 +6,7 @@
 #include <QModelIndex>
 #include <QTest>
 
-namespace RapidAndroid::Common
+namespace RapidAndroid::Common::Tests
 {
 
 namespace
@@ -209,7 +209,7 @@ private Q_SLOTS:
     }
 };
 
-} // namespace RapidAndroid::Common
+} // namespace RapidAndroid::Common::Tests
 
-QTEST_MAIN(RapidAndroid::Common::GenericListModelTest)
+QTEST_MAIN(RapidAndroid::Common::Tests::GenericListModelTest)
 #include "GenericListModelTest.moc"
