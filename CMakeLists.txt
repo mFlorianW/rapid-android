@@ -88,7 +88,7 @@ if(QT_KNOWN_POLICY_QTP0004)
 endif()
 
 setup_compile_flags()
-setup_iwyu()
+# setup_iwyu()
 
 if(ENABLE_DESKTOP AND NOT ENABLE_ANDROID AND CMAKE_BUILD_TYPE STREQUAL "Debug")
     setup_sanitizers()
