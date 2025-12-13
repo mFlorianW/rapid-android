@@ -3,10 +3,13 @@ add_library(RapidAndroid::Common ALIAS RapidAndroidCommon)
 
 target_sources(RapidAndroidCommon PRIVATE
     include/Common/GenericListModel.hpp
+    include/Common/DeviceSettings.hpp
 )
 
 target_link_libraries(RapidAndroidCommon PUBLIC
     Qt6::Core
+    Qt6::Network
+    Qt6::Qml
 )
 
 target_include_directories(RapidAndroidCommon
