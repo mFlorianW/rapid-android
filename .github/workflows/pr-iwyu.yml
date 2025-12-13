@@ -1,0 +1,31 @@
+name: Include What You Use
+
+on:
+  workflow_call:
+
+jobs:
+  Clazy:
+    runs-on: ubuntu-24.04
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+          fetch-depth: 0
+
+    - name: Install Dependencies
+      uses: ./.github/actions/linux-install-dep
+
+    - name: Install Qt
+      uses: ./.github/actions/linux-install-qt
+
+    - name: Generate Compilation Database
+      run: |
+        cmake --preset debug
+
+    - name: Run Include What You Use
+      uses: EmilGedda/include-what-you-use-action@v1
+      with:
+        compilation-database-path: build/debug
+        output-format: 'iwyu'
+        no-error: 'false'

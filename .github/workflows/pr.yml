@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: 2025 All contributors
+#
+# SPDX-License-Identifier: GPL-2.0-or-later
+name: Pull Request Checks
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  Build_And_Test:
+    uses: ./.github/workflows/pr-build.yml
+
+  # Build_Android:
+  #   uses: ./.github/workflows/pr-build-android.yml
+
+  Linting_Clang_Tidy:
+    uses: ./.github/workflows/pr-lint.yml
+
+  Linting_Clazy:
+    uses: ./.github/workflows/pr-clazy.yml

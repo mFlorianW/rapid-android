@@ -1,0 +1,30 @@
+#
+# Pre-commit hooks
+#
+minimum_pre_commit_version: "2.20.0"
+default_install_hook_types:
+  - pre-commit
+  - pre-push
+  - commit-msg
+
+repos:
+  # Commitizen for commit message standardization
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.10.0
+    hooks:
+    - id: commitizen
+      stages: [commit-msg]
+
+  - repo: local
+    hooks:
+    - id: check-license
+      name: check_license
+      entry: reuse lint
+      language: python
+      pass_filenames: false
+
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v21.1.7  # Use the latest Clang-Format version
+    hooks:
+      - id: clang-format
+        files: \.(c|cpp|h|hpp)$  # File extensions to format     additional_dependencies: ["reuse"]
