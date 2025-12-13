@@ -94,13 +94,13 @@ if(ENABLE_DESKTOP AND NOT ENABLE_ANDROID AND CMAKE_BUILD_TYPE STREQUAL "Debug")
     setup_sanitizers()
 endif()
 
-add_subdirectory(rapid_android)
-
 if(ENABLE_TEST)
     include(CTest)
     find_package(Qt6 REQUIRED Test)
     enable_testing()
-    add_subdirectory(tests)
 endif(ENABLE_TEST)
+
+add_subdirectory(rapid_android)
+add_subdirectory(common)
 
 feature_summary(WHAT ALL)
