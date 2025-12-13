@@ -17,6 +17,9 @@ jobs:
   # Build_Android:
   #   uses: ./.github/workflows/pr-build-android.yml
 
+  Linting_Include_What_You_Use:
+    uses: ./.github/workflows/pr-iwyu.yml
+
   Linting_Clang_Tidy:
     uses: ./.github/workflows/pr-lint.yml
 
