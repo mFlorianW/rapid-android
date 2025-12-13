@@ -33,5 +33,4 @@ runs:
                      libxkbcommon-dev \
                      libegl1-mesa-dev \
                      libltdl-dev \
-                     libgps-dev \
-                     iwyu
+                     libgps-dev

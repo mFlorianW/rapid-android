@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  Clazy:
+  IWYU:
     runs-on: ubuntu-24.04
     steps:
 
@@ -19,13 +19,27 @@ jobs:
     - name: Install Qt
       uses: ./.github/actions/linux-install-qt
 
+    - name: Install Include What You Use
+      run: |
+        sudo apt-get install iwyu
+
+    - name: Setup clang as default compiler
+      run: |
+        sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100
+        sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100
+
     - name: Generate Compilation Database
       run: |
         cmake --preset debug
+        cmake --build --preset debug
 
     - name: Run Include What You Use
-      uses: EmilGedda/include-what-you-use-action@v1
+      run: |
+        iwyu_tool -p build/debug -o clang 2>&1 | tee iwyu_output.txt
+
+    - name: Comment IWYU results
+      if: always()
+      uses: JacobDomagala/CompileResult@master
       with:
-        compilation-database-path: build/debug
-        output-format: 'iwyu'
-        no-error: 'false'
+        comment_title: Include What You Result
+        compile_result_file: iwyu_output.txt
