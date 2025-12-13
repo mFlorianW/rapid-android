@@ -46,7 +46,7 @@ jobs:
     - name: build and test
       run: |
         cmake --preset release
-        cmake --build --preset release --target install --parallel
+        cmake --build --preset release --target all --parallel
         ctest --preset release --output-on-failure
       env:
         QT_QPA_PLATFORM: offscreen
