@@ -1,5 +1,5 @@
 # About
-Rapid helps you to organize your [rapid-laptimer](https://https://github.com/mFlorianW/rapid-rusty).<br/>
+Rapid helps you to organize your [rapid-laptimer](https://github.com/mFlorianW/rapid-rusty).<br/>
 With Rapid you can:
 - Manage sessions: create, view, and review runs with recorded lap times and log data.
 - Manage circuits: add, edit, and delete track definitions used for lap detection.
@@ -76,7 +76,7 @@ yay -S include-what-you-use
 sudo apt install include-what-you-use
 ```
 
-Fedora:
+- Fedora:
 ```bash
 sudo dnf install include-what-you-use
 ```
