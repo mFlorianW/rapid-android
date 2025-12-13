@@ -33,7 +33,7 @@ runs:
       uses: jurplel/install-qt-action@v4
       with:
         aqtversion: '==3.1.*'
-        version: '6.8.5'
+        version: '6.8.3'
         host: 'linux'
         target: 'android'
         arch: ${{matrix.abi}}

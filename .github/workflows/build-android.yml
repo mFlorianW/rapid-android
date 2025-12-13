@@ -30,8 +30,8 @@ jobs:
         echo "###############################################################"
         echo "# Start Build for Android ${{ matrix.abi }}"
         echo "###############################################################"
-        export QT_ANDROID_ROOT=/home/runner/work/rapid-andorid/Qt/6.8.5/android_x86_64
-        export QT_HOST_PATH=/home/runner/work/rapid-android/Qt/6.8.5/gcc_64
+        export QT_ANDROID_ROOT=/home/runner/work/rapid-andorid/Qt/6.8.3/android_x86_64
+        export QT_HOST_PATH=/home/runner/work/rapid-android/Qt/6.8.3/gcc_64
         export PATH=${ANDROID_SDK_ROOT}/cmake/3.31.1/bin:${ANDROID_ROOT_PATH}/ndk/26.3.11579264:${PATH}
         cmake --preset release
         cmake --build --preset release --target apk --parallel
