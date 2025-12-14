@@ -7,10 +7,12 @@ target_sources(RapidAndroidCommon PRIVATE
     include/Common/SettingsReader.hpp
     include/Common/SettingsBackend.hpp
     include/Common/SettingsWriter.hpp
+    include/Common/DeviceSettingsListModel.hpp
 
     src/SettingsReader.cpp
     src/SettingsKeys.hpp
     src/SettingsWriter.cpp
+    src/DeviceSettingsListModel.cpp
 )
 
 target_link_libraries(RapidAndroidCommon PUBLIC
@@ -64,4 +66,15 @@ if(ENABLE_TEST)
         RapidAndroid::Common
     )
     add_test(NAME test_common_settings_writer COMMAND test_common_settings_writer)
+
+
+    add_executable(test_common_device_settings_list_model)
+    target_sources(test_common_device_settings_list_model PRIVATE
+        tests/DeviceSettingsListModelTest.cpp
+    )
+    target_link_libraries(test_common_device_settings_list_model PRIVATE
+        Qt6::Test
+        RapidAndroid::Common
+    )
+    add_test(NAME test_common_device_settings_list_model COMMAND test_common_device_settings_list_model)
 endif()
