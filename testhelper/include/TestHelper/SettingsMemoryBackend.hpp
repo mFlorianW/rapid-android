@@ -8,7 +8,7 @@
 #include <Common/SettingsBackend.hpp>
 #include <QVariantHash>
 
-namespace RapidAndroid::Common::Tests
+namespace RapidAndroid::TestHelper
 {
 
 class SettingsMemoryBackend : public Common::SettingsBackend
@@ -22,6 +22,6 @@ private:
     QVariantHash mSingleValues;
 };
 
-} // namespace RapidAndroid::Common::Tests
+} // namespace RapidAndroid::TestHelper
 
 #endif // RAPID_COMMON_TESTS_SETTINGS_MEMORY_BACKEND_HPP

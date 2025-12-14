@@ -3,8 +3,8 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "Common/SettingsReader.hpp"
+#include "Common/Private/SettingsKeys.hpp"
 #include "Common/SettingsBackend.hpp"
-#include "SettingsKeys.hpp"
 
 namespace RapidAndroid::Common
 {

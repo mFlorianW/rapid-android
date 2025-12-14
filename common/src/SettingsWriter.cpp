@@ -4,8 +4,8 @@
 
 #include "Common/SettingsWriter.hpp"
 #include "Common/DeviceSettings.hpp"
+#include "Common/Private/SettingsKeys.hpp"
 #include "Common/SettingsBackend.hpp"
-#include "SettingsKeys.hpp"
 
 namespace RapidAndroid::Common
 {

@@ -2,9 +2,9 @@
 //
 // SPDX-License-Identifier: GPL-2.0-or-later
 
-#include "SettingsMemoryBackend.hpp"
+#include <TestHelper/SettingsMemoryBackend.hpp>
 
-namespace RapidAndroid::Common::Tests
+namespace RapidAndroid::TestHelper
 {
 
 bool SettingsMemoryBackend::storeValue(QAnyStringView const& key, QVariant const& value) noexcept
@@ -18,4 +18,4 @@ QVariant SettingsMemoryBackend::getValue(QAnyStringView const& key) const noexce
     return mSingleValues[key.toString()];
 }
 
-} // namespace RapidAndroid::Common::Tests
+} // namespace RapidAndroid::TestHelper

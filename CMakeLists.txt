@@ -98,6 +98,7 @@ if(ENABLE_TEST)
     include(CTest)
     find_package(Qt6 REQUIRED Test)
     enable_testing()
+    add_subdirectory(testhelper)
 endif(ENABLE_TEST)
 
 add_subdirectory(rapid_android)

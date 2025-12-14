@@ -8,9 +8,9 @@ target_sources(RapidAndroidCommon PRIVATE
     include/Common/SettingsBackend.hpp
     include/Common/SettingsWriter.hpp
     include/Common/DeviceSettingsListModel.hpp
+    include/Common/Private/SettingsKeys.hpp
 
     src/SettingsReader.cpp
-    src/SettingsKeys.hpp
     src/SettingsWriter.cpp
     src/DeviceSettingsListModel.cpp
 )
@@ -27,54 +27,39 @@ target_include_directories(RapidAndroidCommon
 )
 
 if(ENABLE_TEST)
-    add_executable(test_common_generic_list_model)
-    target_sources(test_common_generic_list_model PRIVATE
-        tests/GenericListModelTest.cpp
-    )
+    add_executable(test_common_generic_list_model tests/GenericListModelTest.cpp)
+    add_test(NAME test_common_generic_list_model COMMAND test_common_generic_list_model)
     target_link_libraries(test_common_generic_list_model PRIVATE
         Qt6::Test
         RapidAndroid::Common
     )
-    add_test(NAME test_common_generic_list_model COMMAND test_common_generic_list_model)
 
-    add_executable(test_common_settings_reader)
-    target_sources(test_common_settings_reader PRIVATE
-        tests/SettingsReaderTest.cpp
-        tests/SettingsMemoryBackend.cpp
-        tests/SettingsMemoryBackend.hpp
-    )
+    add_executable(test_common_settings_reader tests/SettingsReaderTest.cpp)
+    add_test(NAME test_common_settings_reader COMMAND test_common_settings_reader)
     target_include_directories(test_common_settings_reader PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
     target_link_libraries(test_common_settings_reader PRIVATE
         Qt6::Test
         RapidAndroid::Common
+        RapidAndroid::TestHelper
     )
-    add_test(NAME test_common_settings_reader COMMAND test_common_settings_reader)
 
-    add_executable(test_common_settings_writer)
-    target_sources(test_common_settings_writer PRIVATE
-        tests/SettingsWriterTest.cpp
-        tests/SettingsMemoryBackend.cpp
-        tests/SettingsMemoryBackend.hpp
-    )
+    add_executable(test_common_settings_writer tests/SettingsWriterTest.cpp)
+    add_test(NAME test_common_settings_writer COMMAND test_common_settings_writer)
     target_include_directories(test_common_settings_writer PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
     target_link_libraries(test_common_settings_writer PRIVATE
         Qt6::Test
         RapidAndroid::Common
+        RapidAndroid::TestHelper
     )
-    add_test(NAME test_common_settings_writer COMMAND test_common_settings_writer)
 
-
-    add_executable(test_common_device_settings_list_model)
-    target_sources(test_common_device_settings_list_model PRIVATE
-        tests/DeviceSettingsListModelTest.cpp
-    )
+    add_executable(test_common_device_settings_list_model tests/DeviceSettingsListModelTest.cpp)
+    add_test(NAME test_common_device_settings_list_model COMMAND test_common_device_settings_list_model)
     target_link_libraries(test_common_device_settings_list_model PRIVATE
         Qt6::Test
         RapidAndroid::Common
     )
-    add_test(NAME test_common_device_settings_list_model COMMAND test_common_device_settings_list_model)
 endif()

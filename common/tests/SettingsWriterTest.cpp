@@ -2,14 +2,15 @@
 //
 // SPDX-License-Identifier: GPL-2.0-or-later
 
-#include "SettingsKeys.hpp"
-#include "SettingsMemoryBackend.hpp"
+#include <Common/Private/SettingsKeys.hpp>
 #include <Common/SettingsReader.hpp>
 #include <Common/SettingsWriter.hpp>
 #include <QHostAddress>
 #include <QTest>
+#include <TestHelper/SettingsMemoryBackend.hpp>
 
 using namespace RapidAndroid::Common;
+using namespace RapidAndroid::TestHelper;
 
 namespace RapidAndroid::Common::Tests
 {
