@@ -49,4 +49,18 @@ public:
 
 } // namespace RapidAndroid::Common
 
+// clang-format off
+inline QDebug operator<<(QDebug debug, RapidAndroid::Common::DeviceSettings const& ds)
+{
+    QDebugStateSaver saver(debug);
+    debug.nospace() << "DeviceSettings{"
+                    << "name=" << ds.name
+                    << ", ip=" << ds.ip.toString()
+                    << ", port=" << ds.port
+                    << ", defaultDevice=" << ds.defaultDevice
+                    << '}';
+    return debug;
+}
+// clang-format on
+
 #endif // RAPIDANDROID_COMMON_DEVICESETTINGS_HPP
