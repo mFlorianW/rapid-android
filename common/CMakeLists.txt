@@ -6,9 +6,11 @@ target_sources(RapidAndroidCommon PRIVATE
     include/Common/DeviceSettings.hpp
     include/Common/SettingsReader.hpp
     include/Common/SettingsBackend.hpp
+    include/Common/SettingsWriter.hpp
 
     src/SettingsReader.cpp
     src/SettingsKeys.hpp
+    src/SettingsWriter.cpp
 )
 
 target_link_libraries(RapidAndroidCommon PUBLIC
@@ -47,4 +49,19 @@ if(ENABLE_TEST)
         RapidAndroid::Common
     )
     add_test(NAME test_common_settings_reader COMMAND test_common_settings_reader)
+
+    add_executable(test_common_settings_writer)
+    target_sources(test_common_settings_writer PRIVATE
+        tests/SettingsWriterTest.cpp
+        tests/SettingsMemoryBackend.cpp
+        tests/SettingsMemoryBackend.hpp
+    )
+    target_include_directories(test_common_settings_writer PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    target_link_libraries(test_common_settings_writer PRIVATE
+        Qt6::Test
+        RapidAndroid::Common
+    )
+    add_test(NAME test_common_settings_writer COMMAND test_common_settings_writer)
 endif()
