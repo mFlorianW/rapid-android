@@ -7,14 +7,25 @@
 namespace RapidAndroid::TestHelper
 {
 
+void SettingsMemoryBackend::enableAlwaysFailureMode() noexcept
+{
+    mAlwaysFail = true;
+}
+
 bool SettingsMemoryBackend::storeValue(QAnyStringView const& key, QVariant const& value) noexcept
 {
+    if (mAlwaysFail) {
+        return false;
+    }
     mSingleValues.insert(key.toString(), value);
     return true;
 }
 
 QVariant SettingsMemoryBackend::getValue(QAnyStringView const& key) const noexcept
 {
+    if (mAlwaysFail) {
+        return {};
+    }
     return mSingleValues[key.toString()];
 }
 

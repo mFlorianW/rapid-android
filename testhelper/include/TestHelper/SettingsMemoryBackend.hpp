@@ -14,12 +14,15 @@ namespace RapidAndroid::TestHelper
 class SettingsMemoryBackend : public Common::SettingsBackend
 {
 public:
+    void enableAlwaysFailureMode() noexcept;
+
     [[nodiscard]] bool storeValue(QAnyStringView const& key, QVariant const& value) noexcept override;
 
     [[nodiscard]] QVariant getValue(QAnyStringView const& key) const noexcept override;
 
 private:
     QVariantHash mSingleValues;
+    bool mAlwaysFail = false;
 };
 
 } // namespace RapidAndroid::TestHelper

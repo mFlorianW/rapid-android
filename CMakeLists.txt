@@ -103,5 +103,6 @@ endif(ENABLE_TEST)
 
 add_subdirectory(rapid_android)
 add_subdirectory(common)
+add_subdirectory(workflow)
 
 feature_summary(WHAT ALL)
