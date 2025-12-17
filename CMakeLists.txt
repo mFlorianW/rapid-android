@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 3.19)
 
-project(Rapid-Android
-    VERSION 0.2.0-b0
-)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/configuration/cmake/")
 
 include(FeatureSummary)
@@ -10,6 +7,11 @@ include(PreCommit)
 include(CompileFlags)
 include(Sanitizers)
 include(Iwyu)
+include(CZVersion)
+
+cz_extract_project_version("${CMAKE_SOURCE_DIR}/.cz.toml" CZ_VERSION)
+project(Rapid-Android VERSION "${CZ_VERSION}")
+message(STATUS "Project Version: ${PROJECT_VERSION}")
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_EXTENSIONS OFF)
