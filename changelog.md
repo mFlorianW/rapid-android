@@ -1,3 +1,10 @@
+## Release Note v0.2.0-b1
+
+### Bug Fixes
+- extrac cmake version from commititzen with correct format
+
+
+
 ## Release Note v0.2.0-b0
 
 ### Continuous Integration
