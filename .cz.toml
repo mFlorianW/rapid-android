@@ -7,7 +7,6 @@ version_scheme = "semver"
 update_changelog_on_bump = true
 annotated_tag = true
 version_files = [
-    "CMakeLists.txt:VERSION"
 ]
 legacy_tag_formats = [
 ]
