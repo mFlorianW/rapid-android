@@ -2,7 +2,25 @@
 //
 // SPDX-License-Identifier: GPL-2.0-or-later
 
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQuickStyle>
+
 int main(int argc, char** argv)
 {
-    return 0;
+    auto app = QGuiApplication{argc, argv};
+    QQuickStyle::setStyle("Material");
+
+    QQmlApplicationEngine engine;
+    QObject::connect(
+        &engine,
+        &QQmlApplicationEngine::objectCreationFailed,
+        &app,
+        []() {
+            QCoreApplication::exit(-1);
+        },
+        Qt::QueuedConnection);
+    engine.load(QUrl{"qrc:/qt/qml/Rapid/Android/qml/RapidAndroid.qml"});
+
+    return app.exec();
 }
