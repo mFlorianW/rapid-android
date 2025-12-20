@@ -52,7 +52,7 @@ jobs:
       if: always()
       uses: JacobDomagala/CompileResult@master
       with:
-        comment_title: Include What You Result
+        comment_title: Clazy Warnings
         compile_result_file: clazy.log
 
     - name: Check Clazy Warnings
