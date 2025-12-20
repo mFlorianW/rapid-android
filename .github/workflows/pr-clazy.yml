@@ -18,6 +18,18 @@ jobs:
       uses: ./.github/actions/linux-install-qt
     - name: Install Dependencies
       uses: ./.github/actions/linux-install-dep
+    - name: Setup default compiler
+      run: |
+        sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100
+        sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100
+        echo "###############################################################"
+        echo "Compiler CC"
+        echo "$(cc --version)"
+        echo "###############################################################"
+        echo "###############################################################"
+        echo "Compiler CXX"
+        echo "$(c++ --version)"
+        echo "###############################################################"
     - name: Generate Compile Commands and Build
       run: |
         cmake --preset debug
