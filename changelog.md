@@ -1,3 +1,27 @@
+## Release Note v0.2.0-b2
+
+### Continuous Integration
+- use clang for clazy linting to avoid warnings caused by unknown compiler error
+- disable IWYU
+
+### Features
+- use correct tilte for clazy comment
+- UI for managing laptimer devices
+- introduce main window with navigation
+- add device management with test
+- add testhelper library
+- add device settings list model with test
+- add debug operator for device settings
+- add settings writer with test
+- add settings reader with tests
+- add device settings definition
+- add generic list model
+
+### Housekeeping
+- move rapid_android in a src folder
+
+
+
 ## Release Note v0.2.0-b1
 
 ### Bug Fixes
