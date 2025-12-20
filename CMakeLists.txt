@@ -88,19 +88,21 @@ if(QT_KNOWN_POLICY_QTP0004)
 endif()
 
 setup_compile_flags()
-setup_iwyu()
+# setup_iwyu()
 
 if(ENABLE_DESKTOP AND NOT ENABLE_ANDROID AND CMAKE_BUILD_TYPE STREQUAL "Debug")
     setup_sanitizers()
 endif()
 
-add_subdirectory(rapid_android)
-
 if(ENABLE_TEST)
     include(CTest)
     find_package(Qt6 REQUIRED Test)
     enable_testing()
-    add_subdirectory(tests)
+    add_subdirectory(testhelper)
 endif(ENABLE_TEST)
+
+add_subdirectory(rapid_android)
+add_subdirectory(common)
+add_subdirectory(workflow)
 
 feature_summary(WHAT ALL)
