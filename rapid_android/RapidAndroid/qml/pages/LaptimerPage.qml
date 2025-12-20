@@ -4,16 +4,17 @@
 
 import QtQuick
 import QtQuick.Controls
+import Rapid.Laptimer
+import Rapid.Android
 
 Page {
     id: laptimerPage
     anchors.fill: parent
     title: qsTr("Laptimer")
 
-    Text {
-        anchors.centerIn: parent
-        text: qsTr("<b>Laptimer Page Content (WIP)</b>")
-        font.pointSize: 12
-        color: "#000000"
+    Laptimer {
+        id: laptimer
+        anchors.fill: parent
+        deviceManagement: GlobalContext.deviceManagement
     }
 }

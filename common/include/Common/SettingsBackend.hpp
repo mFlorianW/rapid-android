@@ -31,12 +31,12 @@ public:
     /**
      * Deleted copy constructor
      */
-    SettingsBackend(SettingsBackend&&) noexcept = delete;
+    SettingsBackend(SettingsBackend&&) noexcept = default;
 
     /**
      * Deleted move operator
      */
-    SettingsBackend& operator=(SettingsBackend&&) noexcept = delete;
+    SettingsBackend& operator=(SettingsBackend&&) noexcept = default;
 
     /**
      * Stores a value under the given key.

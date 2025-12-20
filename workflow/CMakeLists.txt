@@ -8,6 +8,7 @@ target_sources(RapidAndroidWorkflow PRIVATE
     src/LoggingCategories.cpp
     src/LoggingCategories.hpp
     src/DeviceManagement.cpp
+    src/IDeviceManagement.cpp
 )
 
 target_link_libraries(RapidAndroidWorkflow PUBLIC

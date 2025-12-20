@@ -2,6 +2,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml)
 
 add_subdirectory(RapidAndroid)
 add_subdirectory(RapidControls)
+add_subdirectory(RapidLaptimer)
 
 qt_add_executable(rapid_android)
 
@@ -14,8 +15,8 @@ target_link_libraries(rapid_android PRIVATE
     Qt6::Gui
     Qt6::Qml
     Qt6::QuickControls2
-    Rapid::Android
-    Rapid::AndroidPlugin
-    Rapid::Controls
-    Rapid::ControlsPlugin
+    RapidAndroid::Android
+    RapidAndroid::AndroidPlugin
+    RapidAndroid::Controls
+    RapidAndroid::ControlsPlugin
 )

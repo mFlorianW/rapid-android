@@ -16,15 +16,22 @@ qt_add_qml_module(RapidAndroid
         img/Sessions.svg
         img/Laptimer.svg
         img/Tracks.svg
+    SOURCES
+        GlobalContext.cpp
+        GlobalContext.hpp
+        FileSettingsBackend.cpp
+        FileSettingsBackend.hpp
 )
 
-add_library(Rapid::Android ALIAS RapidAndroid)
-add_library(Rapid::AndroidPlugin ALIAS RapidAndroidplugin)
+add_library(RapidAndroid::Android ALIAS RapidAndroid)
+add_library(RapidAndroid::AndroidPlugin ALIAS RapidAndroidplugin)
 
 target_link_libraries(RapidAndroid
     PUBLIC
         Qt6::Quick
-        Rapid::ControlsPlugin
+        RapidAndroid::Workflow
+        RapidAndroid::ControlsPlugin
+        RapidAndroid::LaptimerPlugin
 )
 
 target_include_directories(RapidAndroid

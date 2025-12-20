@@ -72,28 +72,28 @@ public:
     /**
      * @copydoc IDeviceManagement::getActiveLaptimer
      */
-    [[nodiscard]] Common::DeviceSettings getActiveLaptimer() const noexcept override;
+    [[nodiscard]] RapidAndroid::Common::DeviceSettings getActiveLaptimer() const noexcept override;
 
     /**
      * @copydoc IDeviceManagement::store
      */
-    Q_INVOKABLE bool store(Common::DeviceSettings const& device) noexcept override;
+    Q_INVOKABLE bool store(RapidAndroid::Common::DeviceSettings const& device) noexcept override;
 
     /**
      * @copydoc IDeviceManagement::remove
      */
-    Q_INVOKABLE bool remove(Common::DeviceSettings const& device) noexcept override;
+    Q_INVOKABLE bool remove(RapidAndroid::Common::DeviceSettings const& device) noexcept override;
 
     /**
      * @copydoc IDeviceManagement::update
      */
-    Q_INVOKABLE bool update(Common::DeviceSettings const& oldDevice,
-                            Common::DeviceSettings const& newDevice) noexcept override;
+    Q_INVOKABLE bool update(RapidAndroid::Common::DeviceSettings const& oldDevice,
+                            RapidAndroid::Common::DeviceSettings const& newDevice) noexcept override;
 
     /**
      * @copydoc IDeviceManagement::enable
      */
-    Q_INVOKABLE bool enable(Common::DeviceSettings device) noexcept;
+    Q_INVOKABLE bool enable(RapidAndroid::Common::DeviceSettings device) noexcept;
 
 private:
     Common::SettingsBackend* mSettingsBackend{nullptr};

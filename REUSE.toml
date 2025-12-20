@@ -25,7 +25,8 @@ SPDX-License-Identifier = "GPL-2.0-or-later"
 
 [[annotations]]
 path = [
-    "rapid_android/RapidAndroid/img/*.svg"
+    "rapid_android/RapidAndroid/img/*.svg",
+    "rapid_android/RapidLaptimer/img/*.svg"
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "NOASSERTION"

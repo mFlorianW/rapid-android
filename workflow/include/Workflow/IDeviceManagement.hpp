@@ -34,7 +34,7 @@ class IDeviceManagement : public QObject
      *
      * Gives the active laptimer to interact with.
      */
-    Q_PROPERTY(RapidAndroid::Common::DeviceSettings activeLaptimer READ getActiveLaptimer NOTIFY activeLaptimerChanged);
+    Q_PROPERTY(RapidAndroid::Common::DeviceSettings activeLaptimer READ getActiveLaptimer NOTIFY activeLaptimerChanged)
 
 public:
     /**
@@ -91,7 +91,7 @@ public:
      *
      * @return True the laptimer is successful stored otherwise false
      */
-    virtual Q_INVOKABLE bool store(Common::DeviceSettings const& device) noexcept = 0;
+    virtual Q_INVOKABLE bool store(RapidAndroid::Common::DeviceSettings const& device) noexcept = 0;
 
     /**
      * @brief Removes a laptimer
@@ -102,7 +102,7 @@ public:
      *
      * @return True the laptimer is successful stored otherwise false
      */
-    virtual Q_INVOKABLE bool remove(Common::DeviceSettings const& device) noexcept = 0;
+    virtual Q_INVOKABLE bool remove(RapidAndroid::Common::DeviceSettings const& device) noexcept = 0;
 
     /**
      * @brief Updates a laptimer with a new configuration
@@ -114,8 +114,18 @@ public:
      *
      * @return True the laptimer is successful stored otherwise false.
      */
-    virtual Q_INVOKABLE bool update(Common::DeviceSettings const& oldDevice,
-                                    Common::DeviceSettings const& newDevice) noexcept = 0;
+    virtual Q_INVOKABLE bool update(RapidAndroid::Common::DeviceSettings const& oldDevice,
+                                    RapidAndroid::Common::DeviceSettings const& newDevice) noexcept = 0;
+
+    /**
+     * @brief Helper Method to create @ref DeviceSettings in the QML context
+     *
+     * @return The @ref RapidAndroid::Common::DeviceSetting instance with created from the string parameters
+     */
+    Q_INVOKABLE RapidAndroid::Common::DeviceSettings create(QString const& name,
+                                                            QString const& ip,
+                                                            QString port,
+                                                            bool enabled) noexcept;
 Q_SIGNALS:
     /**
      * This signal is emitted when the active laptimer changes

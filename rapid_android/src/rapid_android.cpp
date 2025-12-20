@@ -11,6 +11,10 @@ int main(int argc, char** argv)
     auto app = QGuiApplication{argc, argv};
     QQuickStyle::setStyle("Material");
 
+    QCoreApplication::setOrganizationName("Rapid");
+    QCoreApplication::setOrganizationDomain("rapid.de");
+    QCoreApplication::setApplicationName("Rapid Laptimer");
+
     QQmlApplicationEngine engine;
     QObject::connect(
         &engine,
