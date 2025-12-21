@@ -33,10 +33,10 @@ runs:
       uses: jurplel/install-qt-action@v4
       with:
         aqtversion: '==3.1.*'
-        version: '6.8.3'
+        version: ${{ matrix.qt }}
         host: 'linux'
         target: 'android'
-        arch: ${{matrix.abi}}
+        arch: ${{ matrix.abi }}
         modules: 'qtlocation qtpositioning'
         setup-python: false
 
