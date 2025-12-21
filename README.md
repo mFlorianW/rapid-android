@@ -5,12 +5,24 @@ With Rapid you can:
 - Manage circuits: add, edit, and delete track definitions used for lap detection.
 - Live view: monitor real-time laptimer data during an active session for immediate feedback.
 
+Do not distribute or rely on this keystore for any release builds.
+
 ## Dependencies
 - A C++23 compatible compiler (GCC 15+, Clang 20+)
 - Linux with CMake 3.23+ (currently)
 - Ninja (recommended) or Make
 - Qt 6.9+
 - For Android builds: Android NDK and SDK installed.
+
+## Development Keystore Notice
+
+The keystore "rapid-android" in the configuration/android folder is for development and testing only.
+This should make it easier for developers to build and test the Android application without needing to create their own keystore.
+It's not used for production or "real" releases.
+
+Passwords:
+- Keystore password: 123456
+- Key alias password(s): 123456
 
 ## Build
 This project uses CMake presets for reproducible configure and build setups.

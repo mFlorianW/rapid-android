@@ -4,6 +4,9 @@ add_subdirectory(RapidAndroid)
 add_subdirectory(RapidControls)
 add_subdirectory(RapidLaptimer)
 
+## Development signing configuration
+set(QT_ANDROID_SIGN_APK true)
+
 qt_add_executable(rapid_android)
 
 target_sources(rapid_android PRIVATE
