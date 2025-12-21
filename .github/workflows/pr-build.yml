@@ -34,6 +34,7 @@ jobs:
       matrix:
         commits: ${{ fromJson(needs.Generate_Build_Jobs.outputs.commits) }}
         compiler: [Clang, GCC]
+        qt: [6.8.3, 6.10.1]
         include:
           - compiler: GCC
             cxx: g++
@@ -41,7 +42,10 @@ jobs:
           - compiler: Clang
             cxx: clang++
             cc: clang
-    name: ${{matrix.compiler}}-${{matrix.commits}}
+    permissions:
+      checks: write
+      pull-requests: write
+    name: Desktop_${{ matrix.qt }}-${{ matrix.compiler }}-${{ matrix.commits }}
 
     steps:
     - name: Checkout
@@ -90,8 +94,17 @@ jobs:
       env:
         QT_QPA_PLATFORM: offscreen
     - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: (!cancelled())
+      with:
+        files: |
+          build/debug/test_results.xml
+        comment_title: "Tests Results: Desktop_${{ matrix.qt }}-${{ matrix.compiler }}-${{ matrix.commits }}"
+        comment_mode: "failures"
+        check_name: "Test Results: Desktop_${{ matrix.qt }}-${{ matrix.compiler }}-${{ matrix.commits }}"
+    - name: Publish Test Results
       uses: actions/upload-artifact@v4
       if: success() || failure()
       with:
-        name: test-results@${{ matrix.compiler }}@${{ matrix.commits }}.xml
+        name: test-results_Desktop_${{ matrix.qt }}-${{ matrix.compiler }}-${{ matrix.commits }}.xml
         path: build/debug/test_results.xml
