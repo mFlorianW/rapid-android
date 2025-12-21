@@ -1,3 +1,10 @@
+## Release Note v0.2.0-b3
+
+### Build System
+- add android arm and x86 build targets
+
+
+
 ## Release Note v0.2.0-b2
 
 ### Continuous Integration
