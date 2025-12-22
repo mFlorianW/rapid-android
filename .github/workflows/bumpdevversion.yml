@@ -40,6 +40,6 @@ jobs:
           artifacts: rapid-android_${{ github.run_id }}.apk
       - name: Delete Artifact
         if: always()
-        uses: actions/delete-artifact@v2
+        uses: geekyeggo/delete-artifact@v5
         with:
           name: rapid-android_${{ github.run_id }}.apk
