@@ -1,3 +1,10 @@
+## Release Note v0.2.0-b5
+
+### Bug Fixes
+- install all qt modules so they can be packed in the APK
+
+
+
 ## Release Note v0.2.0-b4
 
 ### Build System
