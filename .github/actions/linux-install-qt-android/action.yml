@@ -37,6 +37,33 @@ runs:
         host: 'linux'
         target: 'android'
         arch: ${{ matrix.abi }}
-        modules: 'qtlocation qtpositioning'
+        modules: 'qt3d
+          qt5compat
+          qtcharts
+          qtconnectivity
+          qtdatavis3d
+          qtgraphs
+          qtgrpc
+          qthttpserver
+          qtimageformats
+          qtlocation
+          qtlottie
+          qtmultimedia
+          qtnetworkauth
+          qtpositioning
+          qtquick3d
+          qtquick3dphysics
+          qtquicktimeline
+          qtremoteobjects
+          qtscxml
+          qtsensors
+          qtserialbus
+          qtserialport
+          qtshadertools
+          qtspeech
+          qtvirtualkeyboard
+          qtwebchannel
+          qtwebsockets
+          qtwebview'
         setup-python: false
 
