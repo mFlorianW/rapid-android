@@ -19,7 +19,7 @@ jobs:
             preset: android-x86
           - abi: android_arm64_v8a
             preset: android-arm64
-    name: Android_${{matrix.abi}}
+    name: Build_Android_${{ matrix.qt }}_${{ matrix.abi }}
     steps:
 
     - name: Checkout
