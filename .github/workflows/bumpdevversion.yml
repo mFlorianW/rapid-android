@@ -23,7 +23,7 @@ jobs:
           name: rapid-android_${{ github.run_id }}.apk
       - name: APK Rename
         run: |
-          ls -lA .
+          ls -lA /home/runner/work/rapid-android/rapid-android
           mv rapid-android_${{ github.run_id }}.apk rapid-android.apk
       - name: Create bump and changelog
         uses: commitizen-tools/commitizen-action@master
