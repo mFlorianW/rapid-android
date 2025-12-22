@@ -34,8 +34,9 @@ jobs:
           tag: v${{ env.REVISION }}
           bodyFile: "body.md"
           skipIfReleaseExists: true
+          artifacts: rapid-android.apk
       - name: Delete Artifact
         if: always()
-        uses: actions/delete-artifact@v2
+        uses: geekyeggo/delete-artifact@v5
         with:
           name: rapid-android_${{ github.run_id }}.apk
