@@ -1,3 +1,33 @@
+## Release Note v0.2.0-b4
+
+### Build System
+- sign android apks with a development keystore
+
+### Continuous Integration
+- don't rename downloaded apk in release
+- download the APK into a download folder
+- print artifact download folder
+- print folder on releasing
+- use correct variable name for APK download in release action
+- inherits secrets to release actions
+- replace broken delete action
+- only upload APK for qt6.10.1 on releases
+- only upload latest Qt APK build
+- align build jobs names
+- use correct syntax for path ignore
+- ci upload the arm64 android apk for releases
+
+### Features
+- set android application name
+
+### Housekeeping
+- don't ignore all hidden files
+
+### Refactoring
+- don't use toolbar as header control
+
+
+
 ## Release Note v0.2.0-b3
 
 ### Build System
