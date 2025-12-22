@@ -17,7 +17,8 @@ path = [
     "**/CMakeLists.txt",
     ".clang-format",
     ".clang-tidy",
-    "**/*.cmake"
+    "**/*.cmake",
+    "configuration/android/**"
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2025 All contributors"

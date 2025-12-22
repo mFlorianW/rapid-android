@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: 2025 All contributors
+#
+# SPDX-License-Identifier: GPL-2.0-or-later
+name: Release
+
+on:
+  push:
+    branches: [ release ]
+  paths-ignore:
+   - 'changelog.md'
+
+permissions:
+  contents: write
+
+jobs:
+  if: "!startsWith(github.event.head_commit.message, 'bump:')"
+  Build_Desktop:
+    uses: ./.github/workflows/build-desktop.yml
+
+  Build_Android:
+    uses: ./.github/workflows/build-android.yml
+
+  Development_Release:
+    needs: [Build_Desktop, Build_Android]
+    uses: ./.github/workflows/bumpversion.yml

@@ -23,8 +23,8 @@ Ctrl.ApplicationWindow {
         color: "#FAFAFA"
     }
 
-    header: Ctrl.ToolBar {
-        id: topNavbar
+    header: Ctrl.Control {
+        id: header
         height: 60
 
         Material.elevation: 6
@@ -34,9 +34,8 @@ Ctrl.ApplicationWindow {
         }
 
         RowLayout {
-            anchors.verticalCenter: parent.verticalCenter
-
             anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: 12
             spacing: 12
 
