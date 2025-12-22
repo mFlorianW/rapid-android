@@ -22,7 +22,7 @@ jobs:
           - compiler: Clang
             cxx: clang++
             cc: clang
-    name: Desktop_${{ matrix.qt }}-${{ matrix.compiler }}
+    name: Build_Desktop_${{ matrix.qt }}-${{ matrix.compiler }}
 
     steps:
     - name: checkout
