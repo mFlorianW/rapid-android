@@ -1,16 +1,13 @@
 name: Bump Release Version
 
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
 
 permissions:
   contents: write
 
 jobs:
   bump-version:
-    if: "!startsWith(github.event.head_commit.message, 'bump:')"
     runs-on: ubuntu-latest
     name: "Bump version and create changelog with commitizen"
     steps:
@@ -19,6 +16,13 @@ jobs:
         with:
           token: ${{ secrets.COMMITIZEN_RELEASE_SECRET }}
           fetch-depth: 0
+      - name: Download Android APK
+        uses: actions/download-artifact@v5
+        with:
+          name: rapid-android_{{ github.run_id }}.apk
+      - name: APK Rename
+        run: |
+          mv rapid-android_${{ github.run_id }}.apk rapid-android.apk
       - name: Create bump and changelog
         uses: commitizen-tools/commitizen-action@master
         with:
@@ -30,3 +34,8 @@ jobs:
           tag: v${{ env.REVISION }}
           bodyFile: "body.md"
           skipIfReleaseExists: true
+      - name: Delete Artifact
+        if: always()
+        uses: actions/delete-artifact@v2
+        with:
+          name: rapid-android_${{ github.run_id }}.apk

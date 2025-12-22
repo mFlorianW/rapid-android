@@ -1,8 +1,7 @@
 name: Bump Develop Version
 
 on:
-  push:
-    branches: [ develop ]
+  workflow_call:
 
 permissions:
   contents: write
@@ -18,6 +17,13 @@ jobs:
         with:
           token: ${{ secrets.COMMITIZEN_RELEASE_SECRET }}
           fetch-depth: 0
+      - name: Download Android APK
+        uses: actions/download-artifact@v5
+        with:
+          name: rapid-android_{{ github.run_id }}.apk
+      - name: APK Rename
+        run: |
+          mv rapid-android_${{ github.run_id }}.apk rapid-android.apk
       - name: Create bump and changelog
         uses: commitizen-tools/commitizen-action@master
         with:
@@ -31,3 +37,9 @@ jobs:
           bodyFile: "body.md"
           skipIfReleaseExists: true
           prerelease: true
+          artifacts: rapid-android_${{ github.run_id }}.apk
+      - name: Delete Artifact
+        if: always()
+        uses: actions/delete-artifact@v2
+        with:
+          name: rapid-android_${{ github.run_id }}.apk

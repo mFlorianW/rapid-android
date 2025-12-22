@@ -4,8 +4,7 @@
 name: Build CI Android
 
 on:
-  push:
-    branches: [ main, develop ]
+  workflow_call:
 
 jobs:
   Build:
@@ -45,3 +44,10 @@ jobs:
         echo "###############################################################"
         echo "# Finished Build Commit ${{ matrix.commits }}"
         echo "###############################################################"
+
+    - name: Upload Artifact
+      if: ${{ matrix.abi == 'android_arm64_v8a' }} && ${{ matrix.qt == '6.10.1' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: rapid-android_${{ github.run_id }}.apk
+        path: build/android-arm64/rapid_android/android-build/rapid-android.apk
