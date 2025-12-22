@@ -23,3 +23,4 @@ jobs:
   Development_Release:
     needs: [Build_Desktop, Build_Android]
     uses: ./.github/workflows/bumpdevversion.yml
+    secrets: inherit
