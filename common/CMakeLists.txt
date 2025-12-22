@@ -9,10 +9,16 @@ target_sources(RapidAndroidCommon PRIVATE
     include/Common/SettingsWriter.hpp
     include/Common/DeviceSettingsListModel.hpp
     include/Common/Private/SettingsKeys.hpp
+    include/Common/Lap.hpp
+    include/Common/GnssPosition.hpp
+    include/Common/Position.hpp
+    include/Common/Session.hpp
+    include/Common/SessionInfo.hpp
 
     src/SettingsReader.cpp
     src/SettingsWriter.cpp
     src/DeviceSettingsListModel.cpp
+    src/Lap.cpp
 )
 
 target_link_libraries(RapidAndroidCommon PUBLIC
@@ -59,6 +65,13 @@ if(ENABLE_TEST)
     add_executable(test_common_device_settings_list_model tests/DeviceSettingsListModelTest.cpp)
     add_test(NAME test_common_device_settings_list_model COMMAND test_common_device_settings_list_model)
     target_link_libraries(test_common_device_settings_list_model PRIVATE
+        Qt6::Test
+        RapidAndroid::Common
+    )
+
+    add_executable(test_common_lap tests/LapTest.cpp)
+    add_test(NAME test_common_lap COMMAND test_common_lap)
+    target_link_libraries(test_common_lap PRIVATE
         Qt6::Test
         RapidAndroid::Common
     )
