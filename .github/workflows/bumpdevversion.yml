@@ -20,7 +20,7 @@ jobs:
       - name: Download Android APK
         uses: actions/download-artifact@v5
         with:
-          name: rapid-android_{{ github.run_id }}.apk
+          name: rapid-android_${{ github.run_id }}.apk
       - name: APK Rename
         run: |
           mv rapid-android_${{ github.run_id }}.apk rapid-android.apk
