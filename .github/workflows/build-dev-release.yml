@@ -6,8 +6,9 @@ name: Development Release
 on:
   push:
     branches: [ develop ]
-  paths-ignore:
-   - 'changelog.md'
+    paths-ignore:
+      - 'changelog.md'
+      - '.cz.toml'
 
 permissions:
   contents: write
