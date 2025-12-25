@@ -18,7 +18,8 @@ path = [
     ".clang-format",
     ".clang-tidy",
     "**/*.cmake",
-    "configuration/android/**"
+    "configuration/android/**",
+    "**/.qmlls.ini"
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2025 All contributors"

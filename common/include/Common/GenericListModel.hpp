@@ -229,10 +229,38 @@ public:
         return std::addressof(mElements[index]);
     }
 
-private:
-    std::list<qint32> getRows(ListType const& item)
+    /**
+     * @brief Returns the rows whose items satisfy the predicate.
+     *
+     * @details Iterates all elements and collects indices for which predicate(item) returns true.
+     *
+     * @param predicate Unary predicate taking a const reference to an item and returning true if it matches.
+     *
+     * @return Vector of row indices that match; empty if none.
+     */
+    QVector<qint32> getRows(std::function<bool(ListType const&)> const& predicate)
     {
-        auto rows = std::list<qint32>{};
+        auto rows = QVector<qint32>{};
+        for (std::size_t i = 0; i < mElements.size(); ++i) {
+            if (predicate(mElements[i])) {
+                rows.push_back(static_cast<qint32>(i));
+            }
+        }
+        return rows;
+    }
+
+    /**
+     * @brief Returns the rows that contain the given item.
+     *
+     * @details Compares each element with the passed item using operator== and collects all matching indices.
+     *
+     * @param item The value to search for.
+     *
+     * @return Vector of row indices of all matches; empty if none.
+     */
+    QVector<qint32> getRows(ListType const& item)
+    {
+        auto rows = QVector<qint32>{};
         for (std::size_t i = 0; i < mElements.size(); ++i) {
             if (mElements[i] == item) {
                 rows.push_back(static_cast<qint32>(i));
