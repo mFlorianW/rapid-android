@@ -237,6 +237,15 @@ private Q_SLOTS:
         rows = model.getRows(TestType{.value = 100});
         QCOMPARE(rows.size(), 0);
     }
+
+    void testContainsItem()
+    {
+        TestData fix;
+        TestModel model(fix.data);
+
+        QVERIFY(model.contains(TestType{.value = 1}));
+        QVERIFY(!model.contains(TestType{.value = 100}));
+    }
 };
 
 } // namespace RapidAndroid::Common::Tests

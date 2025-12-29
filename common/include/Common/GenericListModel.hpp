@@ -269,6 +269,18 @@ public:
         return rows;
     }
 
+    /**
+     * @brief Checks whether the model contains the given item.
+     *
+     * @param item The item to search for.
+     *
+     * @return true if the item is found, false otherwise.
+     */
+    bool contains(ListType const& item) const noexcept
+    {
+        return std::find(mElements.cbegin(), mElements.cend(), item) != mElements.cend();
+    }
+
 private:
     Roles mRoles;
     std::vector<ListType> mElements;
