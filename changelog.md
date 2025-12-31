@@ -1,3 +1,13 @@
+## Release Note v0.2.0-b6
+
+### Features
+- introduce session management on the laptimer device
+- add contains method to the generic list model
+- new helper functions to get the rows of elements in GenericListModel
+- introduce entites for session management
+
+
+
 ## Release Note v0.2.0-b5
 
 ### Bug Fixes
