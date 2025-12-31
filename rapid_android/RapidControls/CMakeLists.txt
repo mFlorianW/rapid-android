@@ -5,10 +5,11 @@ qt_add_qml_module(RapidControls
     STATIC
     QML_FILES
         qml/NavButton.qml
-        qml/ListDelegate.qml
+        qml/ListDelegateBackground.qml
         qml/StatusIndicator.qml
         qml/ContextMenu.qml
         qml/ListItem.qml
+        qml/ListDelegate.qml
 )
 
 add_library(RapidAndroid::Controls ALIAS RapidControls)

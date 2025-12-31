@@ -33,4 +33,6 @@ runs:
                      libxkbcommon-dev \
                      libegl1-mesa-dev \
                      libltdl-dev \
-                     libgps-dev
+                     libgps-dev \
+                     libgtest-dev \
+                     libgmock-dev

@@ -9,7 +9,11 @@
 #include <Common/DeviceSettings.hpp>
 #include <QObject>
 #include <QtQmlIntegration/qqmlintegration.h>
+#include <RapidSession/FilesystemStorage.hpp>
+#include <RapidSession/SessionJsonDeserializer.hpp>
+#include <RapidSession/SessionJsonSerializer.hpp>
 #include <Workflow/DeviceManagement.hpp>
+#include <Workflow/HttpDeviceSessionManagement.hpp>
 #include <memory>
 
 namespace RapidAndroid
@@ -32,7 +36,15 @@ class GlobalContext : public QObject
      *
      * Gives the DeviceManagement workflow for managing the laptimer.
      */
-    Q_PROPERTY(Workflow::DeviceManagement* deviceManagement READ getDeviceManagement CONSTANT)
+    Q_PROPERTY(RapidAndroid::Workflow::IDeviceManagement* deviceManagement READ getDeviceManagement CONSTANT)
+
+    /**
+     * @property RapidAndroid::Workflow::IDeviceSessionManagement*
+     *
+     * Gives the DeviceSessionManagement workflow for managing device sessions.
+     */
+    Q_PROPERTY(RapidAndroid::Workflow::IDeviceSessionManagement* deviceSessionManagement READ getDeviceSessionManagement
+                   CONSTANT)
 
 public:
     Q_DISABLE_COPY_MOVE(GlobalContext)
@@ -53,9 +65,23 @@ public:
      */
     Workflow::DeviceManagement* getDeviceManagement() const noexcept;
 
+    /**
+     * @brief Get the device-session-management workflow.
+     * @return Non-null pointer owned by GlobalContext. Do not delete.
+     */
+    RapidAndroid::Workflow::IDeviceSessionManagement* getDeviceSessionManagement() const noexcept;
+
 private:
     FileSettingsBackend mSettingsBackend;
-    std::unique_ptr<Workflow::DeviceManagement> devieManagement;
+    std::unique_ptr<Workflow::DeviceManagement> mDeviceManagement;
+
+    using Storage = RapidAndroid::Session::FilesystemStorage<RapidAndroid::Session::SessionJsonSerializer>;
+    RapidAndroid::Session::SessionJsonSerializer mSessionSerializer;
+    Storage mSessionStorage;
+
+    using DeviceSessionMgmt = Workflow::HttpDeviceSessionManagement<Session::SessionJsonDeserializer, Storage>;
+    RapidAndroid::Session::SessionJsonDeserializer mSessionDeserializer;
+    std::unique_ptr<DeviceSessionMgmt> mDeviceSessionManagement;
 };
 
 } // namespace RapidAndroid

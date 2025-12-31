@@ -5,3 +5,4 @@
 #include "LoggingCategories.hpp"
 
 Q_LOGGING_CATEGORY(devicemanagement, "RapidAndroid.Workflow.DeviceManagement")
+Q_LOGGING_CATEGORY(dsm, "RapidAndroid.Workflow.DeviceSessionManagement")

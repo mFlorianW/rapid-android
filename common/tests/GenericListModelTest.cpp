@@ -207,6 +207,45 @@ private Q_SLOTS:
             QCOMPARE(*element, fix.data[1]);
         }
     }
+
+    void testGetRows()
+    {
+        TestData fix;
+        TestModel model(fix.data);
+
+        auto rows = model.getRows([](TestType const& item) {
+            return item.value == 2;
+        });
+        QCOMPARE(rows.size(), 1);
+        QCOMPARE(rows.at(0), 1);
+
+        rows = model.getRows(TestType{.value = 1});
+        QCOMPARE(rows.size(), 1);
+        QCOMPARE(rows.at(0), 0);
+    }
+
+    void testGetRowsNoMatch()
+    {
+        TestData fix;
+        TestModel model(fix.data);
+
+        auto rows = model.getRows([](TestType const& item) {
+            return item.value == 100;
+        });
+        QCOMPARE(rows.size(), 0);
+
+        rows = model.getRows(TestType{.value = 100});
+        QCOMPARE(rows.size(), 0);
+    }
+
+    void testContainsItem()
+    {
+        TestData fix;
+        TestModel model(fix.data);
+
+        QVERIFY(model.contains(TestType{.value = 1}));
+        QVERIFY(!model.contains(TestType{.value = 100}));
+    }
 };
 
 } // namespace RapidAndroid::Common::Tests

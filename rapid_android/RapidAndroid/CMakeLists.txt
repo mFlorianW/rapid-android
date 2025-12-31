@@ -21,6 +21,8 @@ qt_add_qml_module(RapidAndroid
         GlobalContext.hpp
         FileSettingsBackend.cpp
         FileSettingsBackend.hpp
+        LoggingCategories.cpp
+        LoggingCategories.hpp
 )
 
 add_library(RapidAndroid::Android ALIAS RapidAndroid)
@@ -32,6 +34,8 @@ target_link_libraries(RapidAndroid
         RapidAndroid::Workflow
         RapidAndroid::ControlsPlugin
         RapidAndroid::LaptimerPlugin
+        RapidAndroid::Session
+        RapidAndroid::SessionPlugin
 )
 
 target_include_directories(RapidAndroid
