@@ -4,16 +4,15 @@
 
 import QtQuick
 import QtQuick.Controls
+import Rapid.Session
 
 Page {
     id: sessionsPage
     anchors.fill: parent
     title: qsTr("Sessions")
 
-    Text {
-        anchors.centerIn: parent
-        text: qsTr("<b>Sessions Page Content (WIP)</b>")
-        font.pointSize: 12
-        color: "#000000"
+    Session {
+        id: session
+        anchors.fill: parent
     }
 }

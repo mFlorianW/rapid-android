@@ -64,7 +64,7 @@ Ctrl.ApplicationWindow {
     Loader {
         id: pageLoader
         anchors.fill: parent
-        sourceComponent: laptimerPage
+        sourceComponent: sessionsPage
     }
 
     footer: Ctrl.ToolBar {

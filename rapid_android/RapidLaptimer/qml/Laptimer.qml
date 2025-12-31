@@ -53,7 +53,7 @@ Control {
             clip: true
             model: laptimer.deviceManagement.model
 
-            delegate: ListDelegate {
+            delegate: ListDelegateBackground {
                 id: listDelegate
                 width: laptimerList.width
                 height: 156

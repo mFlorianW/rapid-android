@@ -14,5 +14,5 @@ runs:
       with:
         version: ${{ matrix.qt }}
         cache: 'true'
-        modules: 'qtlocation qtpositioning'
+        modules: 'qtlocation qtpositioning qthttpserver qtwebsockets'
         setup-python: false
