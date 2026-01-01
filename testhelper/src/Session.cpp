@@ -100,9 +100,9 @@ Common::Session getOscherslebenSession() noexcept
 {
     // clang-format off
     static auto session = Common::Session{};
-    session.date = QDate{1970, 1, 1};
-    session.time = QTime{13, 0, 0, 0};
-    session.track = Common::Track
+    session.setDate(QDate{1970, 1, 1});
+    session.setTime(QTime{13, 0, 0, 0});
+    session.setTrack(Common::Track
     {
         .name = "Oschersleben",
         .startline = Common::Position{.latitude = 52.025833, .longitude = 11.279166},
@@ -112,8 +112,8 @@ Common::Session getOscherslebenSession() noexcept
         Common::Position{.latitude = 52.025833, .longitude = 11.279166},
         Common::Position{.latitude = 52.025833, .longitude = 11.279166}
         }
-    };
-    session.laps =
+    });
+    session.setLaps(
     {
         Common::Lap
         {
@@ -145,9 +145,17 @@ Common::Session getOscherslebenSession() noexcept
                     }
                 }
         }
-    };
+    });
     // clang-format on
     return session;
+}
+
+Common::SessionInfo getOscherslebenSessionInfo() noexcept
+{
+    return Common::SessionInfo{.id = "oschersleben_01_01_1970_13_00_00_000",
+                               .date = QDateTime{QDate{1970, 1, 1}, QTime{13, 0, 0, 0}},
+                               .trackName = "Oschersleben",
+                               .laps = 1};
 }
 
 } // namespace RapidAndroid::TestHelper

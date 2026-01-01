@@ -19,6 +19,7 @@ target_sources(RapidAndroidCommon PRIVATE
     src/SettingsWriter.cpp
     src/DeviceSettingsListModel.cpp
     src/Lap.cpp
+    src/Session.cpp
 )
 
 target_link_libraries(RapidAndroidCommon PUBLIC

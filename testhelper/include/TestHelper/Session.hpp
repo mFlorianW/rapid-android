@@ -6,6 +6,7 @@
 #define RAPIDANDROID_TESTHELPER_JSONOSCHERSLEBENSESSION_HPP
 
 #include <Common/Session.hpp>
+#include <Common/SessionInfo.hpp>
 #include <QJsonDocument>
 
 namespace RapidAndroid::TestHelper

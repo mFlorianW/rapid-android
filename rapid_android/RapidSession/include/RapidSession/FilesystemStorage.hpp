@@ -112,9 +112,9 @@ private:
     Workflow::StoreResult storeImpl(std::unique_ptr<Common::Session> session) noexcept
     {
         bool result = true;
-        auto sessionId = QString{"%1_%2_%3"}.arg(session->track.name.toLower(),
-                                                 session->date.toString("dd_MM_yyyy"),
-                                                 session->time.toString("HH_mm_ss_zzz"));
+        auto sessionId = QString{"%1_%2_%3"}.arg(session->getTrack().name.toLower(),
+                                                 session->getDate().toString("dd_MM_yyyy"),
+                                                 session->getTime().toString("HH_mm_ss_zzz"));
         auto const sessionFileName = QString{"%1.session"}.arg(sessionId);
         auto const sessionInfoFileName = QString{"%1.info"}.arg(sessionId);
         auto const infoFilePath = QString::fromStdString(mStoragePath / sessionInfoFileName.toUtf8().constData());
@@ -122,10 +122,10 @@ private:
         if (infoFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
             auto jsonObj = QJsonObject{};
             jsonObj.insert("id", sessionId);
-            auto const date = QDateTime{session->date, session->time, QTimeZone::UTC};
+            auto const date = QDateTime{session->getDate(), session->getTime(), QTimeZone::UTC};
             jsonObj.insert("date", date.toString("yyyy-MM-ddTHH:mm:ss.zzz"));
-            jsonObj.insert("track_name", session->track.name);
-            jsonObj.insert("laps", static_cast<qint32>(session->laps.size()));
+            jsonObj.insert("track_name", session->getTrack().name);
+            jsonObj.insert("laps", static_cast<qint32>(session->getLaps().size()));
             auto jsonDoc = QJsonDocument{};
             jsonDoc.setObject(jsonObj);
             infoFile.write(jsonDoc.toJson());

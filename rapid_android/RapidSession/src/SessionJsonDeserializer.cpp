@@ -89,14 +89,14 @@ std::optional<std::unique_ptr<Common::Session>> deserializeSession(QByteArray da
     auto session = std::make_unique<Common::Session>();
     auto lapsArray = jsonDoc.object().value("laps").toArray();
     if (not lapsArray.isEmpty()) {
-        session->laps = deserializeLaps(lapsArray);
+        session->setLaps(deserializeLaps(lapsArray));
     }
     auto trackObject = jsonDoc.object().value("track").toObject();
     if (not trackObject.isEmpty()) {
-        session->track = deserializeTrack(trackObject);
+        session->setTrack(deserializeTrack(trackObject));
     }
-    session->date = deserializeDate(jsonDoc.object().value("date").toString());
-    session->time = QTime::fromString(jsonDoc.object().value("time").toString(), Qt::ISODate);
+    session->setDate(deserializeDate(jsonDoc.object().value("date").toString()));
+    session->setTime(QTime::fromString(jsonDoc.object().value("time").toString(), Qt::ISODate));
 
     return session;
 }
