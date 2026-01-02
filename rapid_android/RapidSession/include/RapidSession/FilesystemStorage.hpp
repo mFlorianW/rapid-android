@@ -100,7 +100,7 @@ public:
     QFuture<Workflow::StoreResult> store(std::unique_ptr<Common::Session> session) noexcept
     {
         return QtConcurrent::run([this, s = std::move(session)]() mutable -> Workflow::StoreResult {
-            return this->storeImpl(std::move(s));
+            return storeTask(std::move(s));
         });
     }
 
@@ -116,7 +116,7 @@ public:
     }
 
 private:
-    Workflow::StoreResult storeImpl(std::unique_ptr<Common::Session> session) noexcept
+    Workflow::StoreResult storeTask(std::unique_ptr<Common::Session> session) noexcept
     {
         bool result = true;
         auto sessionId = QString{"%1_%2_%3"}.arg(session->getTrack().name.toLower(),

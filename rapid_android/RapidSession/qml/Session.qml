@@ -88,9 +88,7 @@ Control {
                 anchors.rightMargin: 15
 
                 onClicked: {
-                    // var settings = GlobalContext.deviceManagement.activeLaptimer;
-                    GlobalContext.localSessionManagement.refreshSessionInfoList();
-                    // refreshDialog.open();
+                    GlobalContext.localSessionManagement.refreshSessionInfo();
                 }
             }
 
