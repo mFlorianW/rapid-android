@@ -96,6 +96,27 @@ private Q_SLOTS:
         QCOMPARE(infos.at(0), TestHelper::getOscherslebenSessionInfo());
         QVERIFY(testing::Mock::VerifyAndClearExpectations(&deserializer));
     };
+
+    void testRemoveSession()
+    {
+        QString const sessionFileName = "oschersleben_01_01_1970_13_00_00_000.session";
+        QString const sessionInfoFileName = "oschersleben_01_01_1970_13_00_00_000.info";
+        auto testDir = QTemporaryDir{};
+        auto filePath = std::filesystem::path{testDir.path().toUtf8().constData()};
+        auto serializer = TestHelper::SessionJsonSerializerMock{};
+        auto deserializer = TestHelper::SessionJsonDeserializerMock{};
+        auto storage = FilesystemJsonStorage{filePath, &serializer, &deserializer};
+        createTestFiles(filePath);
+        auto sessionInfo = TestHelper::getOscherslebenSessionInfo();
+
+        auto fut = storage.remove(sessionInfo);
+        fut.waitForFinished();
+        QVERIFY(fut.takeResult());
+        auto const sessionFile = QString::fromStdString(filePath / sessionFileName.toUtf8().constData());
+        QVERIFY(!QFile::exists(sessionFile));
+        auto const sessionInfoFile = QString::fromStdString(filePath / sessionInfoFileName.toUtf8().constData());
+        QVERIFY(!QFile::exists(sessionInfoFile));
+    };
 };
 
 } // namespace RapidAndroid::Session::Test

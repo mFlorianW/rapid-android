@@ -112,7 +112,9 @@ public:
      */
     QFuture<bool> remove(RapidAndroid::Common::SessionInfo const& sessionInfo) noexcept
     {
-        return {};
+        return QtConcurrent::run([this, sessionInfo]() -> bool {
+            return removeTask(sessionInfo);
+        });
     }
 
 private:
@@ -194,6 +196,39 @@ private:
             }
         }
         return sessionInfos;
+    }
+
+    bool removeTask(RapidAndroid::Common::SessionInfo const& sessionInfo) noexcept
+    {
+        bool result = true;
+        auto id =
+            QString{"%1_%2"}.arg(sessionInfo.trackName.toLower(), sessionInfo.date.toString("dd_MM_yyyy_HH_mm_ss_zzz"));
+        auto sessionFileName = QString{"%1.session"}.arg(id);
+        auto sessionInfoFileName = QString{"%1.info"}.arg(id);
+        auto const sessionFilePath = QString::fromStdString(mStoragePath / sessionFileName.toUtf8().constData());
+        auto const sessionInfoFilePath =
+            QString::fromStdString(mStoragePath / sessionInfoFileName.toUtf8().constData());
+
+        auto sessionFile = QFile{sessionFilePath};
+        if (sessionFile.exists()) {
+            if (not sessionFile.remove()) {
+                qCCritical(fsLogCat()) << "Failed to remove session file:" << sessionFilePath;
+                result = false;
+            } else {
+                qDebug(fsLogCat()) << "Removed session file:" << sessionFilePath;
+            }
+        }
+
+        auto infoFile = QFile{sessionInfoFilePath};
+        if (infoFile.exists()) {
+            if (not infoFile.remove()) {
+                qCCritical(fsLogCat()) << "Failed to remove session info file:" << sessionInfoFilePath;
+                result = false;
+            } else {
+                qDebug(fsLogCat()) << "Removed session info file:" << sessionInfoFilePath;
+            }
+        }
+        return result;
     }
 
 private:

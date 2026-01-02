@@ -68,7 +68,9 @@ Control {
 
                     onLeftButtonClicked: {}
 
-                    onRightButtonClicked: {}
+                    onRightButtonClicked: {
+                        GlobalContext.localSessionManagement.remove(listDelegate.sessionInfo);
+                    }
                 }
             }
 
