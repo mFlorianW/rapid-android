@@ -21,10 +21,12 @@ Control {
         Material.accent: "#0682C9"
 
         TabButton {
-            text: qsTr("Stored Sessions")
+            text: qsTr("Local Sessions")
+            icon.source: "qrc:/qt/qml/Rapid/Session/img/Local.svg"
         }
         TabButton {
-            text: qsTr("Laptimer Sessions")
+            text: qsTr("Remote Sessions")
+            icon.source: "qrc:/qt/qml/Rapid/Session/img/Remote.svg"
         }
     }
 
@@ -39,14 +41,65 @@ Control {
         currentIndex: tabbar.currentIndex
 
         Item {
-            id: storedSessionTab
+            id: localSessionTab
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            Text {
-                text: qsTr("Stored Sessions Content Placeholder")
-                anchors.centerIn: parent
+            ListView {
+                id: localLaptimerSessionList
+                anchors.fill: parent
+                anchors.margins: 10
+                model: GlobalContext.localSessionManagement.model
+                spacing: 12
+                clip: true
+                delegate: ListDelegate {
+                    id: listDelegate
+                    width: localLaptimerSessionList.width
+                    required property var sessionInfo
+                    titleName: listDelegate.sessionInfo.trackName
+                    additionalTitleText: listDelegate.sessionInfo.date
+                    detail1Text: qsTr("Laps: %1").arg(listDelegate.sessionInfo.laps)
+                    detail2Text: listDelegate.sessionInfo.trackName
+
+                    buttonLeftText: qsTr("Analyze")
+                    buttonLeftIcon: "qrc:/qt/qml/Rapid/Session/img/Analyze.svg"
+                    buttonRightText: qsTr("Delete")
+                    buttonRightIcon: "qrc:/qt/qml/Rapid/Session/img/Trash.svg"
+
+                    onLeftButtonClicked: {}
+
+                    onRightButtonClicked: {}
+                }
             }
+
+            RoundButton {
+                id: sessionTabRefeshButton
+                height: 60
+                width: height
+                icon.source: "qrc:/qt/qml/Rapid/Session/img/Refresh.svg"
+
+                Material.roundedScale: Material.FullScale
+                Material.foreground: "#FFFFFF"
+                Material.background: "#0682C9"
+
+                anchors.bottom: localSessionTab.bottom
+                anchors.bottomMargin: 10
+                anchors.right: localSessionTab.right
+                anchors.rightMargin: 15
+
+                onClicked: {
+                    // var settings = GlobalContext.deviceManagement.activeLaptimer;
+                    GlobalContext.localSessionManagement.refreshSessionInfoList();
+                    // refreshDialog.open();
+                }
+            }
+
+            StackLayout.onIsCurrentItemChanged: {
+                if (StackLayout.isCurrentItem) {
+                    sessionTabRefeshButton.clicked();
+                }
+            }
+
         }
 
         Item {

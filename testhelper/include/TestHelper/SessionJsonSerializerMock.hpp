@@ -18,6 +18,7 @@ class SessionJsonSerializerMock
 
 public:
     MOCK_METHOD(QFuture<Workflow::SerializeResult>, serialize, (std::unique_ptr<Common::Session>), ());
+    MOCK_METHOD(QFuture<Workflow::SerializeResult>, serializeInfo, (std::unique_ptr<Common::Session>, QString), ());
 };
 
 } // namespace RapidAndroid::TestHelper

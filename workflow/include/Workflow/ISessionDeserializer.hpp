@@ -6,6 +6,7 @@
 #define RAPIDANDROID_WORKFLOW_ISESSIONDESERIALIZER_HPP
 
 #include <Common/Session.hpp>
+#include <Common/SessionInfo.hpp>
 #include <QFuture>
 #include <optional>
 
@@ -18,6 +19,7 @@ namespace RapidAndroid::Workflow
 template <typename T>
 concept SessionDeserializerConcept = requires(T a, QByteArray data) {
     { a.deserialize(data) } -> std::same_as<QFuture<std::optional<std::unique_ptr<Common::Session>>>>;
+    { a.deserializeInfo(data) } -> std::same_as<QFuture<std::optional<std::unique_ptr<Common::SessionInfo>>>>;
 };
 
 }; // namespace RapidAndroid::Workflow

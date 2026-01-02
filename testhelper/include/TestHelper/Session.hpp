@@ -33,6 +33,13 @@ QJsonDocument getJsonOscherslebenSessionInfo() noexcept;
  */
 Common::Session getOscherslebenSession() noexcept;
 
+/**
+ * @brief Provides a Common::SessionInfo object representing session info from Oschersleben track.
+ *
+ * @return Common::SessionInfo containing the session info data.
+ */
+Common::SessionInfo getOscherslebenSessionInfo() noexcept;
+
 } // namespace RapidAndroid::TestHelper
 
 #endif // RAPIDANDROID_TESTHELPER_JSONOSCHERSLEBENSESSION_HPP

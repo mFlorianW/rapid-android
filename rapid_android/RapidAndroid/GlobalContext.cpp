@@ -36,8 +36,9 @@ std::filesystem::path const sessionStoragePath()
 
 GlobalContext::GlobalContext()
     : mDeviceManagement(std::make_unique<Workflow::DeviceManagement>(&mSettingsBackend))
-    , mSessionStorage{sessionStoragePath(), &mSessionSerializer}
+    , mSessionStorage{sessionStoragePath(), &mSessionSerializer, &mSessionDeserializer}
     , mDeviceSessionManagement{std::make_unique<DeviceSessionMgmt>(&mSessionDeserializer, &mSessionStorage)}
+    , mLocalSessionManagement{std::make_unique<LocalSessionMgmt>(&mSessionStorage)}
 {
 }
 
@@ -51,6 +52,11 @@ Workflow::DeviceManagement* GlobalContext::getDeviceManagement() const noexcept
 RapidAndroid::Workflow::IDeviceSessionManagement* GlobalContext::getDeviceSessionManagement() const noexcept
 {
     return mDeviceSessionManagement.get();
+}
+
+Workflow::ILocalSessionManagement* GlobalContext::getLocalSessionManagement() noexcept
+{
+    return mLocalSessionManagement.get();
 }
 
 } // namespace RapidAndroid

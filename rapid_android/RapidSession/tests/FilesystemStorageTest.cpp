@@ -8,12 +8,14 @@
 #include <QTest>
 #include <RapidSession/FilesystemStorage.hpp>
 #include <TestHelper/Session.hpp>
+#include <TestHelper/SessionJsonDeserializerMock.hpp>
 #include <TestHelper/SessionJsonSerializerMock.hpp>
 
 namespace RapidAndroid::Session::Test
 {
 
-// using FilesystemJsonStorage = RapidAndroid::Session::FilesystemStorage<TestHelper::SessionJsonSerializerMock>;
+using FilesystemJsonStorage = RapidAndroid::Session::FilesystemStorage<TestHelper::SessionJsonSerializerMock,
+                                                                       TestHelper::SessionJsonDeserializerMock>;
 
 class FilesystemStorageTest : public QObject
 {
@@ -25,6 +27,17 @@ public:
 
     ~FilesystemStorageTest() override = default;
 
+    void createTestFiles(std::filesystem::path const& filePath)
+    {
+        QString const sessionInfoFileName = "oschersleben_01_01_1970_13_00_00_000.info";
+        auto sessionInfoFile = QString::fromStdString(filePath / sessionInfoFileName.toUtf8().constData());
+        auto infoFileContent = QFile{sessionInfoFile};
+        QVERIFY(infoFileContent.open(QIODevice::WriteOnly | QIODevice::Text));
+        if (infoFileContent.write(TestHelper::getJsonOscherslebenSessionInfo().toJson()) < sessionInfoFile.size()) {
+            QFAIL("Failed to write test session info file");
+        }
+    }
+
 private Q_SLOTS:
     void testStoreSession()
     {
@@ -33,8 +46,8 @@ private Q_SLOTS:
         auto testDir = QTemporaryDir{};
         auto filePath = std::filesystem::path{testDir.path().toUtf8().constData()};
         auto serializer = TestHelper::SessionJsonSerializerMock{};
-        auto storage =
-            RapidAndroid::Session::FilesystemStorage<TestHelper::SessionJsonSerializerMock>{filePath, &serializer};
+        auto deserializer = TestHelper::SessionJsonDeserializerMock{};
+        auto storage = FilesystemJsonStorage{filePath, &serializer, &deserializer};
         auto session = std::make_unique<Common::Session>(TestHelper::getOscherslebenSession());
 
         EXPECT_CALL(serializer, serialize(testing::_))
@@ -59,6 +72,29 @@ private Q_SLOTS:
         auto const storedInfoData = infoFileContent.readAll();
         QCOMPARE(storedInfoData, TestHelper::getJsonOscherslebenSessionInfo().toJson());
         QVERIFY(testing::Mock::VerifyAndClearExpectations(&serializer));
+    };
+
+    void testGetSessionInfos()
+    {
+        auto testDir = QTemporaryDir{};
+        auto filePath = std::filesystem::path{testDir.path().toUtf8().constData()};
+        auto serializer = TestHelper::SessionJsonSerializerMock{};
+        auto deserializer = TestHelper::SessionJsonDeserializerMock{};
+        auto storage = FilesystemJsonStorage{filePath, &serializer, &deserializer};
+        createTestFiles(filePath);
+
+        EXPECT_CALL(deserializer, deserializeInfo(testing::_))
+            .Times(1)
+            .WillOnce(testing::Return(QtConcurrent::run([]() -> std::optional<std::unique_ptr<Common::SessionInfo>> {
+                return std::make_unique<Common::SessionInfo>(TestHelper::getOscherslebenSessionInfo());
+            })));
+
+        auto fut = storage.getSessionInfos();
+        fut.waitForFinished();
+        auto const infos = fut.result();
+        QCOMPARE(infos.size(), 1);
+        QCOMPARE(infos.at(0), TestHelper::getOscherslebenSessionInfo());
+        QVERIFY(testing::Mock::VerifyAndClearExpectations(&deserializer));
     };
 };
 

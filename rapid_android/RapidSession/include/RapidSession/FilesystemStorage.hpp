@@ -5,6 +5,7 @@
 #include <Common/Session.hpp>
 #include <QDateTime>
 #include <QDebug>
+#include <QDir>
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -12,6 +13,7 @@
 #include <QString>
 #include <QTimeZone>
 #include <QtConcurrentRun>
+#include <Workflow/ISessionDeserializer.hpp>
 #include <Workflow/ISessionSerializer.hpp>
 #include <Workflow/ISessionStorage.hpp>
 #include <filesystem>
@@ -21,8 +23,9 @@ namespace RapidAndroid::Session
 
 QLoggingCategory const& fsLogCat();
 
-template <typename SerializerType>
-    requires Workflow::SessionSerializerConcept<SerializerType>
+template <typename SerializerType, typename DeserializerType>
+    requires Workflow::SessionSerializerConcept<SerializerType> and
+             Workflow::SessionDeserializerConcept<DeserializerType>
 class FilesystemStorage
 {
 
@@ -33,9 +36,10 @@ public:
      * @param path Filesystem path used as the storage root directory.
      * @param serializer Non-owning pointer to the session serializer.
      */
-    FilesystemStorage(std::filesystem::path path, SerializerType* serializer) noexcept
+    FilesystemStorage(std::filesystem::path path, SerializerType* serializer, DeserializerType* deserializer) noexcept
         : mStoragePath{std::move(path)}
         , mSerializer{serializer}
+        , mDeserializer{deserializer}
     {
     }
 
@@ -48,29 +52,32 @@ public:
      * @brief Copy constructor.
      */
     FilesystemStorage(FilesystemStorage const&) = default;
+    FilesystemStorage(FilesystemStorage&&) noexcept = default;
 
     /**
      * @brief Copy assignment operator.
      */
     FilesystemStorage& operator=(FilesystemStorage const&) = default;
+    FilesystemStorage& operator=(FilesystemStorage&&) noexcept = default;
 
     /**
      * @brief Move constructor.
      */
-    FilesystemStorage(FilesystemStorage&&) noexcept = default;
 
     /**
      * @brief Move assignment operator.
      */
-    FilesystemStorage& operator=(FilesystemStorage&&) noexcept = default;
 
     /**
-     * @brief Enumerate stored session metadata.
-     * @return A list of available session infos in the storage directory.
+     * @brief Retrieve stored session metadata asynchronously.
+     *
+     * @return A QFuture that will hold a vector of session metadata.
      */
-    QVector<Common::SessionInfo> getSessionInfos() const noexcept
+    QFuture<QVector<Common::SessionInfo>> getSessionInfos() const noexcept
     {
-        return {};
+        return QtConcurrent::run([this]() -> QVector<Common::SessionInfo> {
+            return loadSessionInfoTask();
+        });
     }
 
     /**
@@ -79,9 +86,9 @@ public:
      * @param sessionInfo Metadata identifying the session to load.
      * @return The loaded session if successful; std::nullopt otherwise.
      */
-    std::optional<Common::Session> load(Common::SessionInfo const& sessionInfo) noexcept
+    QFuture<std::optional<Common::Session>> load(Common::SessionInfo const& sessionInfo) noexcept
     {
-        return std::nullopt;
+        return {};
     }
 
     /**
@@ -100,12 +107,12 @@ public:
     /**
      * @brief Remove a stored session from the filesystem.
      *
-     * @param session The session to remove.
+     * @param id The id of the session that shall be removed.
      * @return true on success; false on error.
      */
-    bool remove(Common::Session const& session) noexcept
+    QFuture<bool> remove(RapidAndroid::Common::SessionInfo const& sessionInfo) noexcept
     {
-        return false;
+        return {};
     }
 
 private:
@@ -160,9 +167,39 @@ private:
         return {.session = std::move(session), .success = result};
     }
 
+    QVector<Common::SessionInfo> loadSessionInfoTask() const
+    {
+        QVector<Common::SessionInfo> sessionInfos;
+        auto dirPath = QString::fromStdString(mStoragePath);
+        auto dir = QDir{dirPath};
+        if (not dir.exists()) {
+            qCCritical(fsLogCat()) << "Storage directory does not exist:" << dirPath;
+            return sessionInfos;
+        }
+        auto const infoFiles = dir.entryList(QStringList{"*.info"}, QDir::Files | QDir::Readable);
+        for (auto const& infoFileName : infoFiles) {
+            auto infoFilePath = dir.filePath(infoFileName);
+            auto infoFile = QFile{infoFilePath};
+            if (infoFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                auto task = mDeserializer->deserializeInfo(infoFile.readAll());
+                task.waitForFinished();
+                auto deserializeResult = task.takeResult();
+                if (deserializeResult.has_value()) {
+                    auto info = std::move(deserializeResult.value());
+                    sessionInfos.append(*info);
+                    qDebug(fsLogCat()) << "Loaded session info from" << infoFilePath;
+                }
+            } else {
+                qCCritical(fsLogCat()) << "Failed to open session info file for reading:" << infoFilePath;
+            }
+        }
+        return sessionInfos;
+    }
+
 private:
     std::filesystem::path mStoragePath;
     SerializerType* mSerializer{nullptr};
+    DeserializerType* mDeserializer{nullptr};
 };
 
 } // namespace RapidAndroid::Session

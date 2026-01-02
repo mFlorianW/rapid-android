@@ -11,6 +11,7 @@ target_sources(RapidAndroidWorkflow PRIVATE
     include/Workflow/HttpDeviceSessionManagement.hpp
     include/Workflow/ISessionDeserializer.hpp
     include/Workflow/ISessionSerializer.hpp
+    include/Workflow/LocalSessionManagement.hpp
 
     # Privates
     include/Workflow/Private/SessionListModel.hpp
@@ -21,6 +22,7 @@ target_sources(RapidAndroidWorkflow PRIVATE
     src/IDeviceManagement.cpp
     src/SessionListModel.cpp
     src/HttpDeviceSessionManagement.cpp
+    src/LocalSessionManagement.cpp
 )
 
 target_link_libraries(RapidAndroidWorkflow PUBLIC
@@ -47,6 +49,15 @@ if(ENABLE_TEST)
     add_executable(test_workflow_http_device_session_management tests/HttpDeviceSessionManagementTest.cpp)
     add_test(NAME test_workflow_http_device_session_management COMMAND test_workflow_http_device_session_management)
     target_link_libraries(test_workflow_http_device_session_management PRIVATE
+        Qt6::Test
+        RapidAndroid::Common
+        RapidAndroid::Workflow
+        RapidAndroid::TestHelper
+    )
+
+    add_executable(test_workflow_local_session_management tests/LocalSessionManagementTest.cpp)
+    add_test(NAME test_workflow_local_session_management COMMAND test_workflow_local_session_management)
+    target_link_libraries(test_workflow_local_session_management PRIVATE
         Qt6::Test
         RapidAndroid::Common
         RapidAndroid::Workflow

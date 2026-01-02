@@ -5,8 +5,8 @@
 #ifndef RAPIDANDROID_TESTHELPER_SESSIONDESERIALIZERMOCK_HPP
 #define RAPIDANDROID_TESTHELPER_SESSIONDESERIALIZERMOCK_HPP
 
-#include <Common/Session.hpp>
 #include <QFuture>
+#include <Workflow/ISessionDeserializer.hpp>
 #include <gmock/gmock.h>
 #include <optional>
 
@@ -17,6 +17,7 @@ class SessionJsonDeserializerMock
 {
 public:
     MOCK_METHOD(QFuture<std::optional<std::unique_ptr<Common::Session>>>, deserialize, (QByteArray), ());
+    MOCK_METHOD(QFuture<std::optional<std::unique_ptr<Common::SessionInfo>>>, deserializeInfo, (QByteArray), ());
 };
 
 } // namespace RapidAndroid::TestHelper

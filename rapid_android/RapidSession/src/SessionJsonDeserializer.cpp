@@ -112,4 +112,25 @@ QFuture<std::optional<std::unique_ptr<Common::Session>>> SessionJsonDeserializer
         std::move(data));
 }
 
+QFuture<std::optional<std::unique_ptr<Common::SessionInfo>>> SessionJsonDeserializer::deserializeInfo(QByteArray data)
+{
+    return QtConcurrent::run(
+        [](QByteArray raw) -> std::optional<std::unique_ptr<Common::SessionInfo>> {
+            auto error = QJsonParseError{};
+            auto const jsonDoc = QJsonDocument::fromJson(raw, &error);
+            if (error.error != QJsonParseError::NoError) {
+                qCCritical(sJDeserializer) << "Failed to deserialize session info JSON data:" << error.errorString();
+                return std::nullopt;
+            }
+            auto const obj = jsonDoc.object();
+            auto sessionInfo = std::make_unique<Common::SessionInfo>();
+            sessionInfo->id = obj.value("id").toString();
+            sessionInfo->date = QDateTime::fromString(obj.value("date").toString(), Qt::ISODate);
+            sessionInfo->trackName = obj.value("track_name").toString();
+            sessionInfo->laps = static_cast<quint32>(obj.value("laps").toInt());
+            return sessionInfo;
+        },
+        std::move(data));
+}
+
 } // namespace RapidAndroid::Session
