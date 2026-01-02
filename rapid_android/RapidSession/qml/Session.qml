@@ -99,7 +99,6 @@ Control {
                     sessionTabRefeshButton.clicked();
                 }
             }
-
         }
 
         Item {
@@ -124,7 +123,9 @@ Control {
                     detail2Text: listDelegate.sessionInfo.trackName
 
                     buttonLeftText: qsTr("Delete")
+                    buttonLeftIcon: "qrc:/qt/qml/Rapid/Session/img/Trash.svg"
                     buttonRightText: qsTr("Download")
+                    buttonRightIcon: "qrc:/qt/qml/Rapid/Session/img/Download.svg"
 
                     onLeftButtonClicked: {
                         var settings = GlobalContext.deviceManagement.activeLaptimer;

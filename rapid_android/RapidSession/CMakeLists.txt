@@ -22,6 +22,7 @@ qt_add_qml_module(RapidSession
         img/Analyze.svg
         img/Local.svg
         img/Remote.svg
+        img/Download.svg
 )
 
 add_library(RapidAndroid::Session ALIAS RapidSession)
