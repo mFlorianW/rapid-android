@@ -281,6 +281,16 @@ public:
         return std::find(mElements.cbegin(), mElements.cend(), item) != mElements.cend();
     }
 
+    /**
+     * @brief Clears all elements from the model.
+     */
+    void clear() noexcept
+    {
+        beginResetModel();
+        mElements.clear();
+        endResetModel();
+    }
+
 private:
     Roles mRoles;
     std::vector<ListType> mElements;
