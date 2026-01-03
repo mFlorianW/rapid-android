@@ -40,6 +40,13 @@ Common::Session getOscherslebenSession() noexcept;
  */
 Common::SessionInfo getOscherslebenSessionInfo() noexcept;
 
+/**
+ * @brief Provides a Common::Session object representing another session from Oschersleben track.
+ *
+ * @return Common::Session containing the session data.
+ */
+Common::SessionInfo getOscherslebenSessionInfo1() noexcept;
+
 } // namespace RapidAndroid::TestHelper
 
 #endif // RAPIDANDROID_TESTHELPER_JSONOSCHERSLEBENSESSION_HPP

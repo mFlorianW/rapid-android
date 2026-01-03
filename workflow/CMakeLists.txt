@@ -18,6 +18,7 @@ target_sources(RapidAndroidWorkflow PRIVATE
     # Privates
     include/Workflow/Private/SessionListModel.hpp
     include/Workflow/Private/LapListModel.hpp
+    include/Workflow/Private/SessionSortModel.hpp
 
     src/LoggingCategories.cpp
     src/LoggingCategories.hpp
@@ -28,6 +29,7 @@ target_sources(RapidAndroidWorkflow PRIVATE
     src/LocalSessionManagement.cpp
     src/LapListModel.cpp
     src/SessionAnalyzer.cpp
+    src/SessionSortModel.cpp
 )
 
 target_link_libraries(RapidAndroidWorkflow PUBLIC

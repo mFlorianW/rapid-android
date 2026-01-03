@@ -41,7 +41,7 @@ private Q_SLOTS:
         auto lsm = Lsm{&storage};
 
         QCOMPARE_NE(lsm.getSessionInfoListModel(), nullptr);
-        QCOMPARE_NE(lsm.property("model").value<QAbstractListModel*>(), nullptr);
+        QCOMPARE_NE(lsm.property("model").value<QAbstractItemModel*>(), nullptr);
     }
 
     void testLoadSessionInfos()
@@ -125,6 +125,35 @@ private Q_SLOTS:
         QCOMPARE(spy.at(0).at(0).toBool(), true);
         QCOMPARE(spy.at(0).at(1).value<Common::SessionInfo>(), TestHelper::getOscherslebenSessionInfo());
         QCOMPARE(spy.at(0).at(2).value<Common::Session>(), TestHelper::getOscherslebenSession());
+        QVERIFY(testing::Mock::VerifyAndClearExpectations(&storage));
+    }
+
+    void testSessionInfosAreSorted()
+    {
+        auto storage = TestHelper::SessionStorageMock{};
+        auto lsm = Lsm{&storage};
+        auto spy = QSignalSpy{&lsm, &ILocalSessionManagement::sessionInfoListRefreshed};
+
+        EXPECT_CALL(storage, getSessionInfos()).WillRepeatedly(testing::Return(QtConcurrent::run([]() {
+            QVector<Common::SessionInfo> infos{TestHelper::getOscherslebenSessionInfo(),
+                                               TestHelper::getOscherslebenSessionInfo1()};
+            return infos;
+        })));
+
+        lsm.refreshSessionInfos();
+        QTRY_COMPARE_GE_WITH_TIMEOUT(spy.size(), 1, std::chrono::seconds(1));
+        QCOMPARE(lsm.getSessionInfoListModel()->rowCount(), 2);
+
+        auto index0 = lsm.getSessionInfoListModel()->index(0, 0);
+        auto sessionInfo0 =
+            lsm.getSessionInfoListModel()->data(index0, SessionListModel::SessionInfo).value<Common::SessionInfo>();
+        QCOMPARE(sessionInfo0, TestHelper::getOscherslebenSessionInfo1());
+
+        auto index1 = lsm.getSessionInfoListModel()->index(1, 0);
+        auto sessionInfo1 =
+            lsm.getSessionInfoListModel()->data(index1, SessionListModel::SessionInfo).value<Common::SessionInfo>();
+        QCOMPARE(sessionInfo1, TestHelper::getOscherslebenSessionInfo());
+
         QVERIFY(testing::Mock::VerifyAndClearExpectations(&storage));
     }
 };

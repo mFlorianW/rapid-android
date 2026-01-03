@@ -158,4 +158,12 @@ Common::SessionInfo getOscherslebenSessionInfo() noexcept
                                .laps = 1};
 }
 
+Common::SessionInfo getOscherslebenSessionInfo1() noexcept
+{
+    return Common::SessionInfo{.id = "oschersleben_01_01_1970_14_00_00_000",
+                               .date = QDateTime{QDate{1970, 1, 1}, QTime{14, 0, 0, 0}},
+                               .trackName = "Oschersleben",
+                               .laps = 1};
+}
+
 } // namespace RapidAndroid::TestHelper

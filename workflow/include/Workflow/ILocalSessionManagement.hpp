@@ -36,7 +36,7 @@ class ILocalSessionManagement : public QObject
      * @property QAbstractListModel* model
      * @brief Model exposing the local session information.
      */
-    Q_PROPERTY(QAbstractListModel* model READ getSessionInfoListModel CONSTANT)
+    Q_PROPERTY(QAbstractItemModel* model READ getSessionInfoListModel CONSTANT)
 
 public:
     Q_DISABLE_COPY_MOVE(ILocalSessionManagement)
@@ -58,7 +58,7 @@ public:
      * @return A QAbstractListModel containing session info entries.
      * @warning The returned pointer must remain valid while the object exists.
      */
-    virtual QAbstractListModel* getSessionInfoListModel() noexcept = 0;
+    virtual QAbstractItemModel* getSessionInfoListModel() noexcept = 0;
 
     /**
      * @brief Removes a session identified by the given SessionInfo.

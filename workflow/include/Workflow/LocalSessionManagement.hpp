@@ -12,6 +12,7 @@
 #include <Workflow/ISessionSerializer.hpp>
 #include <Workflow/ISessionStorage.hpp>
 #include <Workflow/Private/SessionListModel.hpp>
+#include <Workflow/Private/SessionSortModel.hpp>
 #include <memory>
 
 namespace RapidAndroid::Workflow
@@ -45,6 +46,7 @@ public:
     LocalSessionManagement(StorageType* storage)
         : mStorage{storage}
     {
+        mSessionSortModel.setSourceModel(&mSessionListModel);
     }
 
     /**
@@ -82,9 +84,9 @@ public:
      *
      * @note Emits sessionRemoved(success).
      */
-    QAbstractListModel* getSessionInfoListModel() noexcept override
+    QAbstractItemModel* getSessionInfoListModel() noexcept override
     {
-        return std::addressof(mSessionListModel);
+        return std::addressof(mSessionSortModel);
     }
 
     /**
@@ -113,7 +115,7 @@ public:
     /**
      * @brief Asynchronously loads a session's full data from storage.
      * @param info The session info identifying the session to load.
-     *
+     QAbstractItemModel
      * If a load task is already running, emits sessionLoaded(false, info, std::nullopt) and returns.
      * On completion, emits the result with the loaded session if available.
      *
@@ -194,6 +196,7 @@ private Q_SLOTS:
 
 private:
     SessionListModel mSessionListModel;
+    SessionSortModel mSessionSortModel;
     StorageType* mStorage;
     std::unique_ptr<QFutureWatcher<QVector<Common::SessionInfo>>> mRefreshTask{nullptr};
     std::unique_ptr<QFutureWatcher<bool>> mRemoveTask{nullptr};
