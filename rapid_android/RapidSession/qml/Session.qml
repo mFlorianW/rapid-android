@@ -66,7 +66,11 @@ Control {
                     buttonRightText: qsTr("Delete")
                     buttonRightIcon: "qrc:/qt/qml/Rapid/Session/img/Trash.svg"
 
-                    onLeftButtonClicked: {}
+                    onLeftButtonClicked: {
+                        GlobalContext.localSessionManagement.load(listDelegate.sessionInfo);
+                        infoDialog.title = qsTr("Loading Session");
+                        infoDialog.open();
+                    }
 
                     onRightButtonClicked: {
                         GlobalContext.localSessionManagement.remove(listDelegate.sessionInfo);
@@ -90,13 +94,43 @@ Control {
                 anchors.rightMargin: 15
 
                 onClicked: {
-                    GlobalContext.localSessionManagement.refreshSessionInfo();
+                    GlobalContext.localSessionManagement.refreshSessionInfos();
                 }
             }
 
             StackLayout.onIsCurrentItemChanged: {
                 if (StackLayout.isCurrentItem) {
                     sessionTabRefeshButton.clicked();
+                }
+            }
+
+            LaptimeDialog {
+                id: laptimeDialog
+                title: qsTr("Laptimes")
+                height: laptimer.height * 0.8
+                width: laptimer.width * 0.8
+            }
+
+            InfoDialog {
+                id: infoDialog
+                width: laptimer.width * 0.8
+                progressbar: true
+            }
+
+            Connections {
+                target: GlobalContext.localSessionManagement
+                function onSessionLoaded(success, info, session) {
+                    if (success) {
+                        GlobalContext.sessionAnalyzer.analyzeSession(session);
+                    }
+                }
+            }
+
+            Connections {
+                target: GlobalContext.sessionAnalyzer
+                function onSessionAnalyzed() {
+                    infoDialog.close();
+                    laptimeDialog.open();
                 }
             }
         }

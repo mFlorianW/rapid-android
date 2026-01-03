@@ -12,9 +12,12 @@ target_sources(RapidAndroidWorkflow PRIVATE
     include/Workflow/ISessionDeserializer.hpp
     include/Workflow/ISessionSerializer.hpp
     include/Workflow/LocalSessionManagement.hpp
+    include/Workflow/ISessionAnalyzer.hpp
+    include/Workflow/SessionAnalyzer.hpp
 
     # Privates
     include/Workflow/Private/SessionListModel.hpp
+    include/Workflow/Private/LapListModel.hpp
 
     src/LoggingCategories.cpp
     src/LoggingCategories.hpp
@@ -23,6 +26,8 @@ target_sources(RapidAndroidWorkflow PRIVATE
     src/SessionListModel.cpp
     src/HttpDeviceSessionManagement.cpp
     src/LocalSessionManagement.cpp
+    src/LapListModel.cpp
+    src/SessionAnalyzer.cpp
 )
 
 target_link_libraries(RapidAndroidWorkflow PUBLIC
@@ -58,6 +63,14 @@ if(ENABLE_TEST)
     add_executable(test_workflow_local_session_management tests/LocalSessionManagementTest.cpp)
     add_test(NAME test_workflow_local_session_management COMMAND test_workflow_local_session_management)
     target_link_libraries(test_workflow_local_session_management PRIVATE
+        Qt6::Test
+        RapidAndroid::Common
+        RapidAndroid::Workflow
+        RapidAndroid::TestHelper
+    )
+    add_executable(test_workflow_session_analyzer tests/SessionAnalyzerTest.cpp)
+    add_test(NAME test_workflow_session_analyzer COMMAND test_workflow_session_analyzer)
+    target_link_libraries(test_workflow_session_analyzer PRIVATE
         Qt6::Test
         RapidAndroid::Common
         RapidAndroid::Workflow

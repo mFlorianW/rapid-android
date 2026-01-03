@@ -4,20 +4,13 @@
 
 #include "GlobalContext.hpp"
 #include "LoggingCategories.hpp"
+#include <LoggingCategories.hpp>
 #include <QCoreApplication>
 #include <QDebug>
 #include <QStandardPaths>
 
 namespace RapidAndroid
 {
-
-struct Wf
-{
-    Q_GADGET
-    QML_FOREIGN(RapidAndroid::Workflow::IDeviceSessionManagement)
-    QML_NAMED_ELEMENT(DeviceSessionManagement)
-    QML_UNCREATABLE("Interface class - an instance of it is provided by a global context.")
-};
 
 std::filesystem::path const sessionStoragePath()
 {
@@ -39,6 +32,7 @@ GlobalContext::GlobalContext()
     , mSessionStorage{sessionStoragePath(), &mSessionSerializer, &mSessionDeserializer}
     , mDeviceSessionManagement{std::make_unique<DeviceSessionMgmt>(&mSessionDeserializer, &mSessionStorage)}
     , mLocalSessionManagement{std::make_unique<LocalSessionMgmt>(&mSessionStorage)}
+    , mSessionAnalyzer{std::make_unique<Workflow::SessionAnalyzer>()}
 {
 }
 
@@ -59,6 +53,9 @@ Workflow::ILocalSessionManagement* GlobalContext::getLocalSessionManagement() no
     return mLocalSessionManagement.get();
 }
 
-} // namespace RapidAndroid
+Workflow::ISessionAnalyzer* GlobalContext::getSessionAnalyzer() noexcept
+{
+    return mSessionAnalyzer.get();
+}
 
-#include "GlobalContext.moc"
+} // namespace RapidAndroid

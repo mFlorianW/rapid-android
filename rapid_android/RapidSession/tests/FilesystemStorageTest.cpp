@@ -36,6 +36,14 @@ public:
         if (infoFileContent.write(TestHelper::getJsonOscherslebenSessionInfo().toJson()) < sessionInfoFile.size()) {
             QFAIL("Failed to write test session info file");
         }
+
+        QString const sessionFileName = "oschersleben_01_01_1970_13_00_00_000.session";
+        auto sessionFile = QString::fromStdString(filePath / sessionFileName.toUtf8().constData());
+        auto fileContent = QFile{sessionFile};
+        QVERIFY(fileContent.open(QIODevice::WriteOnly | QIODevice::Text));
+        if (fileContent.write(TestHelper::getJsonOscherslebenSession().toJson()) < sessionFile.size()) {
+            QFAIL("Failed to write test session file");
+        }
     }
 
 private Q_SLOTS:
@@ -116,6 +124,30 @@ private Q_SLOTS:
         QVERIFY(!QFile::exists(sessionFile));
         auto const sessionInfoFile = QString::fromStdString(filePath / sessionInfoFileName.toUtf8().constData());
         QVERIFY(!QFile::exists(sessionInfoFile));
+    };
+
+    void testLoadSession()
+    {
+        auto testDir = QTemporaryDir{};
+        auto filePath = std::filesystem::path{testDir.path().toUtf8().constData()};
+        auto serializer = TestHelper::SessionJsonSerializerMock{};
+        auto deserializer = TestHelper::SessionJsonDeserializerMock{};
+        auto storage = FilesystemJsonStorage{filePath, &serializer, &deserializer};
+        createTestFiles(filePath);
+
+        EXPECT_CALL(deserializer, deserialize(testing::_))
+            .Times(1)
+            .WillOnce(testing::Return(QtConcurrent::run([]() -> std::optional<std::unique_ptr<Common::Session>> {
+                return std::make_unique<Common::Session>(TestHelper::getOscherslebenSession());
+            })));
+
+        auto fut = storage.load(TestHelper::getOscherslebenSessionInfo());
+        fut.waitForFinished();
+        auto const sessionOpt = fut.takeResult();
+        QVERIFY(sessionOpt.has_value());
+        QCOMPARE(sessionOpt.value(), // NOLINT(bugprone-unchecked-optional-access)
+                 TestHelper::getOscherslebenSession());
+        QVERIFY(testing::Mock::VerifyAndClearExpectations(&deserializer));
     };
 };
 

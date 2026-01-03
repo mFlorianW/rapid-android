@@ -6,6 +6,7 @@ qt_add_qml_module(RapidSession
     QML_FILES
         qml/Session.qml
         qml/dialogs/InfoDialog.qml
+        qml/dialogs/LaptimeDialog.qml
     SOURCES
         include/RapidSession/FilesystemStorage.hpp
         include/RapidSession/SessionJsonDeserializer.hpp

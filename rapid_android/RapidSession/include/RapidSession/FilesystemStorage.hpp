@@ -88,7 +88,9 @@ public:
      */
     QFuture<std::optional<Common::Session>> load(Common::SessionInfo const& sessionInfo) noexcept
     {
-        return {};
+        return QtConcurrent::run([this, sessionInfo]() -> std::optional<Common::Session> {
+            return loadSessionTask(sessionInfo);
+        });
     }
 
     /**
@@ -195,6 +197,7 @@ private:
                 qCCritical(fsLogCat()) << "Failed to open session info file for reading:" << infoFilePath;
             }
         }
+        qDebug(fsLogCat()) << "Total session infos loaded:" << sessionInfos.size();
         return sessionInfos;
     }
 
@@ -229,6 +232,26 @@ private:
             }
         }
         return result;
+    }
+
+    std::optional<Common::Session> loadSessionTask(RapidAndroid::Common::SessionInfo const& sessionInfo) noexcept
+    {
+        auto sessionFileName = QString{"%1_%2.session"}.arg(sessionInfo.trackName.toLower(),
+                                                            sessionInfo.date.toString("dd_MM_yyyy_HH_mm_ss_zzz"));
+        auto const filePath = QString::fromStdString(mStoragePath / sessionFileName.toUtf8().constData());
+        auto file = QFile{filePath};
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            auto task = mDeserializer->deserialize(file.readAll());
+            task.waitForFinished();
+            auto deserializeResult = task.takeResult();
+            if (deserializeResult.has_value()) {
+                qCDebug(fsLogCat()) << "Loaded session from" << filePath;
+                return **deserializeResult;
+            }
+        } else {
+            qCCritical(fsLogCat()) << "Failed to open session file for reading:" << filePath;
+        }
+        return std::nullopt;
     }
 
 private:
