@@ -20,6 +20,7 @@
 #include <Workflow/ISessionDeserializer.hpp>
 #include <Workflow/ISessionStorage.hpp>
 #include <Workflow/Private/SessionListModel.hpp>
+#include <Workflow/Private/SessionSortModel.hpp>
 
 namespace RapidAndroid::Workflow
 {
@@ -56,6 +57,7 @@ public:
         : mSessionDeserializer{std::move(deserializer)}
         , mSessionStorage{std::move(storage)}
     {
+        mSessionInfoSortModel.setSourceModel(std::addressof(mSessionInfoListModel));
     }
 
     /**
@@ -66,9 +68,9 @@ public:
     /**
      * @copydoc IDeviceSessionManagement::getDeviceSessionInfoListModel
      */
-    [[nodiscard]] Q_INVOKABLE QAbstractListModel* getDeviceSessionInfoListModel() override
+    [[nodiscard]] Q_INVOKABLE QAbstractItemModel* getDeviceSessionInfoListModel() override
     {
-        return std::addressof(mSessionInfoListModel);
+        return std::addressof(mSessionInfoSortModel);
     }
 
     /**
@@ -209,6 +211,7 @@ private:
 
 private:
     RapidAndroid::Workflow::SessionListModel mSessionInfoListModel;
+    SessionSortModel mSessionInfoSortModel;
     QNetworkAccessManager mNetworkAccessManager;
     DeserializerType* mSessionDeserializer{nullptr};
     StorageType* mSessionStorage{nullptr};

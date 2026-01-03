@@ -6,7 +6,7 @@
 #define RAPIDANDROID_WORKFLOW_IDEVICESESSIONMANAGEMENT_HPP
 
 #include <Common/DeviceSettings.hpp>
-#include <QAbstractListModel>
+#include <QAbstractItemModel>
 #include <QObject>
 
 namespace RapidAndroid::Workflow
@@ -35,7 +35,7 @@ class IDeviceSessionManagement : public QObject
      * @property QAbstractListModel* model
      * @brief Model exposing the device session information.
      */
-    Q_PROPERTY(QAbstractListModel* model READ getDeviceSessionInfoListModel CONSTANT)
+    Q_PROPERTY(QAbstractItemModel* model READ getDeviceSessionInfoListModel CONSTANT)
 
 public:
     Q_DISABLE_COPY_MOVE(IDeviceSessionManagement)
@@ -90,10 +90,10 @@ public:
 
     /**
      * @brief Access the model exposing device session information.
-     * @return Non-owning pointer to a QAbstractListModel managed by the implementation.
+     * @return Non-owning pointer to a QAbstractItemModel managed by the implementation.
      * @warning The returned pointer must remain valid while the object exists. It may be nullptr until the first synchronization.
      */
-    [[nodiscard]] virtual QAbstractListModel* getDeviceSessionInfoListModel() = 0;
+    [[nodiscard]] virtual QAbstractItemModel* getDeviceSessionInfoListModel() = 0;
 
 Q_SIGNALS:
     /**
