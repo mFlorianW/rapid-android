@@ -59,7 +59,6 @@ Control {
                     titleName: listDelegate.sessionInfo.trackName
                     additionalTitleText: listDelegate.sessionInfo.date
                     detail1Text: qsTr("Laps: %1").arg(listDelegate.sessionInfo.laps)
-                    detail2Text: listDelegate.sessionInfo.trackName
 
                     buttonLeftText: qsTr("Analyze")
                     buttonLeftIcon: "qrc:/qt/qml/Rapid/Session/img/Analyze.svg"
@@ -154,7 +153,6 @@ Control {
                     titleName: listDelegate.sessionInfo.trackName
                     additionalTitleText: listDelegate.sessionInfo.date
                     detail1Text: qsTr("Laps: %1").arg(listDelegate.sessionInfo.laps)
-                    detail2Text: listDelegate.sessionInfo.trackName
 
                     buttonLeftText: qsTr("Delete")
                     buttonLeftIcon: "qrc:/qt/qml/Rapid/Session/img/Trash.svg"
