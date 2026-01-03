@@ -122,7 +122,7 @@ public:
     Q_INVOKABLE void load(RapidAndroid::Common::SessionInfo const& info) noexcept override
     {
         if (mLoadTask && mLoadTask->isRunning()) {
-            Q_EMIT sessionLoaded(false, info, std::nullopt);
+            Q_EMIT sessionLoaded(false, info, Common::Session{});
             return;
         }
         auto future = mStorage->load(info);
@@ -189,7 +189,7 @@ private Q_SLOTS:
         bool success = result.has_value();
         mLoadTask.reset();
         qCDebug(lsmLog) << "Load session" << info.id << (success ? "succeeded." : "failed.");
-        Q_EMIT sessionLoaded(success, info, result);
+        Q_EMIT sessionLoaded(success, info, *result);
     }
 
 private:

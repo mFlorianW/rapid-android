@@ -67,6 +67,12 @@ public:
      */
     virtual Q_INVOKABLE void remove(RapidAndroid::Common::SessionInfo const& info) noexcept = 0;
 
+    /**
+     * @brief Loads a session identified by the given SessionInfo.
+     * @details If the loading failed the session parameter is a default constructed session and success is false.
+     * @param info The SessionInfo identifying the session to load.
+     * @warning Implementations should emit sessionLoaded(bool, SessionInfo, Session) signal upon completion.
+     */
     virtual Q_INVOKABLE void load(RapidAndroid::Common::SessionInfo const& info) noexcept = 0;
 
 Q_SIGNALS:
@@ -84,7 +90,7 @@ Q_SIGNALS:
 
     void sessionLoaded(bool success,
                        RapidAndroid::Common::SessionInfo const& info,
-                       std::optional<RapidAndroid::Common::Session> session);
+                       RapidAndroid::Common::Session const& session);
 
 protected:
     /**

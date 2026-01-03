@@ -124,7 +124,7 @@ private Q_SLOTS:
         QTRY_COMPARE_WITH_TIMEOUT(spy.size(), 1, std::chrono::seconds(1));
         QCOMPARE(spy.at(0).at(0).toBool(), true);
         QCOMPARE(spy.at(0).at(1).value<Common::SessionInfo>(), TestHelper::getOscherslebenSessionInfo());
-        QCOMPARE(spy.at(0).at(2).value<std::optional<Common::Session>>(), TestHelper::getOscherslebenSession());
+        QCOMPARE(spy.at(0).at(2).value<Common::Session>(), TestHelper::getOscherslebenSession());
         QVERIFY(testing::Mock::VerifyAndClearExpectations(&storage));
     }
 };
