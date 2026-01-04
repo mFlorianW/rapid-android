@@ -17,8 +17,20 @@ path = [
     "**/CMakeLists.txt",
     ".clang-format",
     ".clang-tidy",
-    "**/*.cmake"
+    "**/*.cmake",
+    "configuration/android/**",
+    "**/.qmlls.ini"
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2025 All contributors"
 SPDX-License-Identifier = "GPL-2.0-or-later"
+
+[[annotations]]
+path = [
+    "rapid_android/RapidAndroid/img/*.svg",
+    "rapid_android/RapidLaptimer/img/*.svg",
+    "rapid_android/RapidSession/img/*.svg"
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "NOASSERTION"
+SPDX-License-Identifier = "CC-BY-1.0"

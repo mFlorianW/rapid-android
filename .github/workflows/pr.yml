@@ -5,20 +5,21 @@ name: Pull Request Checks
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
 
 permissions:
    pull-requests: write
+   checks: write
 
 jobs:
-  Build_And_Test:
+  Build_Desktop:
     uses: ./.github/workflows/pr-build.yml
 
-  # Build_Android:
-  #   uses: ./.github/workflows/pr-build-android.yml
+  Build_Android:
+    uses: ./.github/workflows/pr-build-android.yml
 
-  Linting_Include_What_You_Use:
-    uses: ./.github/workflows/pr-iwyu.yml
+  # Linting_Include_What_You_Use:
+  #   uses: ./.github/workflows/pr-iwyu.yml
 
   Linting_Clang_Tidy:
     uses: ./.github/workflows/pr-lint.yml

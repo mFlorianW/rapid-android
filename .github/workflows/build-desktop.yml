@@ -5,16 +5,16 @@
 name: Build CI
 
 on:
-  push:
-    branches: [ main ]
+  workflow_call:
 
 jobs:
-  build:
+  Build:
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
         compiler: [Clang, GCC]
+        qt: [6.8.3, 6.10.1]
         include:
           - compiler: GCC
             cxx: g++
@@ -22,7 +22,7 @@ jobs:
           - compiler: Clang
             cxx: clang++
             cc: clang
-    name: ${{matrix.compiler}}
+    name: Build_Desktop_${{ matrix.qt }}-${{ matrix.compiler }}
 
     steps:
     - name: checkout

@@ -1,13 +1,12 @@
 [tool.commitizen]
 name = "cz_customize"
 tag_format = "v$version"
-version = "0.1.0"
+version = "0.2.0-b7"
 version_provider = "commitizen"
 version_scheme = "semver"
 update_changelog_on_bump = true
 annotated_tag = true
 version_files = [
-    "CMakeLists.txt:VERSION"
 ]
 legacy_tag_formats = [
 ]

@@ -1,8 +1,5 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.23)
 
-project(Rapid-Android
-    VERSION 0.1.0
-)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/configuration/cmake/")
 
 include(FeatureSummary)
@@ -10,6 +7,11 @@ include(PreCommit)
 include(CompileFlags)
 include(Sanitizers)
 include(Iwyu)
+include(CZVersion)
+
+cz_extract_project_version("${CMAKE_SOURCE_DIR}/.cz.toml" CZ_VERSION)
+project(Rapid-Android VERSION "${CZ_VERSION}")
+message(STATUS "Project Version: ${PROJECT_VERSION}")
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -86,19 +88,21 @@ if(QT_KNOWN_POLICY_QTP0004)
 endif()
 
 setup_compile_flags()
-setup_iwyu()
+# setup_iwyu()
 
 if(ENABLE_DESKTOP AND NOT ENABLE_ANDROID AND CMAKE_BUILD_TYPE STREQUAL "Debug")
     setup_sanitizers()
 endif()
 
-add_subdirectory(rapid_android)
-
 if(ENABLE_TEST)
     include(CTest)
     find_package(Qt6 REQUIRED Test)
     enable_testing()
-    add_subdirectory(tests)
+    add_subdirectory(testhelper)
 endif(ENABLE_TEST)
+
+add_subdirectory(rapid_android)
+add_subdirectory(common)
+add_subdirectory(workflow)
 
 feature_summary(WHAT ALL)

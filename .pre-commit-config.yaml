@@ -23,6 +23,12 @@ repos:
       language: python
       pass_filenames: false
 
+    - id: format_qml
+      name: format_qml
+      entry: qmlformat6 -i -l native -w 4
+      types_or: ["qml"]
+      language: system
+
   - repo: https://github.com/pre-commit/mirrors-clang-format
     rev: v21.1.7  # Use the latest Clang-Format version
     hooks:

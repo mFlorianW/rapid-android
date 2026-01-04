@@ -33,10 +33,37 @@ runs:
       uses: jurplel/install-qt-action@v4
       with:
         aqtversion: '==3.1.*'
-        version: '6.8.3'
+        version: ${{ matrix.qt }}
         host: 'linux'
         target: 'android'
-        arch: ${{matrix.abi}}
-        modules: 'qtlocation qtpositioning'
+        arch: ${{ matrix.abi }}
+        modules: 'qt3d
+          qt5compat
+          qtcharts
+          qtconnectivity
+          qtdatavis3d
+          qtgraphs
+          qtgrpc
+          qthttpserver
+          qtimageformats
+          qtlocation
+          qtlottie
+          qtmultimedia
+          qtnetworkauth
+          qtpositioning
+          qtquick3d
+          qtquick3dphysics
+          qtquicktimeline
+          qtremoteobjects
+          qtscxml
+          qtsensors
+          qtserialbus
+          qtserialport
+          qtshadertools
+          qtspeech
+          qtvirtualkeyboard
+          qtwebchannel
+          qtwebsockets
+          qtwebview'
         setup-python: false
 

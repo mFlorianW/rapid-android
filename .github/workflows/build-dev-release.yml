@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: 2025 All contributors
+#
+# SPDX-License-Identifier: GPL-2.0-or-later
+name: Development Release
+
+on:
+  push:
+    branches: [ develop ]
+    paths-ignore:
+      - 'changelog.md'
+      - '.cz.toml'
+
+permissions:
+  contents: write
+
+jobs:
+  Build_Desktop:
+    uses: ./.github/workflows/build-desktop.yml
+
+  Build_Android:
+    uses: ./.github/workflows/build-android.yml
+
+  Development_Release:
+    needs: [Build_Desktop, Build_Android]
+    uses: ./.github/workflows/bumpdevversion.yml
+    secrets: inherit

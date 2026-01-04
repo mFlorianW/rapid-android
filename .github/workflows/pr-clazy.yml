@@ -9,6 +9,15 @@ on:
 jobs:
   Clazy:
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        qt: [6.10.1]
+        compiler: [Clang]
+        include:
+          - compiler: Clang
+            cxx: clang++
+            cc: clang
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -18,6 +27,18 @@ jobs:
       uses: ./.github/actions/linux-install-qt
     - name: Install Dependencies
       uses: ./.github/actions/linux-install-dep
+    - name: Setup default compiler
+      run: |
+        sudo update-alternatives --install /usr/bin/cc cc /usr/bin/${{ matrix.cc }} 100
+        sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/${{ matrix.cxx }} 100
+        echo "###############################################################"
+        echo "Compiler CC"
+        echo "$(cc --version)"
+        echo "###############################################################"
+        echo "###############################################################"
+        echo "Compiler CXX"
+        echo "$(c++ --version)"
+        echo "###############################################################"
     - name: Generate Compile Commands and Build
       run: |
         cmake --preset debug
@@ -52,7 +73,7 @@ jobs:
       if: always()
       uses: JacobDomagala/CompileResult@master
       with:
-        comment_title: Include What You Result
+        comment_title: Clazy Warnings
         compile_result_file: clazy.log
 
     - name: Check Clazy Warnings

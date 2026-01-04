@@ -33,8 +33,14 @@ jobs:
       fail-fast: false
       matrix:
         commits: ${{ fromJson(needs.Generate_Build_Jobs.outputs.commits) }}
-        abi: [android_x86_64]
-    name: Build_${{matrix.commits}}_Android_${{matrix.abi}}
+        abi: [android_x86_64, android_arm64_v8a]
+        qt: [6.8.3, 6.10.1]
+        include:
+          - abi: android_x86_64
+            preset: android-x86
+          - abi: android_arm64_v8a
+            preset: android-arm64
+    name: Android_${{ matrix.qt }}_${{ matrix.abi }}_${{ matrix.commits }}
     steps:
 
     - name: Checkout
@@ -50,12 +56,12 @@ jobs:
         echo "###############################################################"
         echo "# Start Build for Commit ${{ matrix.commits }} for Android ${{ matrix.abi }}"
         echo "###############################################################"
-        export QT_ANDROID_ROOT=/home/runner/work/rapid/Qt/6.8.1/android_x86_64
-        export QT_HOST_PATH=/home/runner/work/rapid/Qt/6.8.1/gcc_64
+        export QT_ANDROID_ROOT=/home/runner/work/rapid-android/Qt/${{ matrix.qt }}/${{ matrix.abi }}
+        export QT_HOST_PATH=/home/runner/work/rapid-android/Qt/${{ matrix.qt }}/gcc_64
         export PATH=${ANDROID_SDK_ROOT}/cmake/3.31.1/bin:${ANDROID_ROOT_PATH}/ndk/26.3.11579264:${PATH}
         git checkout ${{ matrix.commits }}
-        cmake --preset github-android-x86_64
-        cmake --build --preset github-android-x86_64 --target apk --parallel
+        cmake --preset ${{ matrix.preset }}
+        cmake --build --preset ${{ matrix.preset }} --target apk --parallel
         echo "###############################################################"
         echo "# Finished Build Commit ${{ matrix.commits }} for Android ${{ matrix.abi }}"
         echo "###############################################################"
