@@ -8,7 +8,7 @@ namespace RapidAndroid::Workflow
 {
 
 LapListModel::LapListModel()
-    : GenericListModel<Common::Lap>{{{DisplayRole::Laptime, "laptime"}}}
+    : GenericListModel<Common::Lap>{{{DisplayRole::Laptime, "laptime"}, {DisplayRole::SectorTimes, "sectorTimes"}}}
 {
 }
 
@@ -25,8 +25,21 @@ LapListModel::~LapListModel() = default;
 QVariant LapListModel::data(QModelIndex const& index, int role) const noexcept
 {
     auto lap = getElement(static_cast<std::size_t>(index.row()));
-    if (lap.has_value() and role == DisplayRole::Laptime) {
+    if (not lap.has_value()) {
+        return {};
+    }
+    switch (static_cast<DisplayRole>(role)) {
+    case DisplayRole::SectorTimes: {
+        QStringList sectors;
+        for (auto const& sector : (*lap)->sectors) {
+            sectors.append(sector.toString("mm:ss.zzz"));
+        }
+        return sectors;
+        break;
+    }
+    case DisplayRole::Laptime:
         return (*lap)->laptime().toString("mm:ss.zzz");
+        break;
     }
     return {};
 }
