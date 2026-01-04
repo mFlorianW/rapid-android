@@ -25,6 +25,20 @@ private Q_SLOTS:
                  TestHelper::getJsonOscherslebenSession());
         QCOMPARE(*serializeResult.session, session);
     }
+
+    void testSerializeSessionInfo()
+    {
+        Common::Session session = TestHelper::getOscherslebenSession();
+        SessionJsonSerializer serializer;
+        auto future = serializer.serializeInfo(std::make_unique<Common::Session>(session),
+                                               QStringLiteral("oschersleben_01_01_1970_13_00_00_000"));
+        future.waitForFinished();
+        auto serializeResult = future.takeResult();
+        QVERIFY(serializeResult.data.has_value());
+        QCOMPARE(QJsonDocument::fromJson(serializeResult.data.value()), // NOLINT(bugprone-unchecked-optional-access)
+                 TestHelper::getJsonOscherslebenSessionInfo());
+        QCOMPARE(*serializeResult.session, session);
+    }
 };
 
 } // namespace RapidAndroid::Session::Test

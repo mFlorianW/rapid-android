@@ -81,15 +81,15 @@ private Q_SLOTS:
         auto index = model->index(0, 0);
         auto role = 257; // SessionListModel::Laptimer
         // clang-format off
-        QCOMPARE(model->data(index, role).value<Common::SessionInfo>().id, fakeLaptimer.getSessionInfo1().id);
-        QCOMPARE(model->data(index, role).value<Common::SessionInfo>().trackName,fakeLaptimer.getSessionInfo1().trackName);
-        QCOMPARE(model->data(index, role).value<Common::SessionInfo>().date, fakeLaptimer.getSessionInfo1().date);
-        QCOMPARE(model->data(index, role).value<Common::SessionInfo>().laps, fakeLaptimer.getSessionInfo1().laps);
-        index = model->index(1, 0);
         QCOMPARE(model->data(index, role).value<Common::SessionInfo>().id, fakeLaptimer.getSessionInfo2().id);
         QCOMPARE(model->data(index, role).value<Common::SessionInfo>().trackName,fakeLaptimer.getSessionInfo2().trackName);
         QCOMPARE(model->data(index, role).value<Common::SessionInfo>().date, fakeLaptimer.getSessionInfo2().date);
         QCOMPARE(model->data(index, role).value<Common::SessionInfo>().laps, fakeLaptimer.getSessionInfo2().laps);
+        index = model->index(1, 0);
+        QCOMPARE(model->data(index, role).value<Common::SessionInfo>().id, fakeLaptimer.getSessionInfo1().id);
+        QCOMPARE(model->data(index, role).value<Common::SessionInfo>().trackName,fakeLaptimer.getSessionInfo1().trackName);
+        QCOMPARE(model->data(index, role).value<Common::SessionInfo>().date, fakeLaptimer.getSessionInfo1().date);
+        QCOMPARE(model->data(index, role).value<Common::SessionInfo>().laps, fakeLaptimer.getSessionInfo1().laps);
         // clang-format on
     }
 
@@ -162,6 +162,26 @@ private Q_SLOTS:
         QCOMPARE(downloadSpy.at(0).at(1).value<IDeviceSessionManagement::Result>(), IDeviceSessionManagement::Result::Success);
         // clang-format on
         QVERIFY(testing::Mock::VerifyAndClearExpectations(&storage));
+    }
+
+    void testSessionInfosAreSorted()
+    {
+        auto fakeLaptimer = TestHelper::FakeLaptimer{};
+        auto deserializer = TestHelper::SessionJsonDeserializerMock{};
+        auto storage = TestHelper::SessionStorageMock{};
+        auto rdsm = RestDeviceSessionManagement{&deserializer, &storage};
+        auto settings = fakeLaptimer.deviceSettings();
+
+        fetchSessionInfos(rdsm, settings);
+
+        auto* const model = rdsm.getDeviceSessionInfoListModel();
+
+        QCOMPARE(model->rowCount(), 2);
+        auto index = model->index(0, 0);
+        auto role = 257; // SessionListModel::Laptimer
+        QCOMPARE(model->data(index, role).value<Common::SessionInfo>().id, fakeLaptimer.getSessionInfo2().id);
+        index = model->index(1, 0);
+        QCOMPARE(model->data(index, role).value<Common::SessionInfo>().id, fakeLaptimer.getSessionInfo1().id);
     }
 };
 

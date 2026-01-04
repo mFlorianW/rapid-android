@@ -5,6 +5,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QTimeZone>
 #include <QtConcurrentRun>
 #include <RapidSession/SessionJsonSerializer.hpp>
 
@@ -64,14 +65,15 @@ Workflow::SerializeResult serializeSession(std::unique_ptr<Common::Session> sess
     auto jsonDocument = QJsonDocument{};
     auto obj = QJsonObject{};
     obj.insert("id", "sess-123");
-    obj.insert("date", session->date.toString("dd.MM.yyyy"));
-    obj.insert("time", session->time.toString("HH:mm:ss.zzz"));
+    obj.insert("date", session->getDate().toString("dd.MM.yyyy"));
+    obj.insert("time", session->getTime().toString("HH:mm:ss.zzz"));
 
-    auto trackObj = serializeTrack(session->track);
+    auto trackObj = serializeTrack(session->getTrack());
     obj.insert("track", trackObj);
 
     auto lapsArray = QJsonArray{};
-    for (auto const& lap : std::as_const(session->laps)) {
+    auto const laps = session->getLaps();
+    for (auto const& lap : laps) {
         auto lapObj = serializeLap(lap);
         lapsArray.append(lapObj);
     }
@@ -81,12 +83,33 @@ Workflow::SerializeResult serializeSession(std::unique_ptr<Common::Session> sess
     return Workflow::SerializeResult{std::move(session), jsonDocument.toJson()};
 }
 
+Workflow::SerializeResult serializeSessionInfo(std::unique_ptr<Common::Session> session, QString& sessionId) noexcept
+{
+    auto jsonObj = QJsonObject{};
+    jsonObj.insert("id", sessionId);
+    auto const date = QDateTime{session->getDate(), session->getTime(), QTimeZone::UTC};
+    jsonObj.insert("date", date.toString("yyyy-MM-ddTHH:mm:ss.zzz"));
+    jsonObj.insert("track_name", session->getTrack().name);
+    jsonObj.insert("laps", static_cast<qint32>(session->getLaps().size()));
+    auto jsonDoc = QJsonDocument{};
+    jsonDoc.setObject(jsonObj);
+    return {std::move(session), jsonDoc.toJson()};
+}
+
 } // namespace
 
 QFuture<Workflow::SerializeResult> SessionJsonSerializer::serialize(std::unique_ptr<Common::Session> session) noexcept
 {
     return QtConcurrent::run([s = std::move(session)]() mutable -> Workflow::SerializeResult {
         return serializeSession(std::move(s));
+    });
+}
+
+QFuture<Workflow::SerializeResult> SessionJsonSerializer::serializeInfo(std::unique_ptr<Common::Session> session,
+                                                                        QString sessionId) noexcept
+{
+    return QtConcurrent::run([s = std::move(session), sessionId]() mutable -> Workflow::SerializeResult {
+        return serializeSessionInfo(std::move(s), sessionId);
     });
 }
 

@@ -38,8 +38,9 @@ struct SerializeResult
  * @brief Concept to verify that a type implements the SessionSerializer interface.
  */
 template <typename T>
-concept SessionSerializerConcept = requires(T a, std::unique_ptr<Common::Session> session) {
+concept SessionSerializerConcept = requires(T a, std::unique_ptr<Common::Session> session, QString sessionId) {
     { a.serialize(std::move(session)) } -> std::same_as<QFuture<Workflow::SerializeResult>>;
+    { a.serializeInfo(std::move(session), sessionId) } -> std::same_as<QFuture<Workflow::SerializeResult>>;
 };
 
 }; // namespace RapidAndroid::Workflow

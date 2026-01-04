@@ -29,10 +29,10 @@ struct StoreResult
  */
 template <typename T>
 concept SessionStorageConcept = requires(T a) {
-    { a.getSessionInfos() } -> std::same_as<QVector<RapidAndroid::Common::SessionInfo>>;
-    { a.load(std::declval<RapidAndroid::Common::SessionInfo const&>()) } -> std::same_as<std::optional<RapidAndroid::Common::Session>>;
-    { a.store(std::declval<std::unique_ptr<RapidAndroid::Common::Session>>()) } -> std::same_as<QFuture<StoreResult>>;
-    { a.remove(std::declval<RapidAndroid::Common::Session const&>()) } -> std::same_as<bool>;
+    { a.getSessionInfos() } -> std::same_as<QFuture<QVector<RapidAndroid::Common::SessionInfo>>>;
+    { a.load(std::declval<Common::SessionInfo const&>()) } -> std::same_as<QFuture<std::optional<RapidAndroid::Common::Session>>>;
+    { a.store(std::declval<std::unique_ptr<Common::Session>>()) } -> std::same_as<QFuture<StoreResult>>;
+    { a.remove(std::declval<Common::SessionInfo const&>()) } -> std::same_as<QFuture<bool>>;
 };
 
 // clang-format on

@@ -6,6 +6,7 @@
 #define RAPIDANDROID_TESTHELPER_JSONOSCHERSLEBENSESSION_HPP
 
 #include <Common/Session.hpp>
+#include <Common/SessionInfo.hpp>
 #include <QJsonDocument>
 
 namespace RapidAndroid::TestHelper
@@ -31,6 +32,20 @@ QJsonDocument getJsonOscherslebenSessionInfo() noexcept;
  * @return Common::Session containing the session data.
  */
 Common::Session getOscherslebenSession() noexcept;
+
+/**
+ * @brief Provides a Common::SessionInfo object representing session info from Oschersleben track.
+ *
+ * @return Common::SessionInfo containing the session info data.
+ */
+Common::SessionInfo getOscherslebenSessionInfo() noexcept;
+
+/**
+ * @brief Provides a Common::Session object representing another session from Oschersleben track.
+ *
+ * @return Common::Session containing the session data.
+ */
+Common::SessionInfo getOscherslebenSessionInfo1() noexcept;
 
 } // namespace RapidAndroid::TestHelper
 

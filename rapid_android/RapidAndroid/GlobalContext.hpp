@@ -14,6 +14,8 @@
 #include <RapidSession/SessionJsonSerializer.hpp>
 #include <Workflow/DeviceManagement.hpp>
 #include <Workflow/HttpDeviceSessionManagement.hpp>
+#include <Workflow/LocalSessionManagement.hpp>
+#include <Workflow/SessionAnalyzer.hpp>
 #include <memory>
 
 namespace RapidAndroid
@@ -46,6 +48,21 @@ class GlobalContext : public QObject
     Q_PROPERTY(RapidAndroid::Workflow::IDeviceSessionManagement* deviceSessionManagement READ getDeviceSessionManagement
                    CONSTANT)
 
+    /**
+     * @property RapidAndroid::Workflow::ILocalSessionManagement*
+     *
+     * Gives the LocalSessionManagement workflow for managing local sessions.
+     */
+    Q_PROPERTY(
+        RapidAndroid::Workflow::ILocalSessionManagement* localSessionManagement READ getLocalSessionManagement CONSTANT)
+
+    /**
+     * @property RapidAndroid::Workflow::ISessionAnalyzer*
+     *
+     * Gives the SessionAnalyzer for analyzing sessions.
+     */
+    Q_PROPERTY(RapidAndroid::Workflow::ISessionAnalyzer* sessionAnalyzer READ getSessionAnalyzer CONSTANT)
+
 public:
     Q_DISABLE_COPY_MOVE(GlobalContext)
 
@@ -71,17 +88,43 @@ public:
      */
     RapidAndroid::Workflow::IDeviceSessionManagement* getDeviceSessionManagement() const noexcept;
 
+    /**
+     * @brief Get the local-session-management workflow.
+     * @return Non-null pointer owned by GlobalContext. Do not delete.
+     */
+    Workflow::ILocalSessionManagement* getLocalSessionManagement() noexcept;
+
+    /**
+     * @brief Get the session-analyzer workflow.
+     * @return Non-null pointer owned by GlobalContext. Do not delete.
+     */
+    Workflow::ISessionAnalyzer* getSessionAnalyzer() noexcept;
+
 private:
     FileSettingsBackend mSettingsBackend;
     std::unique_ptr<Workflow::DeviceManagement> mDeviceManagement;
 
-    using Storage = RapidAndroid::Session::FilesystemStorage<RapidAndroid::Session::SessionJsonSerializer>;
-    RapidAndroid::Session::SessionJsonSerializer mSessionSerializer;
+    using Storage = Session::FilesystemStorage<Session::SessionJsonSerializer, Session::SessionJsonDeserializer>;
+    Session::SessionJsonSerializer mSessionSerializer;
+    Session::SessionJsonDeserializer mSessionJsonDeserializer;
     Storage mSessionStorage;
 
     using DeviceSessionMgmt = Workflow::HttpDeviceSessionManagement<Session::SessionJsonDeserializer, Storage>;
     RapidAndroid::Session::SessionJsonDeserializer mSessionDeserializer;
     std::unique_ptr<DeviceSessionMgmt> mDeviceSessionManagement;
+
+    using LocalSessionMgmt = Workflow::LocalSessionManagement<Storage>;
+    std::unique_ptr<LocalSessionMgmt> mLocalSessionManagement;
+
+    std::unique_ptr<Workflow::SessionAnalyzer> mSessionAnalyzer;
+};
+
+struct Wf
+{
+    Q_GADGET
+    QML_FOREIGN(RapidAndroid::Workflow::IDeviceSessionManagement)
+    QML_NAMED_ELEMENT(DeviceSessionManagement)
+    QML_UNCREATABLE("Interface class - an instance of it is provided by a global context.")
 };
 
 } // namespace RapidAndroid

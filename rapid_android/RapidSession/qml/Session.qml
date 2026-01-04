@@ -21,10 +21,12 @@ Control {
         Material.accent: "#0682C9"
 
         TabButton {
-            text: qsTr("Stored Sessions")
+            text: qsTr("Local Sessions")
+            icon.source: "qrc:/qt/qml/Rapid/Session/img/Local.svg"
         }
         TabButton {
-            text: qsTr("Laptimer Sessions")
+            text: qsTr("Remote Sessions")
+            icon.source: "qrc:/qt/qml/Rapid/Session/img/Remote.svg"
         }
     }
 
@@ -39,13 +41,96 @@ Control {
         currentIndex: tabbar.currentIndex
 
         Item {
-            id: storedSessionTab
+            id: localSessionTab
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            Text {
-                text: qsTr("Stored Sessions Content Placeholder")
-                anchors.centerIn: parent
+            ListView {
+                id: localLaptimerSessionList
+                anchors.fill: parent
+                anchors.margins: 10
+                model: GlobalContext.localSessionManagement.model
+                spacing: 12
+                clip: true
+                delegate: ListDelegate {
+                    id: listDelegate
+                    width: localLaptimerSessionList.width
+                    required property var sessionInfo
+                    titleName: listDelegate.sessionInfo.trackName
+                    additionalTitleText: listDelegate.sessionInfo.date
+                    detail1Text: qsTr("Laps: %1").arg(listDelegate.sessionInfo.laps)
+
+                    buttonLeftText: qsTr("Analyze")
+                    buttonLeftIcon: "qrc:/qt/qml/Rapid/Session/img/Analyze.svg"
+                    buttonRightText: qsTr("Delete")
+                    buttonRightIcon: "qrc:/qt/qml/Rapid/Session/img/Trash.svg"
+
+                    onLeftButtonClicked: {
+                        GlobalContext.localSessionManagement.load(listDelegate.sessionInfo);
+                        infoDialog.title = qsTr("Loading Session");
+                        infoDialog.open();
+                    }
+
+                    onRightButtonClicked: {
+                        GlobalContext.localSessionManagement.remove(listDelegate.sessionInfo);
+                    }
+                }
+            }
+
+            RoundButton {
+                id: sessionTabRefeshButton
+                height: 60
+                width: height
+                icon.source: "qrc:/qt/qml/Rapid/Session/img/Refresh.svg"
+
+                Material.roundedScale: Material.FullScale
+                Material.foreground: "#FFFFFF"
+                Material.background: "#0682C9"
+
+                anchors.bottom: localSessionTab.bottom
+                anchors.bottomMargin: 10
+                anchors.right: localSessionTab.right
+                anchors.rightMargin: 15
+
+                onClicked: {
+                    GlobalContext.localSessionManagement.refreshSessionInfos();
+                }
+            }
+
+            StackLayout.onIsCurrentItemChanged: {
+                if (StackLayout.isCurrentItem) {
+                    sessionTabRefeshButton.clicked();
+                }
+            }
+
+            LaptimeDialog {
+                id: laptimeDialog
+                title: qsTr("Laptimes")
+                height: laptimer.height * 0.8
+                width: laptimer.width * 0.8
+            }
+
+            InfoDialog {
+                id: infoDialog
+                width: laptimer.width * 0.8
+                progressbar: true
+            }
+
+            Connections {
+                target: GlobalContext.localSessionManagement
+                function onSessionLoaded(success, info, session) {
+                    if (success) {
+                        GlobalContext.sessionAnalyzer.analyzeSession(session);
+                    }
+                }
+            }
+
+            Connections {
+                target: GlobalContext.sessionAnalyzer
+                function onSessionAnalyzed() {
+                    infoDialog.close();
+                    laptimeDialog.open();
+                }
             }
         }
 
@@ -68,10 +153,11 @@ Control {
                     titleName: listDelegate.sessionInfo.trackName
                     additionalTitleText: listDelegate.sessionInfo.date
                     detail1Text: qsTr("Laps: %1").arg(listDelegate.sessionInfo.laps)
-                    detail2Text: listDelegate.sessionInfo.trackName
 
                     buttonLeftText: qsTr("Delete")
+                    buttonLeftIcon: "qrc:/qt/qml/Rapid/Session/img/Trash.svg"
                     buttonRightText: qsTr("Download")
+                    buttonRightIcon: "qrc:/qt/qml/Rapid/Session/img/Download.svg"
 
                     onLeftButtonClicked: {
                         var settings = GlobalContext.deviceManagement.activeLaptimer;

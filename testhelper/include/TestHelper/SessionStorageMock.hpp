@@ -16,10 +16,10 @@ class SessionStorageMock
 public:
     // NOLINTBEGIN(bugprone-exception-escape)
     // clang-format off
-    MOCK_METHOD(QVector<RapidAndroid::Common::SessionInfo>, getSessionInfos, (), (noexcept));
-    MOCK_METHOD(std::optional<RapidAndroid::Common::Session>, load, (RapidAndroid::Common::SessionInfo const&), (noexcept));
+    MOCK_METHOD(QFuture<QVector<RapidAndroid::Common::SessionInfo>>, getSessionInfos, (), (noexcept));
+    MOCK_METHOD(QFuture<std::optional<RapidAndroid::Common::Session>>, load, (RapidAndroid::Common::SessionInfo const&), (noexcept));
     MOCK_METHOD(QFuture<Workflow::StoreResult>, store, (std::unique_ptr<RapidAndroid::Common::Session>), (noexcept));
-    MOCK_METHOD(bool, remove, (RapidAndroid::Common::Session const&), (noexcept));
+    MOCK_METHOD(QFuture<bool>, remove, (RapidAndroid::Common::SessionInfo const&), (noexcept));
     // clang-format on
     // NOLINTEND(bugprone-exception-escape)
 };

@@ -89,14 +89,14 @@ std::optional<std::unique_ptr<Common::Session>> deserializeSession(QByteArray da
     auto session = std::make_unique<Common::Session>();
     auto lapsArray = jsonDoc.object().value("laps").toArray();
     if (not lapsArray.isEmpty()) {
-        session->laps = deserializeLaps(lapsArray);
+        session->setLaps(deserializeLaps(lapsArray));
     }
     auto trackObject = jsonDoc.object().value("track").toObject();
     if (not trackObject.isEmpty()) {
-        session->track = deserializeTrack(trackObject);
+        session->setTrack(deserializeTrack(trackObject));
     }
-    session->date = deserializeDate(jsonDoc.object().value("date").toString());
-    session->time = QTime::fromString(jsonDoc.object().value("time").toString(), Qt::ISODate);
+    session->setDate(deserializeDate(jsonDoc.object().value("date").toString()));
+    session->setTime(QTime::fromString(jsonDoc.object().value("time").toString(), Qt::ISODate));
 
     return session;
 }
@@ -108,6 +108,27 @@ QFuture<std::optional<std::unique_ptr<Common::Session>>> SessionJsonDeserializer
     return QtConcurrent::run(
         [](QByteArray raw) -> std::optional<std::unique_ptr<Common::Session>> {
             return deserializeSession(std::move(raw));
+        },
+        std::move(data));
+}
+
+QFuture<std::optional<std::unique_ptr<Common::SessionInfo>>> SessionJsonDeserializer::deserializeInfo(QByteArray data)
+{
+    return QtConcurrent::run(
+        [](QByteArray raw) -> std::optional<std::unique_ptr<Common::SessionInfo>> {
+            auto error = QJsonParseError{};
+            auto const jsonDoc = QJsonDocument::fromJson(raw, &error);
+            if (error.error != QJsonParseError::NoError) {
+                qCCritical(sJDeserializer) << "Failed to deserialize session info JSON data:" << error.errorString();
+                return std::nullopt;
+            }
+            auto const obj = jsonDoc.object();
+            auto sessionInfo = std::make_unique<Common::SessionInfo>();
+            sessionInfo->id = obj.value("id").toString();
+            sessionInfo->date = QDateTime::fromString(obj.value("date").toString(), Qt::ISODate);
+            sessionInfo->trackName = obj.value("track_name").toString();
+            sessionInfo->laps = static_cast<quint32>(obj.value("laps").toInt());
+            return sessionInfo;
         },
         std::move(data));
 }

@@ -6,3 +6,4 @@
 
 Q_LOGGING_CATEGORY(devicemanagement, "RapidAndroid.Workflow.DeviceManagement")
 Q_LOGGING_CATEGORY(dsm, "RapidAndroid.Workflow.DeviceSessionManagement")
+Q_LOGGING_CATEGORY(lsm, "RapidAndroid.Workflow.LocalSessionManagement")

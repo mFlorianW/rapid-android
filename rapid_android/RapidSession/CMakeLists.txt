@@ -6,6 +6,7 @@ qt_add_qml_module(RapidSession
     QML_FILES
         qml/Session.qml
         qml/dialogs/InfoDialog.qml
+        qml/dialogs/LaptimeDialog.qml
     SOURCES
         include/RapidSession/FilesystemStorage.hpp
         include/RapidSession/SessionJsonDeserializer.hpp
@@ -18,6 +19,11 @@ qt_add_qml_module(RapidSession
         src/SessionJsonSerializer.cpp
     RESOURCES
         img/Refresh.svg
+        img/Trash.svg
+        img/Analyze.svg
+        img/Local.svg
+        img/Remote.svg
+        img/Download.svg
 )
 
 add_library(RapidAndroid::Session ALIAS RapidSession)

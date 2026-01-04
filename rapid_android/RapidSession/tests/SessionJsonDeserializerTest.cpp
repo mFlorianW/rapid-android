@@ -29,6 +29,17 @@ private Q_SLOTS:
         QCOMPARE(**deserializedSessionOpt, // NOLINT(bugprone-unchecked-optional-access)
                  TestHelper::getOscherslebenSession());
     }
+
+    void testDeserializeSessionInfo()
+    {
+        auto const jsonData = TestHelper::getJsonOscherslebenSessionInfo().toJson();
+        auto deserializedSessionInfoFuture = SessionJsonDeserializer::deserializeInfo(jsonData);
+        deserializedSessionInfoFuture.waitForFinished();
+        auto const deserializedSessionInfoOpt = deserializedSessionInfoFuture.takeResult();
+        QVERIFY(deserializedSessionInfoOpt.has_value());
+        QCOMPARE(**deserializedSessionInfoOpt, // NOLINT(bugprone-unchecked-optional-access)
+                 TestHelper::getOscherslebenSessionInfo());
+    }
 };
 
 } // namespace RapidAndroid::Session::Test

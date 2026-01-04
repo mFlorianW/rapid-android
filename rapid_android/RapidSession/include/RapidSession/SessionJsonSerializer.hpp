@@ -28,6 +28,17 @@ public:
      *         or std::nullopt on failure.
      */
     QFuture<Workflow::SerializeResult> serialize(std::unique_ptr<Common::Session> session) noexcept;
+
+    /**
+     * @brief Serializes only the session info to JSON format asynchronously.
+     *
+     * @param session A unique pointer to the session whose info is to be serialized.
+     * @param sessionId The identifier of the session.
+     * @return A QFuture that will contain an optional SerializeResult with the serialized JSON data on success,
+     *         or std::nullopt on failure.
+     */
+    QFuture<Workflow::SerializeResult> serializeInfo(std::unique_ptr<Common::Session> session,
+                                                     QString sessionId) noexcept;
 };
 
 } // namespace RapidAndroid::Session
