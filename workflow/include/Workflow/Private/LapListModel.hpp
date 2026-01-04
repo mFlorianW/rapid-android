@@ -30,6 +30,7 @@ public:
     enum DisplayRole
     {
         Laptime = ::Qt::UserRole + 1,
+        SectorTimes,
     };
     Q_ENUM(DisplayRole)
 

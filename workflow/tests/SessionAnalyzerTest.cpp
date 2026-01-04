@@ -33,6 +33,12 @@ private Q_SLOTS:
         auto index = model->index(0, 0);
         QCOMPARE(model->data(index, Workflow::LapListModel::DisplayRole::Laptime).toString(),
                  session.getLaps().at(0).laptime().toString("mm:ss.zzz"));
+        QCOMPARE(model->data(index, Workflow::LapListModel::DisplayRole::SectorTimes).toList().size(),
+                 static_cast<int>(session.getLaps().at(0).sectors.size()));
+        for (int i = 0; i < static_cast<int>(session.getLaps().at(0).sectors.size()); ++i) {
+            QCOMPARE(model->data(index, Workflow::LapListModel::DisplayRole::SectorTimes).toList().at(i).toString(),
+                     session.getLaps().at(0).sectors.at(i).toString("mm:ss.zzz"));
+        }
     }
 };
 
