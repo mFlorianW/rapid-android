@@ -1,3 +1,13 @@
+## Release Note v0.2.0
+
+### Continuous Integration
+- fix broken release build
+
+### Features
+- display sector times in display dialog
+
+
+
 ## Release Note v0.2.0-b7
 
 ### Features
