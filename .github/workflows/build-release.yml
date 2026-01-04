@@ -5,7 +5,7 @@ name: Release
 
 on:
   push:
-    branches: [ release ]
+    branches: [ main ]
     paths-ignore:
       - 'changelog.md'
       - '.cz.toml'
