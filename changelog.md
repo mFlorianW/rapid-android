@@ -1,3 +1,10 @@
+## Release Note v0.2.0-b8
+
+### Features
+- display sector times in display dialog
+
+
+
 ## Release Note v0.2.0-b7
 
 ### Features
