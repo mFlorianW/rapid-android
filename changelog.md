@@ -1,3 +1,22 @@
+## Release Note v0.2.0-b7
+
+### Features
+- sort device session in the descending based on the date
+- sort local session in the descending based on the date
+- display laptimes in a list
+- add clear function to the GenericListModel
+- delete local stored sessions
+- add icons for download and delete button in "Remote Session" tab
+- display local stored session in "Local Session" tab
+
+### Refactoring
+- don't show the track twice in the session lists
+- Don't use optional in signal for better QML usage
+- use better name for the store task
+- Make the session class a implicit shared
+
+
+
 ## Release Note v0.2.0-b6
 
 ### Features
