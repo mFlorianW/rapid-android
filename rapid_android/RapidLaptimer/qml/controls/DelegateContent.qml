@@ -119,9 +119,12 @@ Control {
             Button {
                 id: configureButton
                 text: "Configure"
-                Layout.preferredHeight: 40
+                Layout.preferredHeight: 50
                 Layout.minimumWidth: (columnLayout.width / 2) - 12
                 Material.foreground: "#515A67"
+                icon.height: 40
+                icon.width: 40
+                icon.color: "#000000"
 
                 background: Rectangle {
                     color: "#F5F5F5"
@@ -135,9 +138,11 @@ Control {
             Button {
                 id: activateButton
                 text: "Activate"
-                Layout.preferredHeight: 40
+                Layout.preferredHeight: 50
                 Layout.minimumWidth: (columnLayout.width / 2) - 12
                 property var forgroundColor
+                icon.height: 40
+                icon.width: 40
 
                 Material.foreground: forgroundColor
 
@@ -160,6 +165,7 @@ Control {
                 target: activateButton
                 text: qsTr("Active")
                 forgroundColor: "#ffffff"
+                icon.color: "#FFFFFF"
             }
             PropertyChanges {
                 target: activateButtonBackground
@@ -173,6 +179,7 @@ Control {
                 target: activateButton
                 text: qsTr("Activate")
                 forgroundColor: "#515A67"
+                icon.color: "#000000"
             }
             PropertyChanges {
                 target: activateButtonBackground
