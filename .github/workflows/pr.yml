@@ -6,6 +6,11 @@ name: Pull Request Checks
 on:
   pull_request:
     branches: [ main, develop ]
+  paths:
+    - 'common/**'
+    - 'rapid_android/**'
+    - 'testhelper/**'
+    - 'workflow/**'
 
 permissions:
    pull-requests: write
