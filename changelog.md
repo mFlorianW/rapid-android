@@ -1,3 +1,13 @@
+## Release Note v0.4.0-b0
+
+### Continuous Integration
+- only run build checks when something in the sources has changed
+
+### Housekeeping
+- set next development version
+
+
+
 ## Release Note v0.2.0-b9
 
 ### Housekeeping
