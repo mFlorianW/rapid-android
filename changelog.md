@@ -1,3 +1,13 @@
+## Release Note v0.4.0-b1
+
+### Continuous Integration
+- only run pull request build with source changes
+
+### Refactoring
+- make buttons in list delegates bigger and align color, size
+
+
+
 ## Release Note v0.4.0-b0
 
 ### Continuous Integration
