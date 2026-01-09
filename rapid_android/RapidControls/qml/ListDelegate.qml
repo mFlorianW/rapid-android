@@ -127,9 +127,12 @@ ListDelegateBackground {
 
             Button {
                 id: leftButton
-                Layout.preferredHeight: 40
+                Layout.preferredHeight: 50
                 Layout.minimumWidth: (columnLayout.width / 2) - 12
                 Material.foreground: "#515A67"
+                icon.width: 60
+                icon.height: 60
+                icon.color: "#000000"
 
                 background: Rectangle {
                     color: "#F5F5F5"
@@ -141,9 +144,12 @@ ListDelegateBackground {
 
             Button {
                 id: righttButton
-                Layout.preferredHeight: 40
+                Layout.preferredHeight: 50
                 Layout.minimumWidth: (columnLayout.width / 2) - 12
                 property var forgroundColor
+                icon.width: 40
+                icon.height: 40
+                icon.color: "#000000"
 
                 Material.foreground: forgroundColor
 
