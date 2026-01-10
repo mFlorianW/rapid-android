@@ -4,8 +4,7 @@
 
 qt_add_qml_module(RapidSession
     URI "Rapid.Session"
-    OUTPUT_DIRECTORY "Rapid/Session"
-    IMPORT_PATH "Rapid/Session"
+    OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/qml/Rapid/Session"
     STATIC
     QML_FILES
         qml/Session.qml
@@ -21,6 +20,9 @@ qt_add_qml_module(RapidSession
         src/LoggingCategories.cpp
         src/SessionJsonDeserializer.cpp
         src/SessionJsonSerializer.cpp
+    DEPENDENCIES
+        RapidAndroid::RapidAndroidPlugin
+        RapidAndroid::ControlsPlugin
     RESOURCES
         img/Refresh.svg
         img/Trash.svg
@@ -38,6 +40,7 @@ add_library(RapidAndroid::SessionPlugin ALIAS RapidSessionplugin)
 target_link_libraries(RapidSession
     PUBLIC
         Qt6::Quick
+        RapidAndroid::Controls
         RapidAndroid::ControlsPlugin
         RapidAndroid::Workflow
 )

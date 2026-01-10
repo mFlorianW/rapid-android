@@ -4,8 +4,7 @@
 
 qt_add_qml_module(RapidAndroid
     URI "Rapid.Android"
-    OUTPUT_DIRECTORY "Rapid/Android"
-    IMPORT_PATH "Rapid/Android"
+    OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/qml/Rapid/Android"
     STATIC
     QML_FILES
         qml/RapidAndroid.qml

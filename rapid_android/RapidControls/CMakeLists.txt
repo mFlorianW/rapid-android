@@ -4,8 +4,7 @@
 
 qt_add_qml_module(RapidControls
     URI "Rapid.Controls"
-    OUTPUT_DIRECTORY "Rapid/Controls"
-    IMPORT_PATH "Rapid/Controls"
+    OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/qml/Rapid/Controls"
     STATIC
     QML_FILES
         qml/NavButton.qml

@@ -4,8 +4,7 @@
 
 qt_add_qml_module(RapidLaptimer
     URI "Rapid.Laptimer"
-    OUTPUT_DIRECTORY "Rapid/Laptimer"
-    IMPORT_PATH "Rapid/Laptimer"
+    OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/qml/Rapid/Laptimer"
     STATIC
     QML_FILES
         qml/Laptimer.qml

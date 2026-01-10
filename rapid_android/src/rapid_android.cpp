@@ -5,6 +5,12 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQuickStyle>
+#include <QtQml/QQmlExtensionPlugin>
+
+Q_IMPORT_QML_PLUGIN(Rapid_AndroidPlugin)
+Q_IMPORT_QML_PLUGIN(Rapid_ControlsPlugin)
+Q_IMPORT_QML_PLUGIN(Rapid_LaptimerPlugin)
+Q_IMPORT_QML_PLUGIN(Rapid_SessionPlugin)
 
 int main(int argc, char** argv)
 {
