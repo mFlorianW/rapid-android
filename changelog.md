@@ -1,3 +1,14 @@
+## Release Note v0.4.0-b2
+
+### Continuous Integration
+- don't generate build checks instead iterate over commits
+
+### Housekeeping
+- update all copyright informations
+- reuse update the copyright instead of reporting an error
+
+
+
 ## Release Note v0.4.0-b1
 
 ### Continuous Integration
