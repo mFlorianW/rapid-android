@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 All contributors
+#
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml)
 
 add_subdirectory(RapidAndroid)

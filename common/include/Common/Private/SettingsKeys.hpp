@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 All contributors
+// SPDX-FileCopyrightText: 2025, 2026 All contributors
 //
 // SPDX-License-Identifier: GPL-2.0-or-later
 #ifndef RAPID_COMMON_SETTINGSKEYS_HPP

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 All contributors
+#
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 add_library(RapidAndroidWorkflow STATIC)
 add_library(RapidAndroid::Workflow ALIAS RapidAndroidWorkflow)
 
