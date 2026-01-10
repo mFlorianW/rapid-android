@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 All contributors
+#
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 macro(setup_iwyu)
     find_program(IWYU_PATH NAMES include-what-you-use iwyu)
 

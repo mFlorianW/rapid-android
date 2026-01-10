@@ -24,7 +24,7 @@ repos:
       args: [annotate, -c, "All contributors", -l, "GPL-2.0-or-later", --merge-copyrights ]
       language: python
       pass_filenames: true
-      types_or: ["c++", "c", "qml"]
+      types_or: ["c++", "c", "qml", "cmake"]
 
     - id: format_qml
       name: Format QML files

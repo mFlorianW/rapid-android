@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 All contributors
+#
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 qt_add_qml_module(RapidControls
     URI "Rapid.Controls"
     OUTPUT_DIRECTORY "Rapid/Controls"

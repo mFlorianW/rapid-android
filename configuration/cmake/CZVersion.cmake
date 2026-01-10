@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 All contributors
+#
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 # Extracts the Commitizen version from the config file and sets:
 # - OUT_VERSION to the full version string, either "xx.yy.zz" or "xx.yy.zz-bn"
 #
