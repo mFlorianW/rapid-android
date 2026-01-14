@@ -81,6 +81,7 @@ find_package(Qt6 REQUIRED COMPONENTS
     Network
     Location
     QuickControls2
+    WebSockets
 )
 
 if(QT_KNOWN_POLICY_QTP0001)

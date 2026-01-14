@@ -11,6 +11,7 @@ Q_IMPORT_QML_PLUGIN(Rapid_AndroidPlugin)
 Q_IMPORT_QML_PLUGIN(Rapid_ControlsPlugin)
 Q_IMPORT_QML_PLUGIN(Rapid_LaptimerPlugin)
 Q_IMPORT_QML_PLUGIN(Rapid_SessionPlugin)
+Q_IMPORT_QML_PLUGIN(Rapid_LiveSessionPlugin)
 
 int main(int argc, char** argv)
 {

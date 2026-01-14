@@ -4,16 +4,15 @@
 
 import QtQuick
 import QtQuick.Controls
+import Rapid.LiveSession
 
 Page {
     id: livePage
     anchors.fill: parent
     title: qsTr("Live")
 
-    Text {
-        anchors.centerIn: parent
-        text: qsTr("<b>Live Page Content (WIP)</b>")
-        font.pointSize: 12
-        color: "#000000"
+    LiveSession {
+        id: liveSession
+        anchors.fill: parent
     }
 }
