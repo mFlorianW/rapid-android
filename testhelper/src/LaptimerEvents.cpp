@@ -21,4 +21,18 @@ QString laptimeEventJson(QTime const& time)
         .arg(time.toString("hh:mm:ss.zzz"));
 }
 
+QString lapFinishedEventJson(QTime const& time)
+{
+    return QString{
+        R"json(
+    {
+        "event": "lap_finished",
+        "data": {
+            "time": "%1"
+        }
+    }
+    )json"}
+        .arg(time.toString("hh:mm:ss.zzz"));
+}
+
 } // namespace RapidAndroid::TestHelper

@@ -26,6 +26,19 @@ private Q_SLOTS:
         QVERIFY(std::holds_alternative<Common::LaptimeEvent>(event));
         QCOMPARE(std::get<Common::LaptimeEvent>(event).laptime, time);
     }
+
+    void testDeserializeLapFinishedEvent()
+    {
+        auto deserializer = LiveSessionJsonDeserializer{};
+        auto time = QTime{0, 1, 23, 456};
+        auto task = deserializer.deserialize(TestHelper::lapFinishedEventJson(time).toUtf8());
+        task.waitForFinished();
+        auto eventOpt = task.result();
+        QVERIFY(eventOpt.has_value());
+        auto event = eventOpt.value_or(Event{});
+        QVERIFY(std::holds_alternative<Common::LapFinishedEvent>(event));
+        QCOMPARE(std::get<Common::LapFinishedEvent>(event).laptime, time);
+    }
 };
 
 } // namespace RapidAndroid::RapidLiveSession::Tests

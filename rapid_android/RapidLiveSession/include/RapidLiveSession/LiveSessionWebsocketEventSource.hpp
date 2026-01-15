@@ -184,6 +184,8 @@ private:
                 using T = std::decay_t<decltype(event)>;
                 if constexpr (std::is_same_v<T, Common::LaptimeEvent>) {
                     Q_EMIT currentLaptimeChanged(event);
+                } else if constexpr (std::is_same_v<T, Common::LapFinishedEvent>) {
+                    Q_EMIT laptimeFinished(event);
                 }
             },
             optionalEvent.value());

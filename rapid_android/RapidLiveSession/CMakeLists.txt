@@ -19,6 +19,7 @@ qt_add_qml_module(RapidLiveSession
         src/LiveSessionJsonDeserializer.cpp
         src/LiveSessionWebsocketEventSource.cpp
     RESOURCES
+        img/Flag.svg
 )
 
 add_library(RapidAndroid::LiveSession ALIAS RapidLiveSession)

@@ -8,6 +8,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Controls.Material
+import QtQuick.Effects
+import QtQuick.VectorImage
 import Rapid.Controls
 import Rapid.Android
 
@@ -17,56 +19,93 @@ Control {
     property var liveSessionMgmt: GlobalContext.liveSessionManagement
     property var deviceMgmt: GlobalContext.deviceManagement
 
-    ColumnLayout {
-        id: liveSessionLayout
-        anchors.fill: parent
-        spacing: 12
-        anchors.margins: 10
+    contentItem: Item {
+        ColumnLayout {
+            id: liveSessionLayout
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            spacing: 12
+            anchors.margins: 10
 
-        ListDelegateBackground {
-            Layout.preferredWidth: liveSessionLayout.width
-            Layout.preferredHeight: 156
-            Layout.alignment: Qt.AlignTop
-            borderColor: "#0682C9"
+            ListDelegateBackground {
+                Layout.preferredWidth: liveSessionLayout.width
+                Layout.preferredHeight: 156
+                Layout.alignment: Qt.AlignTop
+                borderColor: "#0682C9"
 
-            ColumnLayout {
-                anchors.centerIn: parent
-                anchors.margins: 10
-                spacing: 5
+                ColumnLayout {
+                    anchors.margins: 10
+                    spacing: 5
+                    anchors.centerIn: parent
 
-                Text {
-                    text: Qt.formatTime(liveSession.liveSessionMgmt.currentLaptime, "hh:mm:ss.zzz")
-                    font.pixelSize: 52
-                    color: "#0682C9"
-                    font.bold: true
-                    Layout.alignment: Qt.AlignHCenter
-                }
+                    Text {
+                        text: Qt.formatTime(liveSession.liveSessionMgmt.currentLaptime, "hh:mm:ss.zzz")
+                        font.pixelSize: 52
+                        color: "#0682C9"
+                        font.bold: true
+                        Layout.alignment: Qt.AlignHCenter
+                    }
 
-                Text {
-                    text: qsTrId("Lap %1".arg(liveSession.liveSessionMgmt.lapCount + 1))
-                    font.pixelSize: 16
-                    opacity: 0.7
-                    color: "#555555"
-                    Layout.alignment: Qt.AlignHCenter
-                    Layout.topMargin: 0
+                    Text {
+                        text: qsTrId("Lap %1".arg(liveSession.liveSessionMgmt.lapCount + 1))
+                        font.pixelSize: 16
+                        opacity: 0.7
+                        color: "#555555"
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.topMargin: 0
+                    }
                 }
             }
 
-            Text {
-                text: Qt.formatTime(liveSession.liveSessionMgmt.currentLaptime, "hh:mm:ss.zzz")
-                font.pixelSize: 36
-                color: "#0682C9"
-                font.bold: true
-                Layout.alignment: Qt.AlignHCenter
-            }
+            RowLayout {
+                id: infoRow
+                Layout.preferredWidth: liveSessionLayout.width
+                // Layout.alignment: Qt.AlignTop
 
-            Text {
-                text: qsTrId("Lap %1 inprogress".arg(5))
-                font.pixelSize: 12
-                opacity: 0.7
-                color: "#555555"
-                Layout.alignment: Qt.AlignHCenter
-                Layout.topMargin: 0
+                Rectangle {
+                    color: "#F5F5F5"
+                    radius: 8
+                    Layout.preferredHeight: 110
+                    Layout.preferredWidth: 100
+
+                    ColumnLayout {
+                        anchors.centerIn: parent
+                        anchors.margins: 10
+
+                        Image {
+                            id: flagImage
+                            source: "qrc:/qt/qml/Rapid/LiveSession/img/Flag.svg"
+                            sourceSize.width: 18
+                            sourceSize.height: 18
+                            fillMode: VectorImage.PreserveAspectFit
+                            Layout.alignment: Qt.AlignHCenter
+                            layer.enabled: true
+                            layer.smooth: true
+                            layer.effect: MultiEffect {
+                                brightness: 1.0
+                                colorization: 1.0          // enable colorization
+                                colorizationColor: "#0682C9" // set color to blue
+                            }
+                        }
+
+                        Text {
+                            text: liveSession.liveSessionMgmt.lapCount
+                            font.pixelSize: 28
+                            color: "#000000"
+                            font.bold: true
+                            Layout.alignment: Qt.AlignHCenter
+                        }
+
+                        Text {
+                            text: qsTrId("Total Laps")
+                            font.pixelSize: 14
+                            opacity: 0.7
+                            color: "#555555"
+                            Layout.alignment: Qt.AlignHCenter
+                        }
+                    }
+                }
             }
         }
     }

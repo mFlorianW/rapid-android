@@ -32,6 +32,13 @@ public:
             mCurrentLaptime = event.laptime;
             Q_EMIT currentLaptimeChanged();
         });
+        connect(mEventSource,
+                &EventSourceType::laptimeFinished,
+                this,
+                [this](Common::LapFinishedEvent const& /*event*/) {
+                    Q_EMIT lapCountChanged();
+                    ++mLapCount;
+                });
     }
 
     /**
@@ -66,9 +73,9 @@ public:
     /**
      * @copydoc ILiveSessionManagement::currentLap
      */
-    [[nodiscard]] int getLapCount() const noexcept override
+    [[nodiscard]] quint32 getLapCount() const noexcept override
     {
-        return 0;
+        return mLapCount;
     }
 
     /**
@@ -82,6 +89,7 @@ public:
 private:
     EventSourceType* mEventSource{nullptr};
     QTime mCurrentLaptime{0, 0, 0, 0};
+    quint32 mLapCount{0};
 };
 
 } // namespace RapidAndroid::Workflow

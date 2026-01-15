@@ -28,8 +28,8 @@ private:
     std::unique_ptr<QWebSocketServer> mWebSocketServer;
     std::unique_ptr<QWebSocket> mWebSocketClient;
 
-    TestHelper::LiveSessionEventDeserializer deserializer;
-    std::unique_ptr<Lses> liveSessionEventSource;
+    TestHelper::LiveSessionEventDeserializer mDeserializer;
+    std::unique_ptr<Lses> mLiveSessionEventSource;
 
 private:
     void waitForConnect()
@@ -65,8 +65,8 @@ private Q_SLOTS:
                     &LiveSessionWebsocketEventSourceTest::webSocketClientDisconnected);
             Q_EMIT webSocketClientConnected();
         });
-        liveSessionEventSource = std::make_unique<Lses>(&deserializer);
-        liveSessionEventSource->setLaptimerConfig(getDeviceSettings());
+        mLiveSessionEventSource = std::make_unique<Lses>(&mDeserializer);
+        mLiveSessionEventSource->setLaptimerConfig(getDeviceSettings());
         waitForConnect();
     }
 
@@ -77,17 +77,17 @@ private Q_SLOTS:
             mWebSocketClient->close();
         }
         QTest::qWait(0);
-        QVERIFY(testing::Mock::VerifyAndClearExpectations(&deserializer));
+        QVERIFY(testing::Mock::VerifyAndClearExpectations(&mDeserializer));
     }
 
     void testCurrentLaptimeUpdates()
     {
-        auto laptimeChangedSpy = QSignalSpy{liveSessionEventSource.get(), &Lses::currentLaptimeChanged};
+        auto laptimeChangedSpy = QSignalSpy{mLiveSessionEventSource.get(), &Lses::currentLaptimeChanged};
         auto laptime = QTime{0, 1, 30, 500};
         auto jsonEvent = TestHelper::laptimeEventJson(laptime);
         auto laptimeEvent = Common::LaptimeEvent{.laptime = laptime};
 
-        EXPECT_CALL(deserializer, deserialize(testing::StrEq(jsonEvent.toStdString())))
+        EXPECT_CALL(mDeserializer, deserialize(testing::StrEq(jsonEvent.toStdString())))
             .WillOnce(testing::Return(QtConcurrent::run([&laptimeEvent]() -> std::optional<RapidLiveSession::Event> {
                 return laptimeEvent;
             })));
@@ -95,6 +95,25 @@ private Q_SLOTS:
         sendEventToClient(jsonEvent);
         QTRY_COMPARE_WITH_TIMEOUT(laptimeChangedSpy.count(), 1, std::chrono::seconds{1});
         auto receivedEvent = laptimeChangedSpy.takeFirst().at(0).value<Common::LaptimeEvent>();
+        QCOMPARE(receivedEvent.laptime, laptime);
+    }
+
+    void testLapFinishedEvents()
+    {
+        auto lapFinishedSpy = QSignalSpy{mLiveSessionEventSource.get(), &Lses::laptimeFinished};
+        auto laptime = QTime{0, 1, 45, 250};
+        auto jsonEvent = TestHelper::lapFinishedEventJson(laptime);
+        auto lapFinishedEvent = Common::LapFinishedEvent{.laptime = laptime};
+
+        EXPECT_CALL(mDeserializer, deserialize(testing::StrEq(jsonEvent.toStdString())))
+            .WillOnce(
+                testing::Return(QtConcurrent::run([&lapFinishedEvent]() -> std::optional<RapidLiveSession::Event> {
+                    return lapFinishedEvent;
+                })));
+
+        sendEventToClient(jsonEvent);
+        QTRY_COMPARE_WITH_TIMEOUT(lapFinishedSpy.count(), 1, std::chrono::seconds{1});
+        auto receivedEvent = lapFinishedSpy.takeFirst().at(0).value<Common::LapFinishedEvent>();
         QCOMPARE(receivedEvent.laptime, laptime);
     }
 };

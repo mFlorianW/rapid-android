@@ -18,6 +18,13 @@ namespace RapidAndroid::TestHelper
  */
 QString laptimeEventJson(QTime const& time);
 
+/**
+ * @brief Generates a JSON string representing a lap finished event with the given time.
+ * @param time The total time at which the lap was finished.
+ * @return A JSON string representing the lap finished event.
+ */
+QString lapFinishedEventJson(QTime const& time);
+
 } // namespace RapidAndroid::TestHelper
 
 #endif // RAPIDANDROID_TESTHELPER_LAPTIMEREVENTS_HPP

@@ -31,6 +31,20 @@ private:
      * @return An optional Event object if parsing is successful; otherwise, std::nullopt.
      */
     std::optional<Event> parseLaptimeEvent(QJsonObject const& dataObj);
+
+    /**
+     * @brief Parses a JSON object into a LapFinished Event object.
+     * @param dataObj The JSON object to parse.
+     * @return An optional Event object if parsing is successful; otherwise, std::nullopt.
+     */
+    std::optional<Event> parseLapFinishedEvent(QJsonObject const& dataObj);
+
+    /**
+     * @brief Parses a time string into a QTime object.
+     * @param timeStr The time string to parse.
+     * @return An optional QTime object if parsing is successful; otherwise, std::nullopt.
+     */
+    std::optional<QTime> parseTime(QString const& timeStr);
 };
 
 } // namespace RapidAndroid::RapidLiveSession

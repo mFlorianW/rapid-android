@@ -12,36 +12,94 @@
 namespace RapidAndroid::Workflow
 {
 
+/**
+ * @brief Interface for live session lap timing management.
+ *
+ * Provides access to current, last, and best lap times, the total lap count.
+ */
 class ILiveSessionManagement : public QObject
 {
     Q_OBJECT
 
+    /**
+     * @property ILiveSessionManagement::currentLaptime
+     * @brief Current lap's elapsed time.
+     * @details Updated while a lap is in progress. Emits currentLaptimeChanged on change.
+     */
     Q_PROPERTY(QTime currentLaptime READ getCurrentLaptime NOTIFY currentLaptimeChanged)
 
+    /**
+     * @property ILiveSessionManagement::lastLaptime
+     * @brief Elapsed time of the most recently completed lap.
+     * @details Emits lastLaptimeChanged when the last lap time is updated.
+     */
     Q_PROPERTY(QTime lastLaptime READ getLastLaptime NOTIFY lastLaptimeChanged)
 
-    Q_PROPERTY(int lapCount READ getLapCount NOTIFY currentLapChanged)
+    /**
+     * @property ILiveSessionManagement::lapCount
+     * @brief Number of completed laps in the current session.
+     * @details Emits lapCountChanged when the count changes.
+     */
+    Q_PROPERTY(quint32 lapCount READ getLapCount NOTIFY lapCountChanged)
 
 public:
     Q_DISABLE_COPY_MOVE(ILiveSessionManagement)
 
+    /**
+     * @brief Virtual destructor.
+     */
     ~ILiveSessionManagement() override = default;
 
+    /**
+     * @brief Returns the elapsed time of the current lap.
+     * @return Current lap time as QTime. May be invalid or zero if no lap is active.
+     */
     [[nodiscard]] virtual QTime getCurrentLaptime() const noexcept = 0;
 
+    /**
+     * @brief Returns the elapsed time of the most recently completed lap.
+     * @return Last lap time as QTime. May be invalid or zero if no lap has been completed.
+     */
     [[nodiscard]] virtual QTime getLastLaptime() const noexcept = 0;
 
+    /**
+     * @brief Returns the best (shortest) lap time recorded in the current session.
+     * @return Best lap time as QTime. May be invalid or zero if no laps have been recorded.
+     */
     [[nodiscard]] virtual QTime getBestLaptime() const noexcept = 0;
 
-    [[nodiscard]] virtual int getLapCount() const noexcept = 0;
+    /**
+     * @brief Returns the number of completed laps in the current session.
+     * @return Lap count as quint32.
+     */
+    [[nodiscard]] virtual quint32 getLapCount() const noexcept = 0;
 
+    /**
+     * @brief Applies device settings these settings are used to receive the live session events from the device.
+     * @param settings Device settings to apply.
+     */
     Q_INVOKABLE virtual void setDeviceSettings(RapidAndroid::Common::DeviceSettings const& settings) = 0;
 
 Q_SIGNALS:
+    /**
+     * @brief Emitted when the current lap time changes.
+     */
     void currentLaptimeChanged();
+
+    /**
+     * @brief Emitted when the last lap time is updated.
+     */
     void lastLaptimeChanged();
+
+    /**
+     * @brief Emitted when the best lap time is updated.
+     */
     void bestLaptimeChanged();
-    void currentLapChanged();
+
+    /**
+     * @brief Emitted when the lap count changes.
+     */
+    void lapCountChanged();
 
 protected:
     ILiveSessionManagement() = default;
