@@ -121,7 +121,7 @@ Control {
 
                         Text {
                             id: lastLaptimeDiffLabel
-                            text: "0.000"//Qt.formatTime(liveSession.liveSessionMgmt.lastLaptime, "hh:mm:ss.zzz")
+                            text: TimeFormatter.formatTime(liveSession.liveSessionMgmt.bestLaptimeDiff)
                             font.pixelSize: 16
                             color: "#555555"
                             anchors.right: lastLaptimeDiffRow.right

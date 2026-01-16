@@ -5,6 +5,7 @@
 #ifndef RAPIDANDROID_WORKFLOW_LIVESESSIONMANAGEMENT_HPP
 #define RAPIDANDROID_WORKFLOW_LIVESESSIONMANAGEMENT_HPP
 
+#include <Common/TimeUtils.hpp>
 #include <Workflow/ILiveSessionEventSource.hpp>
 #include <Workflow/ILiveSessionManagement.hpp>
 
@@ -40,6 +41,7 @@ public:
                 Q_EMIT bestLaptimeChanged();
             }
             Q_EMIT lapCountChanged();
+            Q_EMIT bestLaptimeDiffChanged();
             Q_EMIT lastLaptimeChanged();
         });
     }
@@ -71,6 +73,14 @@ public:
     [[nodiscard]] QTime getBestLaptime() const noexcept override
     {
         return mBestLaptime;
+    }
+
+    [[nodiscard]] QTime getBestLaptimeDiff() const noexcept override
+    {
+        if (mLastLaptime == QTime{0, 0, 0, 0} or mBestLaptime == QTime{0, 0, 0, 0}) {
+            return QTime{0, 0, 0, 0};
+        }
+        return Common::TimeUtils::durationBetween(mLastLaptime, mBestLaptime);
     }
 
     /**

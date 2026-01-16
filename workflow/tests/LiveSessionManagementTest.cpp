@@ -84,6 +84,25 @@ private Q_SLOTS:
         Q_EMIT mLses->laptimeFinished(Common::LapFinishedEvent{.laptime = betterLaptime});
         QCOMPARE(mLsm->property("bestLaptime").value<QTime>(), betterLaptime);
     }
+
+    void testBestLaptimeDiffUpdate()
+    {
+        auto const defaultDiff = QTime{0, 0, 0, 0};
+        auto const bestLaptime = QTime{0, 1, 20, 300};
+        auto const currentLaptime = QTime{0, 1, 30, 500};
+        auto const expectedDiff = QTime{0, 0, 10, 200};
+        auto bestLaptimeDiffSpy = QSignalSpy{mLsm.get(), &Lsm::bestLaptimeDiffChanged};
+
+        QCOMPARE(mLsm->property("bestLaptimeDiff").value<QTime>(), defaultDiff);
+
+        Q_EMIT mLses->laptimeFinished(Common::LapFinishedEvent{.laptime = bestLaptime});
+        QCOMPARE(bestLaptimeDiffSpy.count(), 1);
+        QCOMPARE(mLsm->property("bestLaptimeDiff").value<QTime>(), defaultDiff);
+
+        Q_EMIT mLses->laptimeFinished(Common::LapFinishedEvent{.laptime = currentLaptime});
+        QCOMPARE(bestLaptimeDiffSpy.count(), 2);
+        QCOMPARE(mLsm->property("bestLaptimeDiff").value<QTime>(), expectedDiff);
+    }
 };
 
 } // namespace RapidAndroid::Workflow::Tests
