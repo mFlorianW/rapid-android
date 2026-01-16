@@ -18,12 +18,14 @@ target_sources(RapidAndroidCommon PRIVATE
     include/Common/Position.hpp
     include/Common/Session.hpp
     include/Common/SessionInfo.hpp
+    include/Common/TimeFormatter.hpp
 
     src/SettingsReader.cpp
     src/SettingsWriter.cpp
     src/DeviceSettingsListModel.cpp
     src/Lap.cpp
     src/Session.cpp
+    src/TimeFormatter.cpp
 )
 
 target_link_libraries(RapidAndroidCommon PUBLIC
@@ -77,6 +79,13 @@ if(ENABLE_TEST)
     add_executable(test_common_lap tests/LapTest.cpp)
     add_test(NAME test_common_lap COMMAND test_common_lap)
     target_link_libraries(test_common_lap PRIVATE
+        Qt6::Test
+        RapidAndroid::Common
+    )
+
+    add_executable(test_time_formatter tests/TimeFormatterTest.cpp)
+    add_test(NAME test_time_formatter COMMAND test_time_formatter)
+    target_link_libraries(test_time_formatter PRIVATE
         Qt6::Test
         RapidAndroid::Common
     )

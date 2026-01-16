@@ -40,7 +40,7 @@ Control {
                     anchors.centerIn: parent
 
                     Text {
-                        text: Qt.formatTime(liveSession.liveSessionMgmt.currentLaptime, "hh:mm:ss.zzz")
+                        text: TimeFormatter.formatTime(liveSession.liveSessionMgmt.currentLaptime)
                         font.pixelSize: 52
                         color: "#0682C9"
                         font.bold: true
@@ -105,7 +105,7 @@ Control {
                     }
 
                     Text {
-                        text: liveSession.formatTime(liveSession.liveSessionMgmt.lastLaptime)
+                        text: TimeFormatter.formatTime(liveSession.liveSessionMgmt.lastLaptime)
                         font.pixelSize: 28
                         color: "#000000"
                         font.bold: true
@@ -151,7 +151,7 @@ Control {
                     }
 
                     Text {
-                        text: liveSession.formatTime(liveSession.liveSessionMgmt.bestLaptime)
+                        text: TimeFormatter.formatTime(liveSession.liveSessionMgmt.bestLaptime)
                         font.pixelSize: 28
                         Layout.leftMargin: 15
                         color: "#0682C9"
@@ -211,10 +211,6 @@ Control {
                 }
             }
         }
-    }
-
-    function formatTime(t) { // t is a JS Date or QTime-like, depending on your binding
-        return (t.getHours && t.getHours() === 0) ? Qt.formatTime(t, "mm:ss.zzz") : Qt.formatTime(t, "hh:mm:ss.zzz");
     }
 
     Connections {

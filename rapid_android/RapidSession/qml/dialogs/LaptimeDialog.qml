@@ -66,7 +66,7 @@ Dialog {
                     Text {
                         id: laptimeText
                         Layout.fillWidth: true
-                        text: delegate.laptime
+                        text: TimeFormatter.formatTime(delegate.laptime)
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignRight
                         font.pixelSize: 14
@@ -89,11 +89,12 @@ Dialog {
                     ListView {
                         id: sectorTimesList
                         Layout.fillWidth: true
-                        height: sectorTimesList.contentHeight
+                        Layout.preferredHeight: sectorTimesList.contentHeight
                         model: delegate.sectorTimes
                         clip: true
 
                         delegate: RowLayout {
+                            id: sectorTimeRow
                             width: sectorTimesList.width
                             spacing: 4
 
@@ -101,14 +102,14 @@ Dialog {
                             required property string modelData
 
                             Text {
-                                text: index + 1
+                                text: sectorTimeRow.index + 1
                                 verticalAlignment: Text.AlignVCenter
                                 font.pixelSize: 12
                             }
 
                             Text {
                                 Layout.fillWidth: true
-                                text: modelData
+                                text: TimeFormatter.formatTime(sectorTimeRow.modelData)
                                 verticalAlignment: Text.AlignVCenter
                                 horizontalAlignment: Text.AlignRight
                                 font.pixelSize: 12

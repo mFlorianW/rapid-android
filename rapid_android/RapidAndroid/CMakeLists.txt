@@ -26,6 +26,8 @@ qt_add_qml_module(RapidAndroid
         FileSettingsBackend.hpp
         LoggingCategories.cpp
         LoggingCategories.hpp
+        TimeFormatter.cpp
+        TimeFormatter.hpp
     DEPENDENCIES
         RapidAndroid::Workflow
 )
