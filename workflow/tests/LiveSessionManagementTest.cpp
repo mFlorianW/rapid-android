@@ -69,6 +69,21 @@ private Q_SLOTS:
         QCOMPARE(lastLaptimeSpy.count(), 1);
         QCOMPARE(mLsm->property("lastLaptime").value<QTime>(), laptime);
     }
+
+    void testBestLaptimeUpdate()
+    {
+        auto const defaultLaptime = QTime{0, 0, 0, 0};
+        auto const laptime = QTime{0, 1, 30, 500};
+
+        QCOMPARE(mLsm->property("bestLaptime").value<QTime>(), defaultLaptime);
+
+        Q_EMIT mLses->laptimeFinished(Common::LapFinishedEvent{.laptime = laptime});
+        QCOMPARE(mLsm->property("bestLaptime").value<QTime>(), laptime);
+
+        auto const betterLaptime = QTime{0, 1, 20, 300};
+        Q_EMIT mLses->laptimeFinished(Common::LapFinishedEvent{.laptime = betterLaptime});
+        QCOMPARE(mLsm->property("bestLaptime").value<QTime>(), betterLaptime);
+    }
 };
 
 } // namespace RapidAndroid::Workflow::Tests

@@ -131,6 +131,36 @@ Control {
                 }
             }
 
+            ListDelegateBackground {
+                id: bestLaptimeContainer
+                Layout.fillWidth: true
+                Layout.preferredHeight: 90
+
+                ColumnLayout {
+                    anchors.margins: 10
+                    width: bestLaptimeContainer.width
+                    spacing: 5
+
+                    Text {
+                        text: qsTrId("Best Laptime")
+                        font.pixelSize: 14
+                        Layout.leftMargin: 15
+                        Layout.topMargin: 10
+                        color: "#555555"
+                        Layout.alignment: Qt.AlignLeft
+                    }
+
+                    Text {
+                        text: liveSession.formatTime(liveSession.liveSessionMgmt.bestLaptime)
+                        font.pixelSize: 28
+                        Layout.leftMargin: 15
+                        color: "#0682C9"
+                        font.bold: true
+                        Layout.alignment: Qt.AlignLeft
+                    }
+                }
+            }
+
             RowLayout {
                 id: infoRow
                 Layout.preferredWidth: liveSessionLayout.width

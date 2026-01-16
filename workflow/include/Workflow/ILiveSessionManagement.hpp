@@ -36,6 +36,13 @@ class ILiveSessionManagement : public QObject
     Q_PROPERTY(QTime lastLaptime READ getLastLaptime NOTIFY lastLaptimeChanged)
 
     /**
+     * @property ILiveSessionManagement::bestLaptime
+     * @brief Best (shortest) lap time recorded in the current session.
+     * @details Emits bestLaptimeChanged when the best lap time is updated.
+     */
+    Q_PROPERTY(QTime bestLaptime READ getBestLaptime NOTIFY bestLaptimeChanged)
+
+    /**
      * @property ILiveSessionManagement::lapCount
      * @brief Number of completed laps in the current session.
      * @details Emits lapCountChanged when the count changes.

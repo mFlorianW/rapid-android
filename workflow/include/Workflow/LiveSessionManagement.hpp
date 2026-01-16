@@ -35,6 +35,10 @@ public:
         connect(mEventSource, &EventSourceType::laptimeFinished, this, [this](Common::LapFinishedEvent const& event) {
             ++mLapCount;
             mLastLaptime = event.laptime;
+            if (mBestLaptime == QTime{0, 0, 0, 0} || event.laptime < mBestLaptime) {
+                mBestLaptime = event.laptime;
+                Q_EMIT bestLaptimeChanged();
+            }
             Q_EMIT lapCountChanged();
             Q_EMIT lastLaptimeChanged();
         });
@@ -66,7 +70,7 @@ public:
      */
     [[nodiscard]] QTime getBestLaptime() const noexcept override
     {
-        return {};
+        return mBestLaptime;
     }
 
     /**
@@ -89,6 +93,7 @@ private:
     EventSourceType* mEventSource{nullptr};
     QTime mCurrentLaptime{0, 0, 0, 0};
     QTime mLastLaptime{0, 0, 0, 0};
+    QTime mBestLaptime{0, 0, 0, 0};
     quint32 mLapCount{0};
 };
 
