@@ -58,6 +58,79 @@ Control {
                 }
             }
 
+            ListDelegateBackground {
+                id: lastLaptimeContainer
+                Layout.fillWidth: true
+                Layout.preferredHeight: 120
+
+                ColumnLayout {
+                    anchors.margins: 10
+                    width: lastLaptimeContainer.width
+                    spacing: 5
+
+                    Item {
+                        id: lastLaptimeRow
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: lastLaptimeLabel.implicitHeight + checkeredFlagImage.implicitHeight
+
+                        Text {
+                            id: lastLaptimeLabel
+                            text: qsTrId("Last Laptime")
+                            font.pixelSize: 14
+                            anchors.left: parent.left
+                            anchors.leftMargin: 15
+                            anchors.top: parent.top
+                            anchors.topMargin: 15
+                            color: "#555555"
+                        }
+
+                        Image {
+                            id: checkeredFlagImage
+                            source: "qrc:/qt/qml/Rapid/LiveSession/img/CheckeredFlag.svg"
+                            sourceSize.width: 18
+                            sourceSize.height: 18
+                            fillMode: VectorImage.PreserveAspectFit
+                            anchors.right: lastLaptimeRow.right
+                            anchors.rightMargin: 15
+                            anchors.top: lastLaptimeRow.top
+                            anchors.topMargin: 15
+                            layer.enabled: true
+                            layer.smooth: true
+                            layer.effect: MultiEffect {
+                                brightness: 1.0
+                                colorization: 1.0
+                                colorizationColor: "#0682C9"
+                            }
+                        }
+                    }
+
+                    Text {
+                        text: liveSession.formatTime(liveSession.liveSessionMgmt.lastLaptime)
+                        font.pixelSize: 28
+                        color: "#000000"
+                        font.bold: true
+                        Layout.leftMargin: 15
+                        Layout.alignment: Qt.AlignLeft
+                    }
+
+                    Item {
+                        id: lastLaptimeDiffRow
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: lastLaptimeDiffLabel.implicitHeight
+                        Layout.bottomMargin: 20
+
+                        Text {
+                            id: lastLaptimeDiffLabel
+                            text: "0.000"//Qt.formatTime(liveSession.liveSessionMgmt.lastLaptime, "hh:mm:ss.zzz")
+                            font.pixelSize: 16
+                            color: "#555555"
+                            anchors.right: lastLaptimeDiffRow.right
+                            anchors.rightMargin: 15
+                        }
+                    }
+                }
+            }
+
             RowLayout {
                 id: infoRow
                 Layout.preferredWidth: liveSessionLayout.width
@@ -84,8 +157,8 @@ Control {
                             layer.smooth: true
                             layer.effect: MultiEffect {
                                 brightness: 1.0
-                                colorization: 1.0          // enable colorization
-                                colorizationColor: "#0682C9" // set color to blue
+                                colorization: 1.0
+                                colorizationColor: "#0682C9"
                             }
                         }
 
@@ -108,6 +181,10 @@ Control {
                 }
             }
         }
+    }
+
+    function formatTime(t) { // t is a JS Date or QTime-like, depending on your binding
+        return (t.getHours && t.getHours() === 0) ? Qt.formatTime(t, "mm:ss.zzz") : Qt.formatTime(t, "hh:mm:ss.zzz");
     }
 
     Connections {

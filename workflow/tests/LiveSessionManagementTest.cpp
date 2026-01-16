@@ -46,7 +46,7 @@ private Q_SLOTS:
         auto constexpr defaultLapCount = 0;
         auto constexpr lapCount = 1;
         auto const laptime = QTime{0, 1, 30, 500};
-        QSignalSpy lapCountSpy(mLsm.get(), &Lsm::lapCountChanged);
+        auto lapCountSpy = QSignalSpy{mLsm.get(), &Lsm::lapCountChanged};
 
         QCOMPARE(mLsm->getLapCount(), defaultLapCount);
 
@@ -54,6 +54,20 @@ private Q_SLOTS:
 
         QCOMPARE(lapCountSpy.count(), 1);
         QCOMPARE(mLsm->property("lapCount").toUInt(), lapCount);
+    }
+
+    void testLastLaptimeUpdate()
+    {
+        auto const laptime = QTime{0, 1, 30, 500};
+        auto const defaultLaptime = QTime{0, 0, 0, 0};
+        auto lastLaptimeSpy = QSignalSpy{mLsm.get(), &Lsm::lastLaptimeChanged};
+
+        QCOMPARE(mLsm->property("lastLaptime").value<QTime>(), defaultLaptime);
+
+        Q_EMIT mLses->laptimeFinished(Common::LapFinishedEvent{.laptime = laptime});
+
+        QCOMPARE(lastLaptimeSpy.count(), 1);
+        QCOMPARE(mLsm->property("lastLaptime").value<QTime>(), laptime);
     }
 };
 

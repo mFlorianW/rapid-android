@@ -32,13 +32,12 @@ public:
             mCurrentLaptime = event.laptime;
             Q_EMIT currentLaptimeChanged();
         });
-        connect(mEventSource,
-                &EventSourceType::laptimeFinished,
-                this,
-                [this](Common::LapFinishedEvent const& /*event*/) {
-                    Q_EMIT lapCountChanged();
-                    ++mLapCount;
-                });
+        connect(mEventSource, &EventSourceType::laptimeFinished, this, [this](Common::LapFinishedEvent const& event) {
+            ++mLapCount;
+            mLastLaptime = event.laptime;
+            Q_EMIT lapCountChanged();
+            Q_EMIT lastLaptimeChanged();
+        });
     }
 
     /**
@@ -59,7 +58,7 @@ public:
      */
     [[nodiscard]] QTime getLastLaptime() const noexcept override
     {
-        return {};
+        return mLastLaptime;
     }
 
     /**
@@ -89,6 +88,7 @@ public:
 private:
     EventSourceType* mEventSource{nullptr};
     QTime mCurrentLaptime{0, 0, 0, 0};
+    QTime mLastLaptime{0, 0, 0, 0};
     quint32 mLapCount{0};
 };
 
