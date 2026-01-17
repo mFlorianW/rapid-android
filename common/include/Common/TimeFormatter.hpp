@@ -18,8 +18,8 @@ namespace RapidAndroid::Common::TimeFormatter
  * For example:
  * - A time of 01:02:03.456 will be formatted as "01:02:03.456"
  * - A time of 00:01:23.456 will be formatted as "01:23.456"
- * - A time of 00:00:45.678 will be formatted as "45.678"
- * - A time of 00:00:00.123 will be formatted as "00.123"
+ * - A time of 00:00:45.678 will be formatted as "00:45.678"
+ * - A time of 00:00:00.123 will be formatted as "00:00.123"
  *
  * @param time The QTime to format.
  * @return Formatted lap time string.

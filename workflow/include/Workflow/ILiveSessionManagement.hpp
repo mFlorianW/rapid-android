@@ -50,6 +50,13 @@ class ILiveSessionManagement : public QObject
     Q_PROPERTY(QTime bestLaptimeDiff READ getBestLaptimeDiff NOTIFY bestLaptimeDiffChanged)
 
     /**
+     * @property ILiveSessionManagement::bestLaptimeLap
+     * @brief Lap number of the best lap time recorded in the current session.
+     * @details Emits bestLaptimeChanged when the best lap time is updated.
+     */
+    Q_PROPERTY(quint32 bestLaptimeLap READ getBestLaptimeLap NOTIFY bestLaptimeChanged)
+
+    /**
      * @property ILiveSessionManagement::lapCount
      * @brief Number of completed laps in the current session.
      * @details Emits lapCountChanged when the count changes.
@@ -87,6 +94,12 @@ public:
      * @return Best lap time difference as QTime. May be invalid or zero if no best lap time is recorded.
      */
     [[nodiscard]] virtual QTime getBestLaptimeDiff() const noexcept = 0;
+
+    /**
+     * @brief Returns the lap number of the best lap time recorded in the current session.
+     * @return Lap number as quint32. May be zero if no laps have been recorded.
+     */
+    [[nodiscard]] virtual quint32 getBestLaptimeLap() const noexcept = 0;
 
     /**
      * @brief Returns the number of completed laps in the current session.

@@ -11,8 +11,6 @@ QString formatTime(QTime const& time)
 {
     if (time == QTime{0, 0, 0, 0}) {
         return QTime{0, 0, 0, 0}.toString("mm:ss.zzz");
-    } else if (time.minute() == 0) {
-        return time.toString("ss.zzz");
     } else if (time.hour() == 0) {
         return time.toString("mm:ss.zzz");
     } else {

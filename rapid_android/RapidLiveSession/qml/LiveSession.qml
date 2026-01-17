@@ -134,20 +134,42 @@ Control {
             ListDelegateBackground {
                 id: bestLaptimeContainer
                 Layout.fillWidth: true
-                Layout.preferredHeight: 90
+                Layout.preferredHeight: bestAvgLaptimeRow.implicitHeight
 
-                ColumnLayout {
-                    anchors.margins: 10
-                    width: bestLaptimeContainer.width
-                    spacing: 5
+                RowLayout{
+                    id: bestAvgLaptimeRow
+                    anchors.fill: parent
 
-                    Text {
-                        text: qsTrId("Best Laptime")
-                        font.pixelSize: 14
-                        Layout.leftMargin: 15
-                        Layout.topMargin: 10
-                        color: "#555555"
-                        Layout.alignment: Qt.AlignLeft
+                    ColumnLayout {
+                        Layout.margins: 10
+                        spacing: 5
+
+                        Text {
+                            text: qsTrId("Best Laptime")
+                            font.pixelSize: 14
+                            Layout.leftMargin: 15
+                            Layout.topMargin: 10
+                            color: "#555555"
+                            Layout.alignment: Qt.AlignLeft
+                        }
+
+                        Text {
+                            text: TimeFormatter.formatTime(liveSession.liveSessionMgmt.bestLaptime)
+                            font.pixelSize: 28
+                            Layout.leftMargin: 15
+                            color: "#0682C9"
+                            font.bold: true
+                            Layout.alignment: Qt.AlignLeft
+                        }
+                        Text {
+                            text: qsTrId("Lap: %1").arg(liveSession.liveSessionMgmt.bestLaptimeLap)
+                            font.pixelSize: 12
+                            Layout.leftMargin: 15
+                            color: "#555555"
+                            font.bold: true
+                            Layout.alignment: Qt.AlignLeft
+                            visible: liveSession.liveSessionMgmt.bestLaptimeLap > 0
+                        }
                     }
 
                     Text {

@@ -24,6 +24,7 @@ private Q_SLOTS:
         QTest::newRow("negative duration") << QTime(11, 30, 0) << QTime(10, 0, 0) << QTime(1, 30, 0);
         QTest::newRow("crossing midnight") << QTime(23, 0, 0) << QTime(1, 0, 0) << QTime(2, 0, 0);
     }
+
     void testDurationBetween()
     {
         QFETCH(QTime, start);

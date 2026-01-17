@@ -18,8 +18,8 @@ private Q_SLOTS:
 
         QTest::newRow("full time") << QTime(1, 2, 3, 456) << QString("01:02:03.456");
         QTest::newRow("minutes and seconds") << QTime(0, 1, 23, 456) << QString("01:23.456");
-        QTest::newRow("seconds only") << QTime(0, 0, 45, 678) << QString("45.678");
-        QTest::newRow("milliseconds only") << QTime(0, 0, 0, 123) << QString("00.123");
+        QTest::newRow("seconds only") << QTime(0, 0, 45, 678) << QString("00:45.678");
+        QTest::newRow("milliseconds only") << QTime(0, 0, 0, 123) << QString("00:00.123");
         QTest::newRow("zero time") << QTime(0, 0, 0, 0) << QString("00:00.000");
     }
 
