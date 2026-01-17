@@ -6,6 +6,7 @@
 #define RAPIDANDROID_COMMON_TIMEUTILS_HPP
 
 #include <QTime>
+#include <span>
 
 namespace RapidAndroid::Common::TimeUtils
 {
@@ -25,6 +26,14 @@ namespace RapidAndroid::Common::TimeUtils
  * @return The duration as a QTime object.
  */
 QTime durationBetween(QTime const& start, QTime const& end);
+
+/**
+ * @brief Calculate the average duration from a span of QTime durations.
+ *
+ * @param durations A span of QTime durations.
+ * @return The average duration as a QTime object.
+ */
+QTime averageDuration(std::span<QTime const> durations);
 
 } // namespace RapidAndroid::Common::TimeUtils
 #endif // RAPIDANDROID_COMMON_TIMEUTILS_HPP

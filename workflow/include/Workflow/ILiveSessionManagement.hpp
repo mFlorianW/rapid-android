@@ -57,6 +57,13 @@ class ILiveSessionManagement : public QObject
     Q_PROPERTY(quint32 bestLaptimeLap READ getBestLaptimeLap NOTIFY bestLaptimeChanged)
 
     /**
+     * @property ILiveSessionManagement::averageLaptime
+     * @brief Average lap time of all completed laps in the current session.
+     * @details Emits averageLaptimeChanged when a new lap is completed.
+     */
+    Q_PROPERTY(QTime averageLaptime READ getAverageLaptime NOTIFY averageLaptimeChanged)
+
+    /**
      * @property ILiveSessionManagement::lapCount
      * @brief Number of completed laps in the current session.
      * @details Emits lapCountChanged when the count changes.
@@ -102,6 +109,12 @@ public:
     [[nodiscard]] virtual quint32 getBestLaptimeLap() const noexcept = 0;
 
     /**
+     * @brief Returns the average lap time of all completed laps in the current session.
+     * @return Average lap time as QTime. May be invalid or zero if no laps have been completed.
+     */
+    [[nodiscard]] virtual QTime getAverageLaptime() const noexcept = 0;
+
+    /**
      * @brief Returns the number of completed laps in the current session.
      * @return Lap count as quint32.
      */
@@ -133,6 +146,11 @@ Q_SIGNALS:
      * @brief Emitted when the best lap time difference changes.
      */
     void bestLaptimeDiffChanged();
+
+    /**
+     * @brief Emitted when the average lap time changes.
+     */
+    void averageLaptimeChanged();
 
     /**
      * @brief Emitted when the lap count changes.

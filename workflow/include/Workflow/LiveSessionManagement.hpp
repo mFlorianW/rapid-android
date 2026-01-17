@@ -36,6 +36,7 @@ public:
         connect(mEventSource, &EventSourceType::laptimeFinished, this, [this](Common::LapFinishedEvent const& event) {
             ++mLapCount;
             mLastLaptime = event.laptime;
+            mLaptimes.append(event.laptime);
             if (mBestLaptime == QTime{0, 0, 0, 0} or event.laptime < mBestLaptime) {
                 mBestLaptime = event.laptime;
                 mBestLaptimeLap = mLapCount;
@@ -44,6 +45,7 @@ public:
             Q_EMIT lapCountChanged();
             Q_EMIT bestLaptimeDiffChanged();
             Q_EMIT lastLaptimeChanged();
+            Q_EMIT averageLaptimeChanged();
         });
     }
 
@@ -76,6 +78,9 @@ public:
         return mBestLaptime;
     }
 
+    /**
+     * @copydoc ILiveSessionManagement::getBestLaptimeDiff
+     */
     [[nodiscard]] QTime getBestLaptimeDiff() const noexcept override
     {
         if (mLastLaptime == QTime{0, 0, 0, 0} or mBestLaptime == QTime{0, 0, 0, 0}) {
@@ -89,6 +94,14 @@ public:
     [[nodiscard]] quint32 getBestLaptimeLap() const noexcept override
     {
         return mBestLaptimeLap;
+    }
+
+    /**
+     * @copydoc ILiveSessionManagement::averageLaptime
+     */
+    [[nodiscard]] QTime getAverageLaptime() const noexcept override
+    {
+        return Common::TimeUtils::averageDuration(mLaptimes);
     }
 
     /**
@@ -112,6 +125,7 @@ private:
     QTime mCurrentLaptime{0, 0, 0, 0};
     QTime mLastLaptime{0, 0, 0, 0};
     QTime mBestLaptime{0, 0, 0, 0};
+    QVector<QTime> mLaptimes;
     quint32 mLapCount{0};
     quint32 mBestLaptimeLap{0};
 };

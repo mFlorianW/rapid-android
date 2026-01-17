@@ -34,6 +34,28 @@ private Q_SLOTS:
         QTime result = TimeUtils::durationBetween(start, end);
         QCOMPARE(result, expectedDuration);
     }
+
+    void testAverageDuration_data()
+    {
+        QTest::addColumn<std::vector<QTime>>("durations");
+        QTest::addColumn<QTime>("expectedAverage");
+
+        QTest::newRow("empty") << std::vector<QTime>{} << QTime(0, 0, 0);
+        QTest::newRow("single duration") << std::vector<QTime>{QTime(1, 0, 0)} << QTime(1, 0, 0);
+        QTest::newRow("multiple durations")
+            << std::vector<QTime>{QTime(1, 0, 0), QTime(2, 0, 0), QTime(3, 0, 0)} << QTime(2, 0, 0);
+        QTest::newRow("varying durations")
+            << std::vector<QTime>{QTime(0, 30, 0), QTime(1, 30, 0), QTime(2, 30, 0)} << QTime(1, 30, 0);
+    }
+
+    void testAverageDuration()
+    {
+        QFETCH(std::vector<QTime>, durations);
+        QFETCH(QTime, expectedAverage);
+
+        QTime result = TimeUtils::averageDuration(durations);
+        QCOMPARE(result, expectedAverage);
+    }
 };
 
 } // namespace RapidAndroid::Common::Tests

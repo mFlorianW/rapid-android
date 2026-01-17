@@ -136,7 +136,7 @@ Control {
                 Layout.fillWidth: true
                 Layout.preferredHeight: bestAvgLaptimeRow.implicitHeight
 
-                RowLayout{
+                RowLayout {
                     id: bestAvgLaptimeRow
                     anchors.fill: parent
 
@@ -172,13 +172,28 @@ Control {
                         }
                     }
 
-                    Text {
-                        text: TimeFormatter.formatTime(liveSession.liveSessionMgmt.bestLaptime)
-                        font.pixelSize: 28
-                        Layout.leftMargin: 15
-                        color: "#0682C9"
-                        font.bold: true
-                        Layout.alignment: Qt.AlignLeft
+                    ColumnLayout {
+                        Layout.margins: 10
+                        spacing: 5
+                        Layout.alignment: Qt.AlignRight | Qt.AlignTop
+
+                        Text {
+                            text: qsTrId("Average Laptime")
+                            font.pixelSize: 14
+                            Layout.rightMargin: 15
+                            Layout.topMargin: 10
+                            color: "#000000"
+                            Layout.alignment: Qt.AlignRight
+                        }
+
+                        Text {
+                            text: TimeFormatter.formatTime(liveSession.liveSessionMgmt.averageLaptime)
+                            font.pixelSize: 28
+                            Layout.rightMargin: 15
+                            color: "#0682C9"
+                            font.bold: true
+                            Layout.alignment: Qt.AlignRight
+                        }
                     }
                 }
             }
