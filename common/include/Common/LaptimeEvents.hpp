@@ -5,7 +5,9 @@
 #ifndef RAPIDANDROID_COMMON_LIVESESSIONEVENTS_HPP
 #define RAPIDANDROID_COMMON_LIVESESSIONEVENTS_HPP
 
+#include <Common/Session.hpp>
 #include <QTime>
+#include <memory>
 
 namespace RapidAndroid::Common
 {
@@ -39,6 +41,14 @@ struct LapSectorEvent
 struct LapFinishedEvent
 {
     QTime laptime;
+};
+
+/**
+ * @brief Event providing information about the current session.
+ */
+struct CurrentSessionEvent
+{
+    std::unique_ptr<Session> session;
 };
 
 } // namespace RapidAndroid::Common

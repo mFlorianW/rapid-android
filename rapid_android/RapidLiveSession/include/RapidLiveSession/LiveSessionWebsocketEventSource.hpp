@@ -57,6 +57,12 @@ Q_SIGNALS:
      */
     void lapSectorFinished(RapidAndroid::Common::LapSectorEvent const& event);
 
+    /**
+     * @brief Emitted when a new current session event is received.
+     * @param event The current session event containing session information.
+     */
+    void currentSessionEventReceived(RapidAndroid::Common::CurrentSessionEvent const& event);
+
 protected:
     LiveSessionWebsocketEventSourceBase() = default;
 };
@@ -174,7 +180,7 @@ private:
         if (it == mDeserializeTasks.end()) {
             return;
         }
-        auto optionalEvent = it->second->result();
+        auto optionalEvent = it->second->future().takeResult();
         if (not optionalEvent.has_value()) {
             return;
         }
@@ -186,6 +192,8 @@ private:
                     Q_EMIT currentLaptimeChanged(event);
                 } else if constexpr (std::is_same_v<T, Common::LapFinishedEvent>) {
                     Q_EMIT laptimeFinished(event);
+                } else if constexpr (std::is_same_v<T, Common::CurrentSessionEvent>) {
+                    Q_EMIT currentSessionEventReceived(event);
                 }
             },
             optionalEvent.value());

@@ -25,6 +25,7 @@ Q_SIGNALS:
     void currentLaptimeChanged(RapidAndroid::Common::LaptimeEvent const& event);
     void laptimeFinished(RapidAndroid::Common::LapFinishedEvent const& event);
     void lapSectorFinished(RapidAndroid::Common::LapSectorEvent const& event);
+    void currentSessionEventReceived(RapidAndroid::Common::CurrentSessionEvent const& event);
 };
 
 } // namespace RapidAndroid::TestHelper

@@ -35,4 +35,18 @@ QString lapFinishedEventJson(QTime const& time)
         .arg(time.toString("hh:mm:ss.zzz"));
 }
 
+QString currentSessionEventJson(QString const& session)
+{
+    return QString{
+        R"json(
+    {
+        "event": "current_session",
+        "data": {
+            "session": %1
+        }
+    }
+    )json"}
+        .arg(session);
+}
+
 } // namespace RapidAndroid::TestHelper

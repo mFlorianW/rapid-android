@@ -5,6 +5,7 @@
 #ifndef RAPIDANDROID_SESSIONSESSIONJSONDESERIALIZER_HPP
 #define RAPIDANDROID_SESSIONSESSIONJSONDESERIALIZER_HPP
 
+#include <QJsonObject>
 #include <Workflow/ISessionDeserializer.hpp>
 
 namespace RapidAndroid::Session
@@ -14,7 +15,7 @@ namespace RapidAndroid::Session
  * @class SessionJsonDeserializer
  * @brief Utility for deserializing a session from JSON.
  *
- * Parses a UTF-8 encoded JSON payload and produces a Common::Session instance if the input is valid. 
+ * Parses a UTF-8 encoded JSON payload and produces a Common::Session instance if the input is valid.
  * Returns std::nullopt when the payload cannot be parsed or does not satisfy the expected schema.
  */
 class SessionJsonDeserializer
@@ -29,6 +30,16 @@ public:
      * @return std::optional containing a Common::Session on success; std::nullopt on failure.
      */
     static QFuture<std::optional<std::unique_ptr<Common::Session>>> deserialize(QByteArray data);
+
+    /**
+     * @brief Deserialize session from a JSON object.
+     *
+     * If the data is semantically invalid, the function returns std::nullopt.
+     *
+     * @param data JSON input as a QJsonObject.
+     * @return std::optional containing a Common::Session on success; std::nullopt on failure.
+     */
+    static QFuture<std::optional<std::unique_ptr<Common::Session>>> deserialize(QJsonObject const& data);
 
     /**
      * @brief Deserialize session info from a JSON byte array.

@@ -6,6 +6,7 @@
 #include <QSignalSpy>
 #include <QTest>
 #include <TestHelper/LiveSessionEventSourceMock.hpp>
+#include <TestHelper/Session.hpp>
 #include <Workflow/LiveSessionManagement.hpp>
 
 namespace RapidAndroid::Workflow::Tests
@@ -19,6 +20,13 @@ class LiveSessionManagementTest : public QObject
 private:
     std::unique_ptr<RapidAndroid::TestHelper::LiveSessionEventSourceMock> mLses;
     std::unique_ptr<Lsm> mLsm;
+
+    void sendCurrentSessionEvent()
+    {
+        auto currentSessionEvent = RapidAndroid::Common::CurrentSessionEvent{
+            .session = std::make_unique<RapidAndroid::Common::Session>(TestHelper::getOscherslebenSession())};
+        Q_EMIT mLses->currentSessionEventReceived(currentSessionEvent);
+    }
 
 private Q_SLOTS:
     void init()
@@ -35,6 +43,8 @@ private Q_SLOTS:
 
         QCOMPARE(mLsm->getCurrentLaptime(), defaultLaptime);
 
+        sendCurrentSessionEvent();
+        currentLaptimeSpy.clear();
         Q_EMIT mLses->currentLaptimeChanged(RapidAndroid::Common::LaptimeEvent{.laptime = laptime});
 
         QCOMPARE(currentLaptimeSpy.count(), 1);
@@ -44,12 +54,14 @@ private Q_SLOTS:
     void testLapCountIncrement()
     {
         auto constexpr defaultLapCount = 0;
-        auto constexpr lapCount = 1;
+        auto constexpr lapCount = 2;
         auto const laptime = QTime{0, 1, 30, 500};
         auto lapCountSpy = QSignalSpy{mLsm.get(), &Lsm::lapCountChanged};
 
         QCOMPARE(mLsm->getLapCount(), defaultLapCount);
 
+        sendCurrentSessionEvent();
+        lapCountSpy.clear();
         Q_EMIT mLses->laptimeFinished(Common::LapFinishedEvent{.laptime = laptime});
 
         QCOMPARE(lapCountSpy.count(), 1);
@@ -64,6 +76,8 @@ private Q_SLOTS:
 
         QCOMPARE(mLsm->property("lastLaptime").value<QTime>(), defaultLaptime);
 
+        sendCurrentSessionEvent();
+        lastLaptimeSpy.clear();
         Q_EMIT mLses->laptimeFinished(Common::LapFinishedEvent{.laptime = laptime});
 
         QCOMPARE(lastLaptimeSpy.count(), 1);
@@ -77,6 +91,7 @@ private Q_SLOTS:
 
         QCOMPARE(mLsm->property("bestLaptime").value<QTime>(), defaultLaptime);
 
+        sendCurrentSessionEvent();
         Q_EMIT mLses->laptimeFinished(Common::LapFinishedEvent{.laptime = laptime});
         QCOMPARE(mLsm->property("bestLaptime").value<QTime>(), laptime);
 
@@ -95,6 +110,8 @@ private Q_SLOTS:
 
         QCOMPARE(mLsm->property("bestLaptimeDiff").value<QTime>(), defaultDiff);
 
+        sendCurrentSessionEvent();
+        bestLaptimeDiffSpy.clear();
         Q_EMIT mLses->laptimeFinished(Common::LapFinishedEvent{.laptime = bestLaptime});
         QCOMPARE(bestLaptimeDiffSpy.count(), 1);
         QCOMPARE(mLsm->property("bestLaptimeDiff").value<QTime>(), defaultDiff);
@@ -109,8 +126,9 @@ private Q_SLOTS:
         auto const laptime1 = QTime{0, 1, 30, 0};
         auto const laptime2 = QTime{0, 1, 0, 0};
         auto const laptime3 = QTime{0, 2, 0, 0};
-        auto const expectedAverage = QTime{0, 1, 30, 0};
+        auto const expectedAverage = QTime{0, 1, 38, 930};
 
+        sendCurrentSessionEvent();
         Q_EMIT mLses->laptimeFinished(Common::LapFinishedEvent{.laptime = laptime1});
         Q_EMIT mLses->laptimeFinished(Common::LapFinishedEvent{.laptime = laptime2});
         Q_EMIT mLses->laptimeFinished(Common::LapFinishedEvent{.laptime = laptime3});
@@ -123,13 +141,52 @@ private Q_SLOTS:
         auto const laptime1 = QTime{0, 1, 30, 0};
         auto const laptime2 = QTime{0, 1, 0, 0};
         auto const laptime3 = QTime{0, 2, 0, 0};
-        auto const expectedBestLap = 2; // laptime2 is the best
+        constexpr auto const expectedBestLap = 3;
 
+        sendCurrentSessionEvent();
         Q_EMIT mLses->laptimeFinished(Common::LapFinishedEvent{.laptime = laptime1});
         Q_EMIT mLses->laptimeFinished(Common::LapFinishedEvent{.laptime = laptime2});
         Q_EMIT mLses->laptimeFinished(Common::LapFinishedEvent{.laptime = laptime3});
 
         QCOMPARE(mLsm->property("bestLaptimeLap").toUInt(), expectedBestLap);
+    }
+
+    void testOnlySendUpdatesAfterSync()
+    {
+        auto const laptime = QTime{0, 2, 5, 720};
+        auto const defaultLaptime = QTime{0, 0, 0, 0};
+        auto lastLaptimeSpy = QSignalSpy{mLsm.get(), &Lsm::lastLaptimeChanged};
+        constexpr auto defaultLapCount = 0u;
+        auto lapCountSpy = QSignalSpy{mLsm.get(), &Lsm::lapCountChanged};
+        auto bestLaptimeSpy = QSignalSpy{mLsm.get(), &Lsm::bestLaptimeChanged};
+        auto averageDurationSpy = QSignalSpy{mLsm.get(), &Lsm::averageLaptimeChanged};
+
+        QCOMPARE(mLsm->property("lastLaptime").value<QTime>(), defaultLaptime);
+
+        // these emits should not trigger any updates yet because no current session event has been received
+        Q_EMIT mLses->currentLaptimeChanged(RapidAndroid::Common::LaptimeEvent{.laptime = laptime});
+        Q_EMIT mLses->laptimeFinished(Common::LapFinishedEvent{.laptime = laptime});
+
+        QCOMPARE(lastLaptimeSpy.count(), 0);
+        QCOMPARE(mLsm->property("lastLaptime").value<QTime>(), defaultLaptime);
+        QCOMPARE(lapCountSpy.count(), 0);
+        QCOMPARE(mLsm->property("lapCount").toUInt(), defaultLapCount);
+        QCOMPARE(bestLaptimeSpy.count(), 0);
+        QCOMPARE(mLsm->property("bestLaptime").value<QTime>(), defaultLaptime);
+        QCOMPARE(averageDurationSpy.count(), 0);
+        QCOMPARE(mLsm->property("averageLaptime").value<QTime>(), defaultLaptime);
+
+        // sending the current session event should trigger processing of the live session parameter
+        sendCurrentSessionEvent();
+
+        QCOMPARE(lastLaptimeSpy.count(), 1);
+        QCOMPARE(mLsm->property("lastLaptime").value<QTime>(), laptime);
+        QCOMPARE(lapCountSpy.count(), 1);
+        QCOMPARE(mLsm->property("lapCount").toUInt(), 1);
+        QCOMPARE(bestLaptimeSpy.count(), 1);
+        QCOMPARE(mLsm->property("bestLaptime").value<QTime>(), laptime);
+        QCOMPARE(averageDurationSpy.count(), 1);
+        QCOMPARE(mLsm->property("averageLaptime").value<QTime>(), laptime);
     }
 };
 

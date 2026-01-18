@@ -19,6 +19,7 @@ concept LiveSessionEventSourceConcept = std::derived_from<T, QObject> and requir
     { &T::currentLaptimeChanged } -> std::convertible_to<void (T::*)(Common::LaptimeEvent const&)>;
     { &T::laptimeFinished } -> std::convertible_to<void (T::*)(Common::LapFinishedEvent const&)>;
     { &T::lapSectorFinished } -> std::convertible_to<void (T::*)(Common::LapSectorEvent const&)>;
+    { &T::currentSessionEventReceived } -> std::convertible_to<void (T::*)(Common::CurrentSessionEvent const&)>;
     { obj.setLaptimerConfig(std::declval<Common::DeviceSettings>()) } -> std::same_as<void>;
 };
 

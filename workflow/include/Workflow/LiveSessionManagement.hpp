@@ -28,25 +28,10 @@ public:
         : mEventSource{std::move(eventSource)}
     {
         Q_ASSERT(mEventSource != nullptr);
-
-        connect(mEventSource, &EventSourceType::currentLaptimeChanged, this, [this](Common::LaptimeEvent const& event) {
-            mCurrentLaptime = event.laptime;
-            Q_EMIT currentLaptimeChanged();
-        });
-        connect(mEventSource, &EventSourceType::laptimeFinished, this, [this](Common::LapFinishedEvent const& event) {
-            ++mLapCount;
-            mLastLaptime = event.laptime;
-            mLaptimes.append(event.laptime);
-            if (mBestLaptime == QTime{0, 0, 0, 0} or event.laptime < mBestLaptime) {
-                mBestLaptime = event.laptime;
-                mBestLaptimeLap = mLapCount;
-                Q_EMIT bestLaptimeChanged();
-            }
-            Q_EMIT lapCountChanged();
-            Q_EMIT bestLaptimeDiffChanged();
-            Q_EMIT lastLaptimeChanged();
-            Q_EMIT averageLaptimeChanged();
-        });
+        connect(mEventSource,
+                &EventSourceType::currentSessionEventReceived,
+                this,
+                &LiveSessionManagement::onCurrentSessionReceived);
     }
 
     /**
@@ -118,6 +103,48 @@ public:
     void setDeviceSettings(RapidAndroid::Common::DeviceSettings const& settings) override
     {
         mEventSource->setLaptimerConfig(settings);
+    }
+
+private:
+    void onCurrentSessionReceived(Common::CurrentSessionEvent const& event) noexcept
+    {
+        auto const& laps = event.session->getLaps();
+        std::ranges::transform(laps, std::back_inserter(mLaptimes), [](Common::Lap const& lap) -> QTime {
+            return lap.laptime();
+        });
+        if (not mLaptimes.isEmpty()) {
+            mLapCount = static_cast<quint32>(laps.size());
+            Q_EMIT lapCountChanged();
+            auto const bestLapIter = std::ranges::min_element(mLaptimes);
+            mBestLaptime = *bestLapIter;
+            Q_EMIT bestLaptimeChanged();
+            mBestLaptimeLap = static_cast<quint32>(std::distance(mLaptimes.begin(), bestLapIter)) + 1;
+            mLastLaptime = laps.isEmpty() ? QTime{0, 0, 0, 0} : laps.last().laptime();
+            Q_EMIT lastLaptimeChanged();
+            Q_EMIT averageLaptimeChanged();
+            Q_EMIT bestLaptimeDiffChanged();
+        }
+        connect(mEventSource,
+                &EventSourceType::currentLaptimeChanged,
+                this,
+                [this](Common::LaptimeEvent const& ltEvent) {
+                    mCurrentLaptime = ltEvent.laptime;
+                    Q_EMIT currentLaptimeChanged();
+                });
+        connect(mEventSource, &EventSourceType::laptimeFinished, this, [this](Common::LapFinishedEvent const& lfEvent) {
+            ++mLapCount;
+            mLastLaptime = lfEvent.laptime;
+            mLaptimes.append(lfEvent.laptime);
+            if (mBestLaptime == QTime{0, 0, 0, 0} or lfEvent.laptime < mBestLaptime) {
+                mBestLaptime = lfEvent.laptime;
+                mBestLaptimeLap = mLapCount;
+                Q_EMIT bestLaptimeChanged();
+            }
+            Q_EMIT lapCountChanged();
+            Q_EMIT bestLaptimeDiffChanged();
+            Q_EMIT lastLaptimeChanged();
+            Q_EMIT averageLaptimeChanged();
+        });
     }
 
 private:

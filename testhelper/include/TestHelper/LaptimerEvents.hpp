@@ -25,6 +25,13 @@ QString laptimeEventJson(QTime const& time);
  */
 QString lapFinishedEventJson(QTime const& time);
 
+/**
+ * @brief Generates a JSON string representing a current session event with the given session.
+ * @param session The seralized session to include in the event.
+ * @return A JSON string representing the current session event.
+ */
+QString currentSessionEventJson(QString const& session);
+
 } // namespace RapidAndroid::TestHelper
 
 #endif // RAPIDANDROID_TESTHELPER_LAPTIMEREVENTS_HPP

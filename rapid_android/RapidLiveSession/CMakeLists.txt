@@ -32,6 +32,7 @@ target_link_libraries(RapidLiveSession
         Qt6::WebSockets
         RapidAndroid::ControlsPlugin
         RapidAndroid::Workflow
+        RapidAndroid::Session
 )
 
 target_include_directories(RapidLiveSession

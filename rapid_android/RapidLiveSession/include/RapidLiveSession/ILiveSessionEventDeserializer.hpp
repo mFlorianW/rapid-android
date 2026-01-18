@@ -15,8 +15,11 @@ namespace RapidAndroid::RapidLiveSession
 /**
  * Alias for the variant type that can hold any of the live session event types.
  */
-using Event =
-    std::variant<Common::LapStartedEvent, Common::LaptimeEvent, Common::LapSectorEvent, Common::LapFinishedEvent>;
+using Event = std::variant<Common::LapStartedEvent,
+                           Common::LaptimeEvent,
+                           Common::LapSectorEvent,
+                           Common::LapFinishedEvent,
+                           Common::CurrentSessionEvent>;
 
 /**
  * Concept that checks if a type T conforms to the LiveSessionEventDeserializer interface.

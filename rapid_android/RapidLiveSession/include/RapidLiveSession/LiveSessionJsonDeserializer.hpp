@@ -45,6 +45,13 @@ private:
      * @return An optional QTime object if parsing is successful; otherwise, std::nullopt.
      */
     std::optional<QTime> parseTime(QString const& timeStr);
+
+    /**
+     * @brief Parses a JSON object into a CurrentSession Event object.
+     * @param dataObj The JSON object to parse.
+     * @return An optional Event object if parsing is successful; otherwise, std::nullopt.
+     */
+    std::optional<Event> parseCurrentSessionEvent(QJsonObject const& dataObj);
 };
 
 } // namespace RapidAndroid::RapidLiveSession
