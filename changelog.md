@@ -1,3 +1,25 @@
+## Release Note v0.4.0-b3
+
+### Features
+- display track name in the live session view
+- only update the live session view when current_session events was received
+- display average laptime in live session page
+- display lap of the best lap time
+- show last lap time difference in live session page
+- display best lap time in live session page
+- show last time in live session page
+- display lap count of the current active session
+- display current laptime in the live session page
+
+### Housekeeping
+- add editorconfig to cleanup trailing white spaces
+- install all QML modules in folder and generate global qmlls.ini
+
+### Refactoring
+- use c++ based time formatter in QML
+
+
+
 ## Release Note v0.4.0-b2
 
 ### Continuous Integration
