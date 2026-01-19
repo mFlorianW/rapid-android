@@ -14,10 +14,13 @@ target_sources(RapidAndroidTestHelper PRIVATE
     include/TestHelper/FakeLaptimer.hpp
     include/TestHelper/Session.hpp
     include/TestHelper/Session
+    include/TestHelper/LiveSessionEventSourceMock.hpp
+    include/TestHelper/LaptimerEvents.hpp
 
     src/SettingsMemoryBackend.cpp
     src/FakeLaptimer.cpp
     src/Session.cpp
+    src/LaptimerEvents.cpp
 )
 
 target_include_directories(RapidAndroidTestHelper
@@ -39,5 +42,5 @@ target_link_libraries(RapidAndroidTestHelper
         GTest::gmock
         RapidAndroid::Common
         RapidAndroid::Workflow
+        RapidAndroid::LiveSession
 )
-

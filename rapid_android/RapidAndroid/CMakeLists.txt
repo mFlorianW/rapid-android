@@ -4,8 +4,7 @@
 
 qt_add_qml_module(RapidAndroid
     URI "Rapid.Android"
-    OUTPUT_DIRECTORY "Rapid/Android"
-    IMPORT_PATH "Rapid/Android"
+    OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/qml/Rapid/Android"
     STATIC
     QML_FILES
         qml/RapidAndroid.qml
@@ -19,7 +18,7 @@ qt_add_qml_module(RapidAndroid
         img/Live.svg
         img/Sessions.svg
         img/Laptimer.svg
-        img/Tracks.svg
+        img/RaceTrack.svg
     SOURCES
         GlobalContext.cpp
         GlobalContext.hpp
@@ -27,6 +26,10 @@ qt_add_qml_module(RapidAndroid
         FileSettingsBackend.hpp
         LoggingCategories.cpp
         LoggingCategories.hpp
+        TimeFormatter.cpp
+        TimeFormatter.hpp
+    DEPENDENCIES
+        RapidAndroid::Workflow
 )
 
 add_library(RapidAndroid::Android ALIAS RapidAndroid)
@@ -40,6 +43,8 @@ target_link_libraries(RapidAndroid
         RapidAndroid::LaptimerPlugin
         RapidAndroid::Session
         RapidAndroid::SessionPlugin
+        RapidAndroid::LiveSession
+        RapidAndroid::LiveSessionPlugin
 )
 
 target_include_directories(RapidAndroid

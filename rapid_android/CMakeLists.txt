@@ -8,6 +8,7 @@ add_subdirectory(RapidAndroid)
 add_subdirectory(RapidControls)
 add_subdirectory(RapidLaptimer)
 add_subdirectory(RapidSession)
+add_subdirectory(RapidLiveSession)
 
 qt_add_executable(rapid_android)
 ## Set Android-specific properties

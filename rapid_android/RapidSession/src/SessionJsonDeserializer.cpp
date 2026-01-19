@@ -103,6 +103,27 @@ std::optional<std::unique_ptr<Common::Session>> deserializeSession(QByteArray da
 
 } // namespace
 
+QFuture<std::optional<std::unique_ptr<Common::Session>>> SessionJsonDeserializer::deserialize(QJsonObject const& data)
+{
+    return QtConcurrent::run(
+        [](QJsonObject const& obj) -> std::optional<std::unique_ptr<Common::Session>> {
+            auto session = std::make_unique<Common::Session>();
+            auto lapsArray = obj.value("laps").toArray();
+            if (not lapsArray.isEmpty()) {
+                session->setLaps(deserializeLaps(lapsArray));
+            }
+            auto trackObject = obj.value("track").toObject();
+            if (not trackObject.isEmpty()) {
+                session->setTrack(deserializeTrack(trackObject));
+            }
+            session->setDate(deserializeDate(obj.value("date").toString()));
+            session->setTime(QTime::fromString(obj.value("time").toString(), Qt::ISODate));
+
+            return session;
+        },
+        data);
+}
+
 QFuture<std::optional<std::unique_ptr<Common::Session>>> SessionJsonDeserializer::deserialize(QByteArray data)
 {
     return QtConcurrent::run(

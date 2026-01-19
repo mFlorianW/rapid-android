@@ -9,11 +9,14 @@
 #include <Common/DeviceSettings.hpp>
 #include <QObject>
 #include <QtQmlIntegration/qqmlintegration.h>
+#include <RapidLiveSession/LiveSessionJsonDeserializer.hpp>
+#include <RapidLiveSession/LiveSessionWebsocketEventSource.hpp>
 #include <RapidSession/FilesystemStorage.hpp>
 #include <RapidSession/SessionJsonDeserializer.hpp>
 #include <RapidSession/SessionJsonSerializer.hpp>
 #include <Workflow/DeviceManagement.hpp>
 #include <Workflow/HttpDeviceSessionManagement.hpp>
+#include <Workflow/LiveSessionManagement.hpp>
 #include <Workflow/LocalSessionManagement.hpp>
 #include <Workflow/SessionAnalyzer.hpp>
 #include <memory>
@@ -63,6 +66,14 @@ class GlobalContext : public QObject
      */
     Q_PROPERTY(RapidAndroid::Workflow::ISessionAnalyzer* sessionAnalyzer READ getSessionAnalyzer CONSTANT)
 
+    /**
+     * @property RapidAndroid::Workflow::ILiveSessionManagement*
+     *
+     * Gives the LiveSessionManagement workflow for managing live sessions.
+     */
+    Q_PROPERTY(
+        RapidAndroid::Workflow::ILiveSessionManagement* liveSessionManagement READ getLiveSessionManagement CONSTANT)
+
 public:
     Q_DISABLE_COPY_MOVE(GlobalContext)
 
@@ -100,6 +111,12 @@ public:
      */
     Workflow::ISessionAnalyzer* getSessionAnalyzer() noexcept;
 
+    /**
+     * @brief Get the live-session-management workflow.
+     * @return Non-null pointer owned by GlobalContext. Do not delete.
+     */
+    Workflow::ILiveSessionManagement* getLiveSessionManagement() noexcept;
+
 private:
     FileSettingsBackend mSettingsBackend;
     std::unique_ptr<Workflow::DeviceManagement> mDeviceManagement;
@@ -117,6 +134,14 @@ private:
     std::unique_ptr<LocalSessionMgmt> mLocalSessionManagement;
 
     std::unique_ptr<Workflow::SessionAnalyzer> mSessionAnalyzer;
+
+    RapidLiveSession::LiveSessionJsonDeserializer mLiveSessionJsonDeserializer;
+    using LiveSessionEventSource =
+        RapidLiveSession::LiveSessionWebsocketEventSource<RapidLiveSession::LiveSessionJsonDeserializer>;
+    std::unique_ptr<RapidLiveSession::LiveSessionWebsocketEventSource<RapidLiveSession::LiveSessionJsonDeserializer>>
+        mLiveSessionEventSource;
+    using LiveSessionMgmt = Workflow::LiveSessionManagement<LiveSessionEventSource>;
+    std::unique_ptr<LiveSessionMgmt> mLiveSessionManagement;
 };
 
 struct Wf

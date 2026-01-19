@@ -8,7 +8,10 @@ import QtQuick.Controls
 Control {
     id: listDelegate
 
+    property alias borderColor: backgroundRect.border.color
+
     background: Rectangle {
+        id: backgroundRect
         color: "#ffffff"
         border.color: "#E5E7EB"
         border.width: 1

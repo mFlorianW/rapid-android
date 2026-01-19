@@ -8,7 +8,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as Ctrl
 import QtQuick.Controls.Material
-import Qt5Compat.GraphicalEffects
+import QtQuick.Effects
 import Rapid.Android
 import Rapid.Controls
 
@@ -44,11 +44,11 @@ Ctrl.ApplicationWindow {
                 source: "qrc:/qt/qml/Rapid/Android/img/Stopwatch.svg"
                 sourceSize.width: 24
                 sourceSize.height: 24
-
-                ColorOverlay {
-                    anchors.fill: titleImage
-                    source: titleImage
-                    color: "#ffffff"
+                layer.enabled: true
+                layer.effect: MultiEffect {
+                    brightness: 1.0
+                    colorization: 1.0
+                    colorizationColor: "#ffffff"
                 }
             }
 
@@ -64,7 +64,7 @@ Ctrl.ApplicationWindow {
     Loader {
         id: pageLoader
         anchors.fill: parent
-        sourceComponent: sessionsPage
+        sourceComponent: livePage
     }
 
     footer: Ctrl.ToolBar {
@@ -116,7 +116,7 @@ Ctrl.ApplicationWindow {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillHeight: true
 
-                iconSource: "qrc:/qt/qml/Rapid/Android/img/Tracks.svg"
+                iconSource: "qrc:/qt/qml/Rapid/Android/img/RaceTrack.svg"
                 text: qsTr("Tracks")
                 onClicked: {
                     pageLoader.sourceComponent = tracksPage;

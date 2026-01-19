@@ -10,6 +10,7 @@ import QtQuick.Layouts
 import QtQuick.Controls.Material
 import Rapid.Controls
 import Rapid.Android
+import Rapid.Session
 
 Control {
     id: laptimer

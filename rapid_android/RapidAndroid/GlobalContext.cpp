@@ -33,6 +33,8 @@ GlobalContext::GlobalContext()
     , mDeviceSessionManagement{std::make_unique<DeviceSessionMgmt>(&mSessionDeserializer, &mSessionStorage)}
     , mLocalSessionManagement{std::make_unique<LocalSessionMgmt>(&mSessionStorage)}
     , mSessionAnalyzer{std::make_unique<Workflow::SessionAnalyzer>()}
+    , mLiveSessionEventSource{std::make_unique<LiveSessionEventSource>(&mLiveSessionJsonDeserializer)}
+    , mLiveSessionManagement{std::make_unique<LiveSessionMgmt>(mLiveSessionEventSource.get())}
 {
 }
 
@@ -56,6 +58,11 @@ Workflow::ILocalSessionManagement* GlobalContext::getLocalSessionManagement() no
 Workflow::ISessionAnalyzer* GlobalContext::getSessionAnalyzer() noexcept
 {
     return mSessionAnalyzer.get();
+}
+
+Workflow::ILiveSessionManagement* GlobalContext::getLiveSessionManagement() noexcept
+{
+    return mLiveSessionManagement.get();
 }
 
 } // namespace RapidAndroid

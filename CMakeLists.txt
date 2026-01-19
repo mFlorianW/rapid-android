@@ -81,6 +81,7 @@ find_package(Qt6 REQUIRED COMPONENTS
     Network
     Location
     QuickControls2
+    WebSockets
 )
 
 if(QT_KNOWN_POLICY_QTP0001)
@@ -90,6 +91,12 @@ endif()
 if(QT_KNOWN_POLICY_QTP0004)
     qt_policy(SET QTP0004 NEW)
 endif()
+
+# Generate .qmlls.ini file for language server support
+set(QML_IMPORT_PATH "${CMAKE_BINARY_DIR}/qml" CACHE STRING "Qt Creator extra qml import paths" FORCE)
+
+# Create .qmlls.ini in the source root
+file(WRITE "${CMAKE_SOURCE_DIR}/.qmlls.ini" "[General]\nbuildDir=${CMAKE_BINARY_DIR}\n")
 
 setup_compile_flags()
 # setup_iwyu()
