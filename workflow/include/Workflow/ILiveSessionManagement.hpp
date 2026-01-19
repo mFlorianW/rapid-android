@@ -70,6 +70,13 @@ class ILiveSessionManagement : public QObject
      */
     Q_PROPERTY(quint32 lapCount READ getLapCount NOTIFY lapCountChanged)
 
+    /**
+     * @property ILiveSessionManagement::trackName
+     * @brief Name of the track for the current session.
+     * @details Emits trackNameChanged when the track name changes.
+     */
+    Q_PROPERTY(QString trackName READ getTrackName NOTIFY trackNameChanged)
+
 public:
     Q_DISABLE_COPY_MOVE(ILiveSessionManagement)
 
@@ -121,6 +128,12 @@ public:
     [[nodiscard]] virtual quint32 getLapCount() const noexcept = 0;
 
     /**
+     * @brief Returns the name of the track for the current session.
+     * @return Track name as QString.
+     */
+    [[nodiscard]] virtual QString getTrackName() const noexcept = 0;
+
+    /**
      * @brief Applies device settings these settings are used to receive the live session events from the device.
      * @param settings Device settings to apply.
      */
@@ -156,6 +169,11 @@ Q_SIGNALS:
      * @brief Emitted when the lap count changes.
      */
     void lapCountChanged();
+
+    /**
+     * @brief Emitted when the track name changes.
+     */
+    void trackNameChanged();
 
 protected:
     ILiveSessionManagement() = default;

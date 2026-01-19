@@ -18,7 +18,7 @@ qt_add_qml_module(RapidAndroid
         img/Live.svg
         img/Sessions.svg
         img/Laptimer.svg
-        img/Tracks.svg
+        img/RaceTrack.svg
     SOURCES
         GlobalContext.cpp
         GlobalContext.hpp

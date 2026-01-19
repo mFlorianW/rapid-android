@@ -98,6 +98,14 @@ public:
     }
 
     /**
+     * @copydoc ILiveSessionManagement::trackName
+     */
+    [[nodiscard]] QString getTrackName() const noexcept override
+    {
+        return mTrackName;
+    }
+
+    /**
      * @copydoc ILiveSessionManagement::setDeviceSettings
      */
     void setDeviceSettings(RapidAndroid::Common::DeviceSettings const& settings) override
@@ -112,13 +120,15 @@ private:
         std::ranges::transform(laps, std::back_inserter(mLaptimes), [](Common::Lap const& lap) -> QTime {
             return lap.laptime();
         });
+        mTrackName = event.session->getTrack().name;
+        Q_EMIT trackNameChanged();
         if (not mLaptimes.isEmpty()) {
             mLapCount = static_cast<quint32>(laps.size());
             Q_EMIT lapCountChanged();
             auto const bestLapIter = std::ranges::min_element(mLaptimes);
             mBestLaptime = *bestLapIter;
-            Q_EMIT bestLaptimeChanged();
             mBestLaptimeLap = static_cast<quint32>(std::distance(mLaptimes.begin(), bestLapIter)) + 1;
+            Q_EMIT bestLaptimeChanged();
             mLastLaptime = laps.isEmpty() ? QTime{0, 0, 0, 0} : laps.last().laptime();
             Q_EMIT lastLaptimeChanged();
             Q_EMIT averageLaptimeChanged();
@@ -155,6 +165,7 @@ private:
     QVector<QTime> mLaptimes;
     quint32 mLapCount{0};
     quint32 mBestLaptimeLap{0};
+    QString mTrackName{tr("Unknown Track")};
 };
 
 } // namespace RapidAndroid::Workflow

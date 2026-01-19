@@ -116,7 +116,7 @@ Ctrl.ApplicationWindow {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillHeight: true
 
-                iconSource: "qrc:/qt/qml/Rapid/Android/img/Tracks.svg"
+                iconSource: "qrc:/qt/qml/Rapid/Android/img/RaceTrack.svg"
                 text: qsTr("Tracks")
                 onClicked: {
                     pageLoader.sourceComponent = tracksPage;

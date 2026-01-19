@@ -29,6 +29,56 @@ Control {
             anchors.margins: 10
 
             ListDelegateBackground {
+                id: trackNameContainer
+                Layout.fillWidth: true
+                Layout.preferredHeight: trackNameLayout.implicitHeight
+
+                RowLayout {
+                    id: trackNameLayout
+                    anchors.margins: 10
+                    width: trackNameContainer.width
+                    spacing: 5
+                    height: trackNameText.implicitHeight
+
+                    Image {
+                        id: trackImage
+                        property int size: 26
+                        source: "qrc:/qt/qml/Rapid/Android/img/RaceTrack.svg"
+                        sourceSize.width: size
+                        sourceSize.height: size
+                        fillMode: VectorImage.PreserveAspectFit
+                        layer.enabled: true
+                        layer.smooth: true
+                        layer.effect: MultiEffect {
+                            brightness: 1.0
+                            colorization: 1.0
+                            colorizationColor: "#0682C9"
+                        }
+                        Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                        Layout.leftMargin: 15
+                        Layout.topMargin: 10
+                        Layout.bottomMargin: 10
+                    }
+
+                    Text {
+                        id: trackNameText
+                        text: liveSession.liveSessionMgmt.trackName
+                        font.pixelSize: 18
+                        color: "#000000"
+                        Layout.fillHeight: true
+                        font.bold: true
+                        Layout.preferredWidth: 0.5 * trackNameLayout.width
+                        elide: Text.ElideMiddle
+                        horizontalAlignment: Text.AlignRight
+                        Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                        Layout.rightMargin: 15
+                        Layout.topMargin: 10
+                        Layout.bottomMargin: 10
+                    }
+                }
+            }
+
+            ListDelegateBackground {
                 Layout.preferredWidth: liveSessionLayout.width
                 Layout.preferredHeight: 156
                 Layout.alignment: Qt.AlignTop

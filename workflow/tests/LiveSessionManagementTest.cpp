@@ -160,6 +160,7 @@ private Q_SLOTS:
         auto lapCountSpy = QSignalSpy{mLsm.get(), &Lsm::lapCountChanged};
         auto bestLaptimeSpy = QSignalSpy{mLsm.get(), &Lsm::bestLaptimeChanged};
         auto averageDurationSpy = QSignalSpy{mLsm.get(), &Lsm::averageLaptimeChanged};
+        auto trackNameSpy = QSignalSpy{mLsm.get(), &Lsm::trackNameChanged};
 
         QCOMPARE(mLsm->property("lastLaptime").value<QTime>(), defaultLaptime);
 
@@ -175,6 +176,8 @@ private Q_SLOTS:
         QCOMPARE(mLsm->property("bestLaptime").value<QTime>(), defaultLaptime);
         QCOMPARE(averageDurationSpy.count(), 0);
         QCOMPARE(mLsm->property("averageLaptime").value<QTime>(), defaultLaptime);
+        QCOMPARE(trackNameSpy.count(), 0);
+        QCOMPARE(mLsm->property("trackName").toString(), QString{"Unknown Track"});
 
         // sending the current session event should trigger processing of the live session parameter
         sendCurrentSessionEvent();
@@ -187,6 +190,8 @@ private Q_SLOTS:
         QCOMPARE(mLsm->property("bestLaptime").value<QTime>(), laptime);
         QCOMPARE(averageDurationSpy.count(), 1);
         QCOMPARE(mLsm->property("averageLaptime").value<QTime>(), laptime);
+        QCOMPARE(trackNameSpy.count(), 1);
+        QCOMPARE(mLsm->property("trackName").toString(), QString{"Oschersleben"});
     }
 };
 
