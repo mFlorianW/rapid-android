@@ -148,12 +148,12 @@ Control {
                 spacing: 12
                 clip: true
                 delegate: ListDelegate {
-                    id: listDelegate
+                    id: listDeviceSessionDelegate
                     width: laptimerSessionList.width
                     required property var sessionInfo
-                    titleName: listDelegate.sessionInfo.trackName
-                    additionalTitleText: listDelegate.sessionInfo.date
-                    detail1Text: qsTr("Laps: %1").arg(listDelegate.sessionInfo.laps)
+                    titleName: listDeviceSessionDelegate.sessionInfo.trackName
+                    additionalTitleText: listDeviceSessionDelegate.sessionInfo.date
+                    detail1Text: qsTr("Laps: %1").arg(listDeviceSessionDelegate.sessionInfo.laps)
 
                     buttonLeftText: qsTr("Delete")
                     buttonLeftIcon: "qrc:/qt/qml/Rapid/Session/img/Trash.svg"
@@ -162,14 +162,14 @@ Control {
 
                     onLeftButtonClicked: {
                         var settings = GlobalContext.deviceManagement.activeLaptimer;
-                        GlobalContext.deviceSessionManagement.deleteSession(settings, listDelegate.sessionInfo.id);
+                        GlobalContext.deviceSessionManagement.deleteSession(settings, listDeviceSessionDelegate.sessionInfo.id);
                     }
 
                     onRightButtonClicked: {
                         var settings = GlobalContext.deviceManagement.activeLaptimer;
-                        GlobalContext.deviceSessionManagement.downloadSession(settings, listDelegate.sessionInfo.id);
-                        downloadDialog.trackName = listDelegate.sessionInfo.trackName;
-                        downloadDialog.date = listDelegate.sessionInfo.date;
+                        GlobalContext.deviceSessionManagement.downloadSession(settings, listDeviceSessionDelegate.sessionInfo.id);
+                        downloadDialog.trackName = listDeviceSessionDelegate.sessionInfo.trackName;
+                        downloadDialog.date = listDeviceSessionDelegate.sessionInfo.date;
                         downloadDialog.open();
                     }
                 }
