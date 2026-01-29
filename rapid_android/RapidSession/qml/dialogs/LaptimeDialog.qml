@@ -89,7 +89,7 @@ Dialog {
                     ListView {
                         id: sectorTimesList
                         Layout.fillWidth: true
-                        Layout.preferredHeight: sectorTimesList.contentHeight
+                        implicitHeight: sectorTimesList.contentHeight
                         model: delegate.sectorTimes
                         clip: true
 
@@ -131,7 +131,7 @@ Dialog {
                     gesturePolicy: TapHandler.ReleaseWithinBounds
                     onTapped: {
                         sectorTimes.visible = !sectorTimes.visible;
-                        delegate.height = delegate.height + (sectorTimes.visible ? sectorTimes.height : -sectorTimes.height);
+                        delegate.height = delegate.height + (sectorTimes.visible ? sectorTimes.implicitHeight : -sectorTimes.implicitHeight);
                     }
                 }
             }
