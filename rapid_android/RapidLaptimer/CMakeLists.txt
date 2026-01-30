@@ -12,6 +12,10 @@ qt_add_qml_module(RapidLaptimer
         qml/controls/DelegateContent.qml
         # dialogs
         qml/dialogs/LaptimerConfigurationDialog.qml
+    SOURCES
+        include/RapidLaptimer/FileSettingsBackend.hpp
+
+        src/FileSettingsBackend.cpp
     RESOURCES
         img/ClockHourWatch.svg
         img/ConnectionHigh.svg
@@ -33,11 +37,12 @@ target_link_libraries(RapidLaptimer
     PUBLIC
         Qt6::Quick
         RapidAndroid::ControlsPlugin
+        RapidAndroid::Common
 )
 
 target_include_directories(RapidLaptimer
     PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include
 )
 
 

@@ -22,8 +22,6 @@ qt_add_qml_module(RapidAndroid
     SOURCES
         GlobalContext.cpp
         GlobalContext.hpp
-        FileSettingsBackend.cpp
-        FileSettingsBackend.hpp
         LoggingCategories.cpp
         LoggingCategories.hpp
         TimeFormatter.cpp
@@ -40,6 +38,7 @@ target_link_libraries(RapidAndroid
         Qt6::Quick
         RapidAndroid::Workflow
         RapidAndroid::ControlsPlugin
+        RapidAndroid::Laptimer
         RapidAndroid::LaptimerPlugin
         RapidAndroid::Session
         RapidAndroid::SessionPlugin

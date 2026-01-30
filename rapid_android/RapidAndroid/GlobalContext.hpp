@@ -5,10 +5,10 @@
 #ifndef RAPIDANDROID_GLOBALCONTEXT_HPP
 #define RAPIDANDROID_GLOBALCONTEXT_HPP
 
-#include "FileSettingsBackend.hpp"
 #include <Common/DeviceSettings.hpp>
 #include <QObject>
 #include <QtQmlIntegration/qqmlintegration.h>
+#include <RapidLaptimer/FileSettingsBackend.hpp>
 #include <RapidLiveSession/LiveSessionJsonDeserializer.hpp>
 #include <RapidLiveSession/LiveSessionWebsocketEventSource.hpp>
 #include <RapidSession/FilesystemStorage.hpp>

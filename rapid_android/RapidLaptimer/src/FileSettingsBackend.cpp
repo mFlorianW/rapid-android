@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-2.0-or-later
 
-#include "FileSettingsBackend.hpp"
+#include "RapidLaptimer/FileSettingsBackend.hpp"
 #include <QCoreApplication>
 
 namespace RapidAndroid
