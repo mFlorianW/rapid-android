@@ -24,7 +24,9 @@ namespace RapidAndroid::RapidLiveSession
  */
 QLoggingCategory const& rljeLog();
 
-// Base class to allow forward declaration with Q_OBJECT macro
+/**
+ *  @brief Base class for LiveSessionWebsocketEventSource to provide common signals.
+ */
 class LiveSessionWebsocketEventSourceBase : public QObject
 {
     Q_OBJECT
