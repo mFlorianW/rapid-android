@@ -1,3 +1,13 @@
+## Release Note v0.4.0-b4
+
+### Bug Fixes
+- use implicit height for the sector time list
+
+### Refactoring
+- remove duplicated id
+
+
+
 ## Release Note v0.4.0-b3
 
 ### Features
