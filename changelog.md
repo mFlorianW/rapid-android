@@ -1,3 +1,13 @@
+## Release Note v0.4.0-b5
+
+### Continuous Integration
+- document the LiveSessionWebsocketEventSourceBase
+
+### Refactoring
+- move FileSettingsBackend into the RapidLaptimer
+
+
+
 ## Release Note v0.4.0-b4
 
 ### Bug Fixes
