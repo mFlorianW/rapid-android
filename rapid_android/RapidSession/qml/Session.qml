@@ -70,6 +70,7 @@ Control {
                         GlobalContext.localSessionManagement.load(listDelegate.sessionInfo);
                         infoDialog.title = qsTr("Loading Session");
                         infoDialog.open();
+                        laptimeDialog.title = listDelegate.sessionInfo.trackName + " - " + listDelegate.sessionInfo.date;
                     }
 
                     onRightButtonClicked: {
@@ -106,7 +107,6 @@ Control {
 
             LaptimeDialog {
                 id: laptimeDialog
-                title: qsTr("Laptimes")
                 height: laptimer.height * 0.8
                 width: laptimer.width * 0.8
             }

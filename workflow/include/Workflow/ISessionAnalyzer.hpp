@@ -18,6 +18,10 @@ class ISessionAnalyzer : public QObject
 
     Q_PROPERTY(QAbstractListModel* lapListModel READ getLapListModel CONSTANT)
 
+    Q_PROPERTY(QTime bestLapTime READ getBestLapTime NOTIFY sessionAnalyzed)
+
+    Q_PROPERTY(qreal topSpeed READ getTopSpeed NOTIFY sessionAnalyzed)
+
 public:
     Q_DISABLE_COPY_MOVE(ISessionAnalyzer)
 
@@ -38,6 +42,18 @@ public:
      * @param session The session data to be analyzed.
      */
     Q_INVOKABLE virtual void analyzeSession(RapidAndroid::Common::Session const& session) noexcept = 0;
+
+    /**
+     * @brief Returns the best lap time from the analyzed session.
+     * @return The best lap time as a QTime object.
+     */
+    virtual QTime getBestLapTime() const noexcept = 0;
+
+    /**
+     * @brief Returns the top speed achieved in the analyzed session.
+     * @return The top speed as a qreal value in m/s.
+     */
+    virtual qreal getTopSpeed() const noexcept = 0;
 
 Q_SIGNALS:
     /**
