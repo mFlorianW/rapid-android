@@ -1,3 +1,15 @@
+## Release Note v0.4.0-b6
+
+### Bug Fixes
+- use time formatter to return lap and sector times
+
+### Features
+- use track and track date as session header
+- display the top speed in the session dialog
+- display session best laptime
+
+
+
 ## Release Note v0.4.0-b5
 
 ### Continuous Integration

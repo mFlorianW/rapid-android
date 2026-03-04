@@ -1,7 +1,7 @@
 [tool.commitizen]
 name = "cz_customize"
 tag_format = "v$version"
-version = "0.4.0-b5"
+version = "0.4.0-b6"
 version_provider = "commitizen"
 version_scheme = "semver"
 update_changelog_on_bump = true
