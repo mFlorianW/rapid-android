@@ -55,12 +55,40 @@ Dialog {
             horizontalAlignment: Text.AlignRight
             font.pixelSize: 14
             Layout.fillWidth: true
+            font.bold: true
+        }
+    }
+
+    RowLayout {
+        id: topSpeedRow
+        anchors.top: bestLapTimeRow.bottom
+        anchors.topMargin: 20
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+
+        Text {
+            id: topSpeedLabel
+            text: qsTr("Top Speed:")
+            verticalAlignment: Text.AlignVCenter
+            font.pixelSize: 14
+        }
+
+        Text {
+            id: topSpeedLabelValue
+            text: GlobalContext.sessionAnalyzer.topSpeed * 3.6 + " km/h"
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignRight
+            font.pixelSize: 14
+            Layout.fillWidth: true
+            font.bold: true
         }
     }
 
     Rectangle {
         id: analyzeSeparator
-        anchors.top: bestLapTimeRow.bottom
+        anchors.top: topSpeedRow.bottom
         anchors.topMargin: 12
         anchors.left: parent.left
         anchors.leftMargin: 10

@@ -45,9 +45,15 @@ public:
      */
     QTime getBestLapTime() const noexcept override;
 
+    /**
+     * @copydoc ISessionAnalyzer::getTopSpeed
+     */
+    qreal getTopSpeed() const noexcept override;
+
 private:
     LapListModel mLapModel;
     QTime mBestLapTime;
+    qreal mTopSpeed{0.0};
 };
 
 } // namespace RapidAndroid::Workflow

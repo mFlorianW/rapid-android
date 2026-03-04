@@ -20,6 +20,8 @@ class ISessionAnalyzer : public QObject
 
     Q_PROPERTY(QTime bestLapTime READ getBestLapTime NOTIFY sessionAnalyzed)
 
+    Q_PROPERTY(qreal topSpeed READ getTopSpeed NOTIFY sessionAnalyzed)
+
 public:
     Q_DISABLE_COPY_MOVE(ISessionAnalyzer)
 
@@ -46,6 +48,12 @@ public:
      * @return The best lap time as a QTime object.
      */
     virtual QTime getBestLapTime() const noexcept = 0;
+
+    /**
+     * @brief Returns the top speed achieved in the analyzed session.
+     * @return The top speed as a qreal value in m/s.
+     */
+    virtual qreal getTopSpeed() const noexcept = 0;
 
 Q_SIGNALS:
     /**

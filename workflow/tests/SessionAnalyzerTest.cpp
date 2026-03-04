@@ -45,10 +45,17 @@ private Q_SLOTS:
     {
         SessionAnalyzer analyzer;
         auto bestLapTime = QTime::fromString("02:05.720", "mm:ss.zzz");
-
         analyzer.analyzeSession(TestHelper::getOscherslebenSession());
-
         QCOMPARE(analyzer.getBestLapTime(), bestLapTime);
+    }
+
+    void testSessionTopSpeed()
+    {
+        SessionAnalyzer analyzer;
+        auto session = TestHelper::getOscherslebenSession();
+        auto topSpeed = 100;
+        analyzer.analyzeSession(session);
+        QCOMPARE(analyzer.getTopSpeed(), topSpeed);
     }
 };
 
