@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "Workflow/Private/LapListModel.hpp"
+#include <Common/TimeFormatter.hpp>
 
 namespace RapidAndroid::Workflow
 {
@@ -32,13 +33,13 @@ QVariant LapListModel::data(QModelIndex const& index, int role) const noexcept
     case DisplayRole::SectorTimes: {
         QStringList sectors;
         for (auto const& sector : (*lap)->sectors) {
-            sectors.append(sector.toString("mm:ss.zzz"));
+            sectors.append(Common::TimeFormatter::formatTime(sector));
         }
         return sectors;
         break;
     }
     case DisplayRole::Laptime:
-        return (*lap)->laptime().toString("mm:ss.zzz");
+        return Common::TimeFormatter::formatTime((*lap)->laptime());
         break;
     }
     return {};
