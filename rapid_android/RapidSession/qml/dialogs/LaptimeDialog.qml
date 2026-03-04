@@ -22,9 +22,72 @@ Dialog {
     modal: true
     closePolicy: Dialog.NoAutoClose
 
+    Text {
+        id: overviewLabel
+        text: qsTr("Overview")
+        verticalAlignment: Text.AlignVCenter
+        font.pixelSize: 16
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        font.bold: true
+    }
+
+    RowLayout {
+        id: bestLapTimeRow
+        anchors.top: overviewLabel.bottom
+        anchors.topMargin: 20
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+
+        Text {
+            id: bestLapTimeLabel
+            text: qsTr("Best Lap Time:")
+            verticalAlignment: Text.AlignVCenter
+            font.pixelSize: 14
+        }
+
+        Text {
+            id: bestLapTimeLabelValue
+            text: TimeFormatter.formatTime(GlobalContext.sessionAnalyzer.bestLapTime)
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignRight
+            font.pixelSize: 14
+            Layout.fillWidth: true
+        }
+    }
+
+    Rectangle {
+        id: analyzeSeparator
+        anchors.top: bestLapTimeRow.bottom
+        anchors.topMargin: 12
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        height: 1
+        color: "#e5e7eb"
+    }
+
+    Text {
+        id: lapTimesLabel
+        text: qsTr("Lap Times")
+        verticalAlignment: Text.AlignVCenter
+        font.pixelSize: 16
+        anchors.top: analyzeSeparator.bottom
+        anchors.topMargin: 20
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        font.bold: true
+    }
+
     ListView {
         id: laptimeView
-        anchors.fill: parent
+        anchors.top: lapTimesLabel.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
         anchors.margins: 10
         model: GlobalContext.sessionAnalyzer.lapListModel
         clip: true
@@ -66,7 +129,7 @@ Dialog {
                     Text {
                         id: laptimeText
                         Layout.fillWidth: true
-                        text: TimeFormatter.formatTime(delegate.laptime)
+                        text: delegate.laptime
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignRight
                         font.pixelSize: 14
@@ -109,7 +172,7 @@ Dialog {
 
                             Text {
                                 Layout.fillWidth: true
-                                text: TimeFormatter.formatTime(sectorTimeRow.modelData)
+                                text: sectorTimeRow.modelData
                                 verticalAlignment: Text.AlignVCenter
                                 horizontalAlignment: Text.AlignRight
                                 font.pixelSize: 12

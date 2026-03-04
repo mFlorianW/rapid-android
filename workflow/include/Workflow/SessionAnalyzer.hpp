@@ -40,8 +40,14 @@ public:
      */
     void analyzeSession(Common::Session const& session) noexcept override;
 
+    /**
+     * @copydoc ISessionAnalyzer::getBestLapTime
+     */
+    QTime getBestLapTime() const noexcept override;
+
 private:
     LapListModel mLapModel;
+    QTime mBestLapTime;
 };
 
 } // namespace RapidAndroid::Workflow

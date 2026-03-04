@@ -106,7 +106,7 @@ Control {
 
             LaptimeDialog {
                 id: laptimeDialog
-                title: qsTr("Laptimes")
+                title: qsTr("Session Analysis")
                 height: laptimer.height * 0.8
                 width: laptimer.width * 0.8
             }
