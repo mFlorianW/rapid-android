@@ -77,7 +77,7 @@ Dialog {
 
         Text {
             id: topSpeedLabelValue
-            text: GlobalContext.sessionAnalyzer.topSpeed * 3.6 + " km/h"
+            text: Number(GlobalContext.sessionAnalyzer.topSpeed * 3.6).toFixed(1) + " km/h"
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignRight
             font.pixelSize: 14
