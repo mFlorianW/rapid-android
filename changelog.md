@@ -1,3 +1,13 @@
+## Release Note v0.4.0-b7
+
+### Bug Fixes
+- limit decimal places to one for the top speed
+
+### Housekeeping
+- add missing Qt package
+
+
+
 ## Release Note v0.4.0-b6
 
 ### Bug Fixes
